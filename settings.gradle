@@ -15,4 +15,4 @@ include 'api'
 include 'services:webservice'
 */
 
-rootProject.name = 'PBL-D-2018-b2'
+rootProject.name = 'memoworld'
