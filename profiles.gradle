@@ -1,0 +1,28 @@
+environments{
+    development {
+        hostname = 'localhost'
+        portnumber = 8080
+        protocol = 'http'
+        username = 'tomcat'
+        password = 'spiral'
+        curlpath = 'curl'
+    }
+
+    jenkins{
+        hostname = '133.1.236.167'
+        portnumber = 8082
+        protocol = 'http'
+        username = 'tomcat'
+        password = 'spiral'
+        curlpath = 'curl'
+    }
+
+    amazon{
+        hostname = 'team2.aibic-spiral.cloud'
+        portnumber = '443'
+        protocol = 'https'
+        username = 'tomcat'
+        password = '8np1tClouD'
+        curlpath = 'curl'
+    }
+}

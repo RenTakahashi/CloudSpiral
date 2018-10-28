@@ -1,0 +1,60 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse'
+apply plugin: 'jacoco'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+def DEFAULT_PROFILE = 'development'
+def profile = project.getProperties().getOrDefault("profile", DEFAULT_PROFILE)
+def config = new ConfigSlurper(profile).parse(file("profiles.gradle").toURL())
+
+[compileJava, compileTestJava]*.options*.encoding = 'utf-8'
+
+repositories {
+      maven{
+         url "http://133.1.236.168/repository/maven-public/"
+         credentials{
+             username 'cspiral'
+             password 'spiralspiral'
+         }
+     }
+     jcenter()
+}
+
+dependencies{
+    compile 'org.glassfish.jersey.containers:jersey-container-grizzly2-http:2.25.1'
+    compile 'org.glassfish.jersey.containers:jersey-container-servlet-core:2.25.1'
+    compile 'org.glassfish.jersey.media:jersey-media-moxy:2.25.1'
+    compile 'org.mongodb:mongo-java-driver:3.4.1'
+    
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+
+    testCompile 'org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-grizzly2:2.25.1'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.hamcrest:hamcrest-all:1.3'
+    testCompile 'org.exparity:hamcrest-date:2.0.4'
+}
+
+def path = "/${rootProject.name}"
+
+task deployLocal(type: Exec, dependsOn: [war]) {
+	group = 'Build'
+	description = 'Deploy the generated war to Tomcat.'
+
+    def auth = "${config.username}:${config.password}"
+    def targetPath = "/manager/text/deploy?path=${path}&update=true"
+    def url = "${config.protocol}://${auth}@${config.hostname}:${config.portnumber}${targetPath}"
+
+	// print "${config.curlpath} --upload-file build/libs/${rootProject.name}.war ${url}"
+    commandLine "${config.curlpath}", "--upload-file", "build/libs/${rootProject.name}.war", "${url}"
+}
+
+jacoco {
+    toolVersion = "0.7.9"
+}
+
+test.doLast {
+    tasks.jacocoTestReport.execute()
+}
