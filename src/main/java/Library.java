@@ -3,6 +3,7 @@
  */
 public class Library {
     public boolean someLibraryMethod() {
+    	/*コメント挿入*/
         return true;
     }
 }
