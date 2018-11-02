@@ -5,7 +5,7 @@ environments{
         protocol = 'http'
         username = 'tomcat'
         password = 'spiral'
-        curlpath = 'curl'
+        curlpath = '../msys64/usr/bin/curl.exe'
     }
 
     jenkins{
