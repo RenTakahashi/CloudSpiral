@@ -18,6 +18,8 @@ public class Photo {
     private String author;
     @XmlElement(name = "raw_uri")
     private String raw_uri;
+    @XmlElement(name = "raw")
+    private String raw_image;
 
     public Photo() {
     }
@@ -60,5 +62,13 @@ public class Photo {
 
     public void setRawURI(String raw_uri) {
         this.raw_uri = raw_uri;
+    }
+
+    public String getRawImage() {
+        return raw_image;
+    }
+
+    public void setRawImage(String raw_image) {
+        this.raw_image = raw_image;
     }
 }

@@ -16,15 +16,19 @@ public class PhotoTest {
         String desc = "foo";
         String location = "bar";
         String raw_uri = "baz";
+        String raw_image = "/vtIGhuilKGYU=";
+
         p.setId(id);
         p.setDate(date);
         p.setDescription(desc);
         p.setLocation(location);
         p.setRawURI(raw_uri);
+        p.setRawImage(raw_image);
         assertEquals(id, p.getId());
         assertEquals(date, p.getDate());
         assertEquals(desc, p.getDescription());
         assertEquals(location, p.getLocation());
         assertEquals(raw_uri, p.getRawURI());
+        assertEquals(raw_image, p.getRawImage());
     }
 }

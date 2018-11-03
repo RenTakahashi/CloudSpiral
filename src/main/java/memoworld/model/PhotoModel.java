@@ -25,7 +25,7 @@ public class PhotoModel implements AutoCloseable {
     public void close() {
     }
 
-    private Document toDocument(Photo photo) {
+    private Document toDocument(Photo photo, String raw_image) {
         if (photo == null)
             return null;
         Map<String, Object> map = new HashMap<String, Object>();
@@ -34,6 +34,7 @@ public class PhotoModel implements AutoCloseable {
         map.put("description", photo.getDescription());
         map.put("date", photo.getDate());
         map.put("raw_uri", photo.getRawURI());
+        map.put("raw_image", raw_image);
         return new Document(map);
     }
 
@@ -48,7 +49,8 @@ public class PhotoModel implements AutoCloseable {
 
     public Photo register(Photo photo) {
         photo.setId(newId() + 1);
-        photos.insertOne(toDocument(photo));
+        photo.setRawURI("/photos/" + Integer.toString(photo.getId()));
+        photos.insertOne(toDocument(photo, photo.getRawImage()));
         return photo;
     }
 }
