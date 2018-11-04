@@ -49,7 +49,7 @@ public class PhotoRest {
 
         } catch (IOException | IllegalArgumentException e) {
             // 画像バイナリが正しくなかった場合
-            HashMap<String, Object> h = new HashMap<String, Object>();
+            HashMap<String, Object> h = new HashMap<>();
             h.put("Content-Type", "application/json");
             return errorMessage(400, "bad image binary", h);
         }
