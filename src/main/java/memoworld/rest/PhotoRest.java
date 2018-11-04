@@ -1,9 +1,13 @@
 package memoworld.rest;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.Tag;
 import memoworld.entities.ErrorMessage;
 import memoworld.entities.Photo;
 import memoworld.model.PhotoModel;
-import org.eclipse.persistence.tools.file.FileUtil;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.*;
@@ -14,9 +18,8 @@ import javax.ws.rs.core.Response;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Path("/photos")
@@ -32,14 +35,41 @@ public class PhotoRest {
             // 写真をDBに登録して登録内容を返す
             PhotoModel model = new PhotoModel();
             byte[] base64 = Base64.getDecoder().decode(photo.getRawImage());
-            BufferedImage image = toBufferedImage(base64);
 
-            // TODO: exifから情報取得
-            if (photo.getLocation().isEmpty()) {
-
-            }
-            if (photo.getDate() == null) {
-
+            // exifから情報取得
+            boolean isDefaultLocation = photo.getLocation().getLatitude() == -360;
+            boolean isDefaultDate = photo.getDate() == null;
+            if (isDefaultLocation || isDefaultDate) {
+                Metadata metadata = ImageMetadataReader.readMetadata(new ByteArrayInputStream(base64));
+                boolean reverseLatitude = false;
+                boolean reverseLongitude = false;
+                for (Directory directory : metadata.getDirectories()) {
+                    for (Tag tag : directory.getTags()) {
+                        if (tag.getTagName().equals("GPS Latitude") && isDefaultLocation) {
+                            photo.getLocation().setLatitude(Double.parseDouble(tag.getDescription()
+                                    .replace("' ", "")
+                                    .replace(".", "")
+                                    .replace("\"", "")
+                                    .replace("° ", ".")));
+                        } else if (tag.getTagName().equals("GPS Latitude Ref") && isDefaultLocation) {
+                            reverseLatitude = tag.getDescription().equals("N");
+                        } else if (tag.getTagName().equals("GPS Longitude") && isDefaultLocation) {
+                            photo.getLocation().setLongitude(Double.parseDouble(tag.getDescription()
+                                    .replace("' ", "")
+                                    .replace(".", "")
+                                    .replace("\"", "")
+                                    .replace("° ", ".")));
+                        } else if (tag.getTagName().equals("GPS Longitude Ref") && isDefaultLocation) {
+                            reverseLatitude = tag.getDescription().equals("W");
+                        } else if (tag.getTagName().equals("Date/Time") && isDefaultDate) {
+                            photo.setDate(new SimpleDateFormat("yyyy:MM:dd hh:mm:ss").parse(tag.getDescription()));
+                        }
+                    }
+                }
+                if (reverseLatitude)
+                    photo.getLocation().setLatitude(-photo.getLocation().getLatitude());
+                if (reverseLongitude)
+                    photo.getLocation().setLongitude(-photo.getLocation().getLongitude());
             }
 
             return Response.status(201)
@@ -52,6 +82,11 @@ public class PhotoRest {
             HashMap<String, Object> h = new HashMap<>();
             h.put("Content-Type", "application/json");
             return errorMessage(400, "bad image binary", h);
+        } catch (ImageProcessingException | ParseException e) {
+            // EXIFメタデータが読み込めなかった場合
+            HashMap<String, Object> h = new HashMap<>();
+            h.put("Content-Type", "application/json");
+            return errorMessage(400, "invalid image metadata", h);
         }
     }
 
