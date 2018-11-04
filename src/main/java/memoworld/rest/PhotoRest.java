@@ -122,6 +122,32 @@ public class PhotoRest {
         }
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{id}/raw")
+    public Response getRawImage(@PathParam("id") String idString) {
+        HashMap<String, Object> h = new HashMap<>();
+        h.put("Content-Type", "application/json");
+        try (PhotoModel model = new PhotoModel()) {
+            int id = toInteger(idString);
+            if (id <= 0)
+                return errorMessage(400, "Bad request", h);
+            Photo photo = model.findById(id);
+            if (photo == null)
+                return errorMessage(404, "Not found", h);
+            photo.setDate(null);
+            photo.setDescription(null);
+            photo.setLocation(null);
+            photo.setAuthor(null);
+            photo.setRawURI(null);
+            return Response.status(200)
+                    .header("Content-Type", "application/json")
+                    .entity(photo)
+                    .build();
+        } catch (Exception e) {
+            return errorMessage(500, "server internal error", h);
+        }
+    }
 
     private Response errorMessage(int statusCode,
                                   String message,
