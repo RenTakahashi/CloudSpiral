@@ -78,9 +78,12 @@ public class PhotoRest {
                 }
             }
 
+            // レスポンスには画像データを入れない
+            Photo result = model.register(photo);
+            result.setRawImage(null);
             return Response.status(201)
                     .header("Content-Type", "application/json")
-                    .entity(model.register(photo))
+                    .entity(result)
                     .build();
 
         } catch (IOException | IllegalArgumentException e) {
@@ -109,6 +112,7 @@ public class PhotoRest {
             Photo photo = model.findById(id);
             if (photo == null)
                 return errorMessage(404, "Not found", h);
+            photo.setRawImage(null);
             return Response.status(200)
                     .header("Content-Type", "application/json")
                     .entity(photo)
