@@ -76,7 +76,7 @@ public class PhotoModel implements AutoCloseable {
 
     public Photo register(Photo photo) {
         photo.setId(newId() + 1);
-        photo.setRawURI("/photos/" + Integer.toString(photo.getId()));
+        photo.setRawURI("/photos/" + Integer.toString(photo.getId()) + "/raw");
         photos.insertOne(toDocument(photo));
         return photo;
     }
