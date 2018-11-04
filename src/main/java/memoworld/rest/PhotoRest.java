@@ -43,6 +43,7 @@ public class PhotoRest {
             }
 
             return Response.status(201)
+                    .header("Content-Type", "application/json")
                     .entity(model.register(photo))
                     .build();
 
