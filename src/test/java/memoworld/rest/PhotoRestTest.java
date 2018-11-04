@@ -1,6 +1,5 @@
 package memoworld.rest;
 
-import com.mongodb.util.JSON;
 import memoworld.entities.Location;
 import memoworld.entities.Photo;
 import memoworld.model.PhotoModel;
@@ -9,13 +8,10 @@ import org.junit.Test;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Form;
 import javax.ws.rs.core.Response;
-
 import java.util.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 // TODO: いい感じに正しい画像データを投げるテストもする
 public class PhotoRestTest {

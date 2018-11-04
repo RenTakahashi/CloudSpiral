@@ -2,7 +2,6 @@ package memoworld.model;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
-import com.sun.org.apache.bcel.internal.generic.POP2;
 import memoworld.entities.Location;
 import memoworld.entities.Photo;
 import org.bson.Document;
@@ -12,7 +11,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class PhotoModelTest {
     private int itemCount;

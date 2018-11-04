@@ -1,19 +1,13 @@
 package memoworld.model;
 
-import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
-import com.mongodb.client.result.DeleteResult;
-
 import memoworld.entities.Location;
 import memoworld.entities.Photo;
 import org.bson.Document;
 
-import java.security.Key;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class PhotoModel implements AutoCloseable {
