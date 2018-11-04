@@ -6,6 +6,7 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 import memoworld.entities.ErrorMessage;
+import memoworld.entities.Location;
 import memoworld.entities.Photo;
 import memoworld.model.PhotoModel;
 
@@ -38,39 +39,43 @@ public class PhotoRest {
             toBufferedImage(base64);
 
             // exifから情報取得
-            boolean isDefaultLocation = photo.getLocation().getLatitude() == -360;
+            boolean isDefaultLocation = photo.getLocation() == null;
             boolean isDefaultDate = photo.getDate() == null;
             if (isDefaultLocation || isDefaultDate) {
                 Metadata metadata = ImageMetadataReader.readMetadata(new ByteArrayInputStream(base64));
                 boolean reverseLatitude = false;
                 boolean reverseLongitude = false;
+                Location location = new Location();
                 for (Directory directory : metadata.getDirectories()) {
                     for (Tag tag : directory.getTags()) {
                         if (tag.getTagName().equals("GPS Latitude") && isDefaultLocation) {
-                            photo.getLocation().setLatitude(Double.parseDouble(tag.getDescription()
+                            location.setLatitude(Double.parseDouble(tag.getDescription()
                                     .replace("' ", "")
                                     .replace(".", "")
                                     .replace("\"", "")
                                     .replace("° ", ".")));
-                        } else if (tag.getTagName().equals("GPS Latitude Ref") && isDefaultLocation) {
+                        } else if (tag.getTagName().equals("GPS Latitude Ref")) {
                             reverseLatitude = tag.getDescription().equals("N");
                         } else if (tag.getTagName().equals("GPS Longitude") && isDefaultLocation) {
-                            photo.getLocation().setLongitude(Double.parseDouble(tag.getDescription()
+                            location.setLongitude(Double.parseDouble(tag.getDescription()
                                     .replace("' ", "")
                                     .replace(".", "")
                                     .replace("\"", "")
                                     .replace("° ", ".")));
-                        } else if (tag.getTagName().equals("GPS Longitude Ref") && isDefaultLocation) {
+                        } else if (tag.getTagName().equals("GPS Longitude Ref")) {
                             reverseLatitude = tag.getDescription().equals("W");
                         } else if (tag.getTagName().equals("Date/Time") && isDefaultDate) {
                             photo.setDate(new SimpleDateFormat("yyyy:MM:dd hh:mm:ss").parse(tag.getDescription()));
                         }
                     }
                 }
-                if (reverseLatitude)
-                    photo.getLocation().setLatitude(-photo.getLocation().getLatitude());
-                if (reverseLongitude)
-                    photo.getLocation().setLongitude(-photo.getLocation().getLongitude());
+                if (isDefaultLocation) {
+                    photo.setLocation(location);
+                    if (reverseLatitude)
+                        photo.getLocation().setLatitude(-photo.getLocation().getLatitude());
+                    if (reverseLongitude)
+                        photo.getLocation().setLongitude(-photo.getLocation().getLongitude());
+                }
             }
 
             return Response.status(201)
