@@ -6,6 +6,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.result.DeleteResult;
 
+import memoworld.entities.Location;
 import memoworld.entities.Photo;
 import org.bson.Document;
 
@@ -23,6 +24,30 @@ public class PhotoModel implements AutoCloseable {
     }
 
     public void close() {
+    }
+
+    public Photo findById(int id) {
+
+        Document document = photos
+                .find(Filters.eq("id", id))
+                .first();
+
+        return toPhoto(document);
+    }
+
+    private static Photo toPhoto(Document document) {
+
+        if (document == null)
+            return null;
+        Photo photo = new Photo();
+        photo.setId(document.getInteger("id", 0));
+        photo.setDate(document.getDate("date"));
+        photo.setDescription(document.getString("description"));
+        photo.setLocation(new Location(document.getDouble("latitude"), document.getDouble("longitude")));
+        photo.setAuthor(document.getString("author"));
+        photo.setRawURI(document.getString("raw_uri"));
+        photo.setRawImage(document.getString("raw_image"));
+        return photo;
     }
 
     private Document toDocument(Photo photo) {

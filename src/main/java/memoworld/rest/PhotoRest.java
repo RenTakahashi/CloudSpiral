@@ -90,6 +90,30 @@ public class PhotoRest {
         }
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{id}")
+    public Response getPhoto(@PathParam("id") String idString) {
+        HashMap<String, Object> h = new HashMap<>();
+        h.put("Content-Type", "application/json");
+        try (PhotoModel model = new PhotoModel()) {
+            int id = toInteger(idString);
+            if (id <= 0)
+                return errorMessage(400, "Bad request", h);
+            Photo photo = model.findById(id);
+            if (photo == null)
+                return errorMessage(404, "Not found", h);
+            return Response.status(200)
+                    .header("Content-Type", "application/json")
+                    .entity(photo)
+                    .build();
+        } catch (Exception e){
+            return errorMessage(500, "server internal error", h);
+        }
+    }
+
+
+
     private Response errorMessage(int statusCode,
                                   String message,
                                   HashMap<String, Object> headers) {
@@ -118,5 +142,13 @@ public class PhotoRest {
             }
         }
         return bufImage;
+    }
+
+    private int toInteger(String string) {
+        try {
+            return Integer.parseInt(string);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 }
