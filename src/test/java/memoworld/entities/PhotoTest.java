@@ -17,6 +17,7 @@ public class PhotoTest {
         Location location = new Location(35.402949, 135.171579);
         String raw_uri = "baz";
         String raw_image = "/vtIGhuilKGYU=";
+        String author = "bar";
 
         p.setId(id);
         p.setDate(date);
@@ -24,11 +25,13 @@ public class PhotoTest {
         p.setLocation(location);
         p.setRawURI(raw_uri);
         p.setRawImage(raw_image);
+        p.setAuthor(author);
         assertEquals(id, p.getId());
         assertEquals(date, p.getDate());
         assertEquals(desc, p.getDescription());
         assertEquals(location, p.getLocation());
         assertEquals(raw_uri, p.getRawURI());
         assertEquals(raw_image, p.getRawImage());
+        assertEquals(author, p.getAuthor());
     }
 }

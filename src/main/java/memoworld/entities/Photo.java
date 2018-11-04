@@ -71,4 +71,12 @@ public class Photo {
     public void setRawImage(String raw_image) {
         this.raw_image = raw_image;
     }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 }
