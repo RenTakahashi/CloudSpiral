@@ -14,7 +14,7 @@ public class PhotoTest {
         int id = 1;
         Date date = new Date();
         String desc = "foo";
-        String location = "bar";
+        Location location = new Location(35.402949, 135.171579);
         String raw_uri = "baz";
         String raw_image = "/vtIGhuilKGYU=";
 

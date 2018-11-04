@@ -13,7 +13,7 @@ public class Photo {
     @XmlElement(name = "description")
     private String description;
     @XmlElement(name = "location")
-    private String location;
+    private Location location;
     @XmlElement(name = "author")
     private String author;
     @XmlElement(name = "raw_uri")
@@ -40,11 +40,11 @@ public class Photo {
         this.id = id;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 

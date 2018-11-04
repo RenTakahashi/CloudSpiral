@@ -30,7 +30,8 @@ public class PhotoModel implements AutoCloseable {
             return null;
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("id", photo.getId());
-        map.put("location", photo.getLocation());
+        map.put("latitude", photo.getLocation().getLatitude());
+        map.put("longitude", photo.getLocation().getLongitude());
         map.put("description", photo.getDescription());
         map.put("date", photo.getDate());
         map.put("raw_uri", photo.getRawURI());
