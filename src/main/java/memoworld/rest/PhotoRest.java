@@ -108,11 +108,10 @@ public class PhotoRest {
                     .header("Content-Type", "application/json")
                     .entity(photo)
                     .build();
-        } catch (Exception e){
+        } catch (Exception e) {
             return errorMessage(500, "server internal error", h);
         }
     }
-
 
 
     private Response errorMessage(int statusCode,

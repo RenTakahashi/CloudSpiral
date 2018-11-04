@@ -26,7 +26,7 @@ public class PhotoModelTest {
     @After
     public void tearDown() throws Exception {
         MongoCollection<Document> photos = MongoClientPool.getInstance().collection("photos");
-        photos.deleteOne(Filters.eq("id", itemCount+1));
+        photos.deleteOne(Filters.eq("id", itemCount + 1));
     }
 
     @Test
@@ -37,7 +37,7 @@ public class PhotoModelTest {
         photo.setDate(new Date());
         photo.setLocation(new Location());
         Photo p = model.register(photo);
-        assertEquals(itemCount+1, model.newId());
+        assertEquals(itemCount + 1, model.newId());
         Photo p2 = model.findById(p.getId());
         assertEquals(p.getId(), p2.getId());
         assertEquals(p.getDate(), p2.getDate());
