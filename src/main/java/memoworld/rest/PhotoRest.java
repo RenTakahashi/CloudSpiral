@@ -32,9 +32,10 @@ public class PhotoRest {
             // TODO: トークンの認証
             String auth = headers.getHeaderString("WWW-Authenticate");
 
-            // 写真をDBに登録して登録内容を返す
+            // 写真をデコードして画像として正しいかをチェック
             PhotoModel model = new PhotoModel();
             byte[] base64 = Base64.getDecoder().decode(photo.getRawImage());
+            toBufferedImage(base64);
 
             // exifから情報取得
             boolean isDefaultLocation = photo.getLocation().getLatitude() == -360;
