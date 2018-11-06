@@ -8,15 +8,22 @@ import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import static org.junit.Assert.*;
 
+@RunWith(PowerMockRunner.class)
+@PowerMockIgnore({"javax.management.*"})
+@PrepareForTest({AccessTokenModel.class})
 public class AccessTokenModelTest {
 
     private static final Account TEST_ACCOUNT = new Account();
@@ -31,7 +38,21 @@ public class AccessTokenModelTest {
 
     @Test
     public void expiredTokenTest() {
-        // TODO: 有効期限切れトークンのテスト
+        AccessTokenModel model = new AccessTokenModel();
+        AccessToken accessToken = model.register(TEST_ACCOUNT);
+
+        try {
+            Calendar calendar = GregorianCalendar.getInstance();
+            calendar.add(Calendar.HOUR, 1);
+            Date mockDate = calendar.getTime();
+            PowerMockito.mock(Date.class, Mockito.RETURNS_DEEP_STUBS);
+            PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(mockDate);
+
+            assertFalse(model.validate(accessToken.getAccessToken()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     @Test
