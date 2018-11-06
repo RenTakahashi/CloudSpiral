@@ -5,29 +5,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Authentication {
-	@XmlElement(name = "user_id")
-	private String userId;
-	@XmlElement(name = "password")
-	private String password;
-	
-	public Authentication() {
-	}
+    @XmlElement(name = "user_id")
+    private String userId;
 
-	public String getUserId() {
-		return userId;
-	}
+    @XmlElement(name = "password")
+    private String password;
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public Authentication() {
+    }
 
-	public String getPasswordHash() {
-		return password;
-	}
+    public String getPasswordHash() {
+        return password;
+    }
 
-	public void setPasswordHash(String passwordHash) {
-		this.password = passwordHash;
-	}
-	
-	
+    public void setPasswordHash(String passwordHash) {
+        this.password = passwordHash;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+
 }
