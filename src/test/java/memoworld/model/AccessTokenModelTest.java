@@ -9,7 +9,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -38,15 +37,14 @@ public class AccessTokenModelTest {
 
     @Test
     public void expiredTokenTest() {
-        AccessTokenModel model = new AccessTokenModel();
-        AccessToken accessToken = model.register(TEST_ACCOUNT);
+        try (AccessTokenModel model = new AccessTokenModel()) {
+            AccessToken accessToken = model.register(TEST_ACCOUNT);
 
-        try {
             Calendar calendar = GregorianCalendar.getInstance();
             calendar.add(Calendar.HOUR, 1);
             Date mockDate = calendar.getTime();
-            PowerMockito.mock(Date.class, Mockito.RETURNS_DEEP_STUBS);
-            PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(mockDate);
+            PowerMockito.mock(Date.class);
+            PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(mockDate);    // 時刻を1時間後に設定
 
             assertFalse(model.validate(accessToken.getAccessToken()));
         } catch (Exception e) {
@@ -57,38 +55,40 @@ public class AccessTokenModelTest {
 
     @Test
     public void notRegisteredTokenTest() {
-        AccessTokenModel model = new AccessTokenModel();
-        AccessToken accessToken = new AccessToken(TEST_ACCOUNT);
-        assertFalse(model.validate(accessToken.getAccessToken()));
+        try (AccessTokenModel model = new AccessTokenModel()) {
+            AccessToken accessToken = new AccessToken(TEST_ACCOUNT);
+            assertFalse(model.validate(accessToken.getAccessToken()));
+        }
     }
 
     @Test
     public void registerTokenTest() {
-        AccessTokenModel model = new AccessTokenModel();
+        try (AccessTokenModel model = new AccessTokenModel()) {
+            AccessToken accessToken = model.register(TEST_ACCOUNT);
+            assertEquals(itemCount + 1, model.newId());
 
-        AccessToken accessToken = model.register(TEST_ACCOUNT);
-        assertEquals(itemCount + 1, model.newId());
+            assertEquals(AccessToken.TOKEN_TYPE, accessToken.getTokenType());
+            assertFalse(accessToken.getAccessToken().isEmpty());
+            assertFalse(accessToken.getRefreshToken().isEmpty());
+            assertNotEquals(accessToken.getAccessToken(), accessToken.getRefreshToken());
+            assertFalse(accessToken.isExpired());
 
-        assertEquals(AccessToken.TOKEN_TYPE, accessToken.getTokenType());
-        assertFalse(accessToken.getAccessToken().isEmpty());
-        assertFalse(accessToken.getRefreshToken().isEmpty());
-        assertNotEquals(accessToken.getAccessToken(), accessToken.getRefreshToken());
-        assertFalse(accessToken.isExpired());
+            AccessToken anotherToken = model.register(TEST_ACCOUNT);
+            assertEquals(itemCount + 2, model.newId());
 
-        AccessToken anotherToken = model.register(TEST_ACCOUNT);
-        assertEquals(itemCount + 2, model.newId());
-
-        assertNotEquals(accessToken.getAccessToken(), anotherToken.getAccessToken());
-        assertNotEquals(accessToken.getRefreshToken(), anotherToken.getRefreshToken());
-        assertEquals(AccessToken.TOKEN_TYPE, anotherToken.getTokenType());
-        assertFalse(anotherToken.isExpired());
-        assertTrue(anotherToken.getExpiresAt().after(accessToken.getExpiresAt()));
+            assertNotEquals(accessToken.getAccessToken(), anotherToken.getAccessToken());
+            assertNotEquals(accessToken.getRefreshToken(), anotherToken.getRefreshToken());
+            assertEquals(AccessToken.TOKEN_TYPE, anotherToken.getTokenType());
+            assertFalse(anotherToken.isExpired());
+            assertTrue(anotherToken.getExpiresAt().after(accessToken.getExpiresAt()));
+        }
     }
 
     @Before
     public void setUp() {
-        AccessTokenModel model = new AccessTokenModel();
-        itemCount = model.newId();
+        try (AccessTokenModel model = new AccessTokenModel()) {
+            itemCount = model.newId();
+        }
     }
 
     @After
@@ -99,9 +99,10 @@ public class AccessTokenModelTest {
 
     @Test
     public void validateTokenTest() {
-        AccessTokenModel model = new AccessTokenModel();
-        AccessToken accessToken = model.register(TEST_ACCOUNT);
-        assertTrue(model.validate(accessToken.getAccessToken()));
+        try (AccessTokenModel model = new AccessTokenModel()) {
+            AccessToken accessToken = model.register(TEST_ACCOUNT);
+            assertTrue(model.validate(accessToken.getAccessToken()));
+        }
     }
 
 }
