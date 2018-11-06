@@ -1,10 +1,13 @@
 package memoworld.model;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 import memoworld.entities.AccessToken;
 import memoworld.entities.Account;
 import org.bson.Document;
+
+import java.util.Date;
 
 public class AccessTokenModel implements AutoCloseable {
     private MongoCollection<Document> tokens = MongoClientPool.getInstance().collection("access_tokens");
@@ -55,5 +58,25 @@ public class AccessTokenModel implements AutoCloseable {
         document.put("expires_at", token.getExpiresAt());
         document.put("token_type", token.getTokenType());
         return document;
+    }
+
+    /**
+     * アクセストークンが有効かを返す。
+     * アクセストークンがDBに登録されていて、かつ有効期限内であれば有効
+     *
+     * @param accessToken アクセストークン
+     * @return アクセストークンが有効ならtrue
+     */
+    public boolean validate(String accessToken) {
+        removeExpiredTokens();
+
+        return tokens.count(Filters.eq("access_token", accessToken)) > 0;
+    }
+
+    /**
+     * 期限切れのトークンを削除する
+     */
+    private void removeExpiredTokens() {
+        tokens.deleteMany(Filters.lte("expires_at", new Date()));
     }
 }

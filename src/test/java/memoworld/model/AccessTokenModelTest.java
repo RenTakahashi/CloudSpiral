@@ -9,6 +9,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import static org.junit.Assert.*;
 
 public class AccessTokenModelTest {
@@ -30,7 +36,9 @@ public class AccessTokenModelTest {
 
     @Test
     public void notRegisteredTokenTest() {
-        // TODO: 登録されていない（不正な）トークンのテスト
+        AccessTokenModel model = new AccessTokenModel();
+        AccessToken accessToken = new AccessToken(TEST_ACCOUNT);
+        assertFalse(model.validate(accessToken.getAccessToken()));
     }
 
     @Test
@@ -70,7 +78,9 @@ public class AccessTokenModelTest {
 
     @Test
     public void validateTokenTest() {
-        // TODO: アクセストークンがDBに登録されていて、有効期限内であることを確認するテスト
+        AccessTokenModel model = new AccessTokenModel();
+        AccessToken accessToken = model.register(TEST_ACCOUNT);
+        assertTrue(model.validate(accessToken.getAccessToken()));
     }
 
 }
