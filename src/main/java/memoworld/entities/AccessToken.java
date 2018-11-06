@@ -2,10 +2,7 @@ package memoworld.entities;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.time.ZonedDateTime;
-import java.util.Base64;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
 @XmlRootElement
 public class AccessToken {
@@ -29,7 +26,10 @@ public class AccessToken {
     public AccessToken(Account account) {
         setAccessToken(generateAccessToken(account));
         setRefreshToken(generateRefreshToken(account));
-        setExpiresAt(Date.from(ZonedDateTime.now().plusHours(1).toInstant()));  // 1時間後
+
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.add(Calendar.HOUR, 1);
+        setExpiresAt(calendar.getTime());
     }
 
     public String getAccessToken() {
