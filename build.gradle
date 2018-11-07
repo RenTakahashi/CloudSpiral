@@ -38,6 +38,7 @@ dependencies{
     testCompile 'org.mockito:mockito-core:2.8.9'
     testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '1.7.3'
     testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: '1.7.3'
+    testCompile 'io.rest-assured:rest-assured:3.2.0'
 }
 
 def path = "/${rootProject.name}"

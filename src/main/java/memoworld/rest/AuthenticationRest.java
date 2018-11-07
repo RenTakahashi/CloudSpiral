@@ -1,6 +1,9 @@
 package memoworld.rest;
 
+import memoworld.entities.AccessToken;
+import memoworld.entities.Account;
 import memoworld.entities.Authentication;
+import memoworld.model.AccessTokenModel;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -16,11 +19,16 @@ public class AuthenticationRest {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postAuthentication(Authentication authentication) {
         // TODO: アカウントDBにuser_idとpasswordの組が登録されているか?　なければ401
+        // 仮実装 ここから
+        Account account = new Account();
+        account.setUserId(authentication.getUserId());
+        account.setPassword(authentication.getPasswordHash());
+        account.setUserName(authentication.getUserId());
+        // 仮実装 ここまで
 
+        AccessTokenModel model = new AccessTokenModel();
+        AccessToken token = model.register(account);
 
-        // TODO: AccessTokenModelにTokenを要求
-
-
-        return Response.ok().build();
+        return Response.ok(token).build();
     }
 }
