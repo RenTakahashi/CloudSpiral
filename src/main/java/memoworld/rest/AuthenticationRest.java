@@ -22,7 +22,7 @@ public class AuthenticationRest {
         // 仮実装 ここから
         Account account = new Account();
         account.setUserId(authentication.getUserId());
-        account.setPassword(authentication.getPasswordHash());
+        account.setPassword(authentication.getPassword());
         account.setUserName(authentication.getUserId());
         // 仮実装 ここまで
 

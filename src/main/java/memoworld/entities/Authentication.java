@@ -14,12 +14,12 @@ public class Authentication {
     public Authentication() {
     }
 
-    public String getPasswordHash() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.password = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUserId() {
@@ -29,6 +29,4 @@ public class Authentication {
     public void setUserId(String userId) {
         this.userId = userId;
     }
-
-
 }
