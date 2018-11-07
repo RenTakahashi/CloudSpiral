@@ -10,6 +10,7 @@ import memoworld.model.MongoClientPool;
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
@@ -22,6 +23,7 @@ public class AuthenticationRestTest {
     private int accessTokenCount;
 
     @Test
+    @Ignore
     public void getAccessTokenTest() {
         post(TEST_REQUEST_BODY)
                 .then()
@@ -33,6 +35,7 @@ public class AuthenticationRestTest {
     }
 
     @Test
+    @Ignore
     public void getTwiceTest() {
         String firstResponse = post(TEST_REQUEST_BODY).asString();
         String secondResponse = post(TEST_REQUEST_BODY).asString();
