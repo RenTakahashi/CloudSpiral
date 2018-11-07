@@ -39,13 +39,16 @@ public class AccessTokenModelTest {
     public void expiredTokenTest() {
         try (AccessTokenModel model = new AccessTokenModel()) {
             AccessToken accessToken = model.register(TEST_ACCOUNT);
+            assertTrue(model.validate(accessToken.getAccessToken()));
 
+            // 時刻を1日後に設定
             Calendar calendar = GregorianCalendar.getInstance();
-            calendar.add(Calendar.HOUR, 1);
+            calendar.add(Calendar.HOUR, 24);
             Date mockDate = calendar.getTime();
             PowerMockito.mock(Date.class);
-            PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(mockDate);    // 時刻を1時間後に設定
+            PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(mockDate);
 
+            // 1日後にはトークンが無効になっているはず
             assertFalse(model.validate(accessToken.getAccessToken()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,18 +72,20 @@ public class AccessTokenModelTest {
 
             assertEquals(AccessToken.TOKEN_TYPE, accessToken.getTokenType());
             assertFalse(accessToken.getAccessToken().isEmpty());
-            assertFalse(accessToken.getRefreshToken().isEmpty());
-            assertNotEquals(accessToken.getAccessToken(), accessToken.getRefreshToken());
             assertFalse(accessToken.isExpired());
 
+            // 再登録
             AccessToken anotherToken = model.register(TEST_ACCOUNT);
-            assertEquals(itemCount + 2, model.newId());
+            assertEquals(itemCount + 1, model.newId()); // 古いのは削除するので、newIdは変わらない
 
+            // 前のトークンとは変わっているはず
             assertNotEquals(accessToken.getAccessToken(), anotherToken.getAccessToken());
-            assertNotEquals(accessToken.getRefreshToken(), anotherToken.getRefreshToken());
             assertEquals(AccessToken.TOKEN_TYPE, anotherToken.getTokenType());
             assertFalse(anotherToken.isExpired());
             assertTrue(anotherToken.getExpiresAt().after(accessToken.getExpiresAt()));
+
+            // 古いトークンは使えない
+            assertFalse(model.validate(accessToken.getAccessToken()));
         }
     }
 

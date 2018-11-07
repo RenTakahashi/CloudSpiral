@@ -2,11 +2,17 @@ package memoworld.entities;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 @XmlRootElement
 public class AccessToken {
     public static final String TOKEN_TYPE = "Bearer";
+    private static final int TOKEN_LENGTH = 64;
 
     @XmlElement(name = "access_token")
     private String accessToken;
@@ -17,18 +23,14 @@ public class AccessToken {
     @XmlElement(name = "expires_at")
     private Date expiresAt;
 
-    @XmlElement(name = "refresh_token")
-    private String refreshToken;
-
     public AccessToken() {
     }
 
     public AccessToken(Account account) {
-        setAccessToken(generateAccessToken(account));
-        setRefreshToken(generateRefreshToken(account));
+        setAccessToken(generateAccessToken());
 
         Calendar calendar = GregorianCalendar.getInstance();
-        calendar.add(Calendar.HOUR, 1);
+        calendar.add(Calendar.HOUR, 24);
         setExpiresAt(calendar.getTime());
     }
 
@@ -48,14 +50,6 @@ public class AccessToken {
         this.expiresAt = expiresAt;
     }
 
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
     public String getTokenType() {
         return tokenType;
     }
@@ -73,27 +67,19 @@ public class AccessToken {
         return expiresAt.before(new Date());
     }
 
-    private String encodeByBase64(String text) {
-        return Base64.getEncoder().encodeToString(text.getBytes());
-    }
-
     /**
      * アクセストークンを生成する
      *
-     * @param account アカウント
      * @return アクセストークン
      */
-    private String generateAccessToken(Account account) {
-        return encodeByBase64(new Random().nextLong() + account.getUserId() + account.getUserName());
-    }
-
-    /**
-     * 再発行トークンを生成する
-     *
-     * @param account アカウント
-     * @return 再発行トークン
-     */
-    private String generateRefreshToken(Account account) {
-        return encodeByBase64(new Random().nextLong() + account.getUserName() + account.getUserId());
+    private String generateAccessToken() {
+        try {
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            byte[] tokenBytes = new byte[TOKEN_LENGTH];
+            random.nextBytes(tokenBytes);
+            return Base64.getEncoder().encodeToString(tokenBytes);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
