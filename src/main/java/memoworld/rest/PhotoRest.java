@@ -49,24 +49,30 @@ public class PhotoRest {
                 for (Directory directory : metadata.getDirectories()) {
                     for (Tag tag : directory.getTags()) {
                         if (tag.getTagName().equals("GPS Latitude") && isDefaultLocation) {
+                            // 緯度を60進から10進に直して取得
                             String[] s = tag.getDescription().split("[°'\"]");
                             location.setLatitude(Double.parseDouble(s[0]) +
                                     Double.parseDouble(s[1]) / 60 +
                                     Double.parseDouble(s[2]) / 3600);
                         } else if (tag.getTagName().equals("GPS Latitude Ref")) {
+                            // 緯度を反転させるかどうかの取得
                             reverseLatitude = tag.getDescription().equals("S");
                         } else if (tag.getTagName().equals("GPS Longitude") && isDefaultLocation) {
+                            // 経度を60進から10進に直して取得
                             String[] s = tag.getDescription().split("[°'\"]");
                             location.setLongitude(Double.parseDouble(s[0]) +
                                     Double.parseDouble(s[1]) / 60 +
                                     Double.parseDouble(s[2]) / 3600);
                         } else if (tag.getTagName().equals("GPS Longitude Ref")) {
+                            // 経度を反転させるかどうかの取得
                             reverseLongitude = tag.getDescription().equals("W");
                         } else if (tag.getTagName().equals("Date/Time") && isDefaultDate) {
+                            // 日付の取得・更新
                             photo.setDate(new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(tag.getDescription()));
                         }
                     }
                 }
+                // 位置情報を写真から取得したデータを使うなら更新
                 if (isDefaultLocation) {
                     photo.setLocation(location);
                     if (reverseLatitude)
@@ -82,7 +88,6 @@ public class PhotoRest {
             return Response.status(201)
                     .entity(result)
                     .build();
-
         } catch (IOException | IllegalArgumentException e) {
             // 画像バイナリが正しくなかった場合
             return errorMessage(400, "bad image binary");
@@ -103,6 +108,8 @@ public class PhotoRest {
             Photo photo = model.findById(id);
             if (photo == null)
                 return errorMessage(404, "Not found");
+
+            // 画像データは返さないのでnullにする
             photo.setRawImage(null);
             return Response.status(200)
                     .entity(photo)
@@ -123,6 +130,8 @@ public class PhotoRest {
             Photo photo = model.findById(id);
             if (photo == null)
                 return errorMessage(404, "Not found");
+
+            // 画像以外のデータは返さないのでnullにする
             photo.setDate(null);
             photo.setDescription(null);
             photo.setLocation(null);
@@ -142,6 +151,12 @@ public class PhotoRest {
                 .build();
     }
 
+    /**
+     * バイト列からバッファイメージに変換する
+     * @param imageBinary 画像のバイナリ
+     * @return バッファイメージ
+     * @throws IOException 変換不可能なバイナリの場合の例外
+     */
     private static BufferedImage toBufferedImage(byte[] imageBinary) throws IOException {
         BufferedImage img = ImageIO.read(new ByteArrayInputStream(imageBinary));
         int width = img.getWidth();
