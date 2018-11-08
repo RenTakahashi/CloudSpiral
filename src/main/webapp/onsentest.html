@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+  <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+  <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+  <script>
+    $(function(){
+      // Initialization code
+      $('ons-button').on('click', function(e) {
+        ons.notification.alert('Button is tapped!');
+      })
+    });
+  </script>
+  <ons-button>Click me!</ons-button>
+</body>
+</html>
