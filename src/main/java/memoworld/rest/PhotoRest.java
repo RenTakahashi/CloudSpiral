@@ -22,8 +22,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 
 @Path("/photos")
 public class PhotoRest {
@@ -82,20 +80,15 @@ public class PhotoRest {
             Photo result = model.register(photo);
             result.setRawImage(null);
             return Response.status(201)
-//                    .header("Content-Type", "application/json")
                     .entity(result)
                     .build();
 
         } catch (IOException | IllegalArgumentException e) {
             // 画像バイナリが正しくなかった場合
-            HashMap<String, Object> h = new HashMap<>();
-//            h.put("Content-Type", "application/json");
-            return errorMessage(400, "bad image binary", h);
+            return errorMessage(400, "bad image binary");
         } catch (ImageProcessingException | ParseException e) {
             // EXIFメタデータが読み込めなかった場合
-            HashMap<String, Object> h = new HashMap<>();
-//            h.put("Content-Type", "application/json");
-            return errorMessage(400, "invalid image metadata", h);
+            return errorMessage(400, "invalid image metadata");
         }
     }
 
@@ -103,22 +96,19 @@ public class PhotoRest {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
     public Response getPhoto(@PathParam("id") String idString) {
-        HashMap<String, Object> h = new HashMap<>();
-//        h.put("Content-Type", "application/json");
         try (PhotoModel model = new PhotoModel()) {
             int id = toInteger(idString);
             if (id <= 0)
-                return errorMessage(400, "Bad request", h);
+                return errorMessage(400, "Bad request");
             Photo photo = model.findById(id);
             if (photo == null)
-                return errorMessage(404, "Not found", h);
+                return errorMessage(404, "Not found");
             photo.setRawImage(null);
             return Response.status(200)
-//                    .header("Content-Type", "application/json")
                     .entity(photo)
                     .build();
         } catch (Exception e) {
-            return errorMessage(500, "server internal error", h);
+            return errorMessage(500, "server internal error");
         }
     }
 
@@ -126,39 +116,30 @@ public class PhotoRest {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}/raw")
     public Response getRawImage(@PathParam("id") String idString) {
-        HashMap<String, Object> h = new HashMap<>();
-//        h.put("Content-Type", "application/json");
         try (PhotoModel model = new PhotoModel()) {
             int id = toInteger(idString);
             if (id <= 0)
-                return errorMessage(400, "Bad request", h);
+                return errorMessage(400, "Bad request");
             Photo photo = model.findById(id);
             if (photo == null)
-                return errorMessage(404, "Not found", h);
+                return errorMessage(404, "Not found");
             photo.setDate(null);
             photo.setDescription(null);
             photo.setLocation(null);
             photo.setAuthor(null);
             photo.setRawURI(null);
             return Response.status(200)
-//                    .header("Content-Type", "application/json")
                     .entity(photo)
                     .build();
         } catch (Exception e) {
-            return errorMessage(500, "server internal error", h);
+            return errorMessage(500, "server internal error");
         }
     }
 
-    private Response errorMessage(int statusCode,
-                                  String message,
-                                  HashMap<String, Object> headers) {
-        Response.ResponseBuilder response = Response.status(statusCode);
-        for (Map.Entry<String, Object> header : headers.entrySet()) {
-            response = response.header(header.getKey(), header.getValue());
-        }
-        return response.entity(new ErrorMessage(message))
+    private Response errorMessage(int statusCode, String message) {
+        return Response.status(statusCode)
+                .entity(new ErrorMessage(message))
                 .build();
-
     }
 
     private static BufferedImage toBufferedImage(byte[] imageBinary) throws IOException {
