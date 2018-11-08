@@ -24,10 +24,10 @@ public class Account {
 		this.pass = pass;
 	}
 	
-	public Account(String uid, String name, String pass) {
-		this.uid = uid;
-		this.name = name;
+	public Account(String pass, String name, String uid) {
 		this.pass = pass;
+		this.name = name;
+		this.uid = uid;
 	}
 	//アカウントidの取得とセット
 	public int getAid() {
