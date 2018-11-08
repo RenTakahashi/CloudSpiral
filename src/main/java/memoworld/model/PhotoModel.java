@@ -61,15 +61,15 @@ public class PhotoModel implements AutoCloseable {
 
     public int newId() {
         if (photos.count() == 0L)
-            return 0;
+            return 1;
         return photos.find()
                 .sort(Sorts.descending("id"))
                 .first()
-                .getInteger("id", 0);
+                .getInteger("id", 0) + 1;
     }
 
     public Photo register(Photo photo) {
-        photo.setId(newId() + 1);
+        photo.setId(newId());
         photo.setRawURI("/photos/" + Integer.toString(photo.getId()) + "/raw");
         photos.insertOne(toDocument(photo));
         return photo;

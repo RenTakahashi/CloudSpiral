@@ -25,7 +25,7 @@ public class PhotoModelTest {
     @After
     public void tearDown() throws Exception {
         MongoCollection<Document> photos = MongoClientPool.getInstance().collection("photos");
-        photos.deleteOne(Filters.eq("id", itemCount + 1));
+        photos.deleteOne(Filters.eq("id", itemCount));
     }
 
     @Test
