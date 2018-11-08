@@ -21,16 +21,13 @@ public class PhotoModel implements AutoCloseable {
     }
 
     public Photo findById(int id) {
-
         Document document = photos
                 .find(Filters.eq("id", id))
                 .first();
-
         return toPhoto(document);
     }
 
     private static Photo toPhoto(Document document) {
-
         if (document == null)
             return null;
         Photo photo = new Photo();
