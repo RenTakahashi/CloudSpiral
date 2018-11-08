@@ -51,19 +51,17 @@ public class PhotoRest {
                 for (Directory directory : metadata.getDirectories()) {
                     for (Tag tag : directory.getTags()) {
                         if (tag.getTagName().equals("GPS Latitude") && isDefaultLocation) {
-                            location.setLatitude(Double.parseDouble(tag.getDescription()
-                                    .replace("' ", "")
-                                    .replace(".", "")
-                                    .replace("\"", "")
-                                    .replace("° ", ".")));
+                            String[] s = tag.getDescription().split("[°'\"]");
+                            location.setLatitude(Double.parseDouble(s[0]) +
+                                    Double.parseDouble(s[1]) / 60 +
+                                    Double.parseDouble(s[2]) / 3600);
                         } else if (tag.getTagName().equals("GPS Latitude Ref")) {
                             reverseLatitude = tag.getDescription().equals("N");
                         } else if (tag.getTagName().equals("GPS Longitude") && isDefaultLocation) {
-                            location.setLongitude(Double.parseDouble(tag.getDescription()
-                                    .replace("' ", "")
-                                    .replace(".", "")
-                                    .replace("\"", "")
-                                    .replace("° ", ".")));
+                            String[] s = tag.getDescription().split("[°'\"]");
+                            location.setLongitude(Double.parseDouble(s[0]) +
+                                    Double.parseDouble(s[1]) / 60 +
+                                    Double.parseDouble(s[2]) / 3600);
                         } else if (tag.getTagName().equals("GPS Longitude Ref")) {
                             reverseLatitude = tag.getDescription().equals("W");
                         } else if (tag.getTagName().equals("Date/Time") && isDefaultDate) {
