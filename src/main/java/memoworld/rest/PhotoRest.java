@@ -12,8 +12,6 @@ import memoworld.model.PhotoModel;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.awt.image.BufferedImage;
@@ -26,13 +24,11 @@ import java.util.Base64;
 @Path("/photos")
 public class PhotoRest {
     @POST
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postPhoto(@Context HttpHeaders headers, Photo photo) {
+    public Response postPhoto(Photo photo) {
         try {
-            // TODO: トークンの認証
-            String auth = headers.getHeaderString("WWW-Authenticate");
-
             // 写真をデコードして画像として正しいかをチェック
             PhotoModel model = new PhotoModel();
             byte[] base64 = Base64.getDecoder().decode(photo.getRawImage());
