@@ -67,7 +67,7 @@ public class PhotoRest {
                         } else if (tag.getTagName().equals("GPS Longitude Ref")) {
                             reverseLatitude = tag.getDescription().equals("W");
                         } else if (tag.getTagName().equals("Date/Time") && isDefaultDate) {
-                            photo.setDate(new SimpleDateFormat("yyyy:MM:dd hh:mm:ss").parse(tag.getDescription()));
+                            photo.setDate(new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(tag.getDescription()));
                         }
                     }
                 }
