@@ -23,8 +23,13 @@ public class Account {
 	public Account(String pass) {
 		this.pass = pass;
 	}
-	
 	public Account(String pass, String name, String uid) {
+		this.pass = pass;
+		this.name = name;
+		this.uid = uid;
+	}
+	public Account(int aid, String pass, String name, String uid) {
+		this.aid = aid;
 		this.pass = pass;
 		this.name = name;
 		this.uid = uid;

@@ -1,3 +1,4 @@
+
 package memoworld.rest;
 
 import memoworld.entities.Account;
@@ -23,7 +24,7 @@ public class AccountRest {
 	if(name == null || name.trim().equals(""))
 		return errorMessage(400, "empty name");
 	if(pass.length() < 5)
-		return errorMessage(400, "too log password");
+		return errorMessage(400, "too short password");
 		try (AccountModel model = new AccountModel()) {
 			Account account = model.register(new Account(pass,name,uid));
 			return Response.status(201).entity(account).build();
@@ -39,9 +40,6 @@ public class AccountRest {
 		}
 	}
 		
-		
-		
-	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{aid}")
