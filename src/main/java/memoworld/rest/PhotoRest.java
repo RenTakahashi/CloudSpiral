@@ -56,14 +56,14 @@ public class PhotoRest {
                                     Double.parseDouble(s[1]) / 60 +
                                     Double.parseDouble(s[2]) / 3600);
                         } else if (tag.getTagName().equals("GPS Latitude Ref")) {
-                            reverseLatitude = tag.getDescription().equals("N");
+                            reverseLatitude = tag.getDescription().equals("S");
                         } else if (tag.getTagName().equals("GPS Longitude") && isDefaultLocation) {
                             String[] s = tag.getDescription().split("[°'\"]");
                             location.setLongitude(Double.parseDouble(s[0]) +
                                     Double.parseDouble(s[1]) / 60 +
                                     Double.parseDouble(s[2]) / 3600);
                         } else if (tag.getTagName().equals("GPS Longitude Ref")) {
-                            reverseLatitude = tag.getDescription().equals("W");
+                            reverseLongitude = tag.getDescription().equals("W");
                         } else if (tag.getTagName().equals("Date/Time") && isDefaultDate) {
                             photo.setDate(new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(tag.getDescription()));
                         }
@@ -82,19 +82,19 @@ public class PhotoRest {
             Photo result = model.register(photo);
             result.setRawImage(null);
             return Response.status(201)
-                    .header("Content-Type", "application/json")
+//                    .header("Content-Type", "application/json")
                     .entity(result)
                     .build();
 
         } catch (IOException | IllegalArgumentException e) {
             // 画像バイナリが正しくなかった場合
             HashMap<String, Object> h = new HashMap<>();
-            h.put("Content-Type", "application/json");
+//            h.put("Content-Type", "application/json");
             return errorMessage(400, "bad image binary", h);
         } catch (ImageProcessingException | ParseException e) {
             // EXIFメタデータが読み込めなかった場合
             HashMap<String, Object> h = new HashMap<>();
-            h.put("Content-Type", "application/json");
+//            h.put("Content-Type", "application/json");
             return errorMessage(400, "invalid image metadata", h);
         }
     }
@@ -104,7 +104,7 @@ public class PhotoRest {
     @Path("{id}")
     public Response getPhoto(@PathParam("id") String idString) {
         HashMap<String, Object> h = new HashMap<>();
-        h.put("Content-Type", "application/json");
+//        h.put("Content-Type", "application/json");
         try (PhotoModel model = new PhotoModel()) {
             int id = toInteger(idString);
             if (id <= 0)
@@ -114,7 +114,7 @@ public class PhotoRest {
                 return errorMessage(404, "Not found", h);
             photo.setRawImage(null);
             return Response.status(200)
-                    .header("Content-Type", "application/json")
+//                    .header("Content-Type", "application/json")
                     .entity(photo)
                     .build();
         } catch (Exception e) {
@@ -127,7 +127,7 @@ public class PhotoRest {
     @Path("{id}/raw")
     public Response getRawImage(@PathParam("id") String idString) {
         HashMap<String, Object> h = new HashMap<>();
-        h.put("Content-Type", "application/json");
+//        h.put("Content-Type", "application/json");
         try (PhotoModel model = new PhotoModel()) {
             int id = toInteger(idString);
             if (id <= 0)
@@ -141,7 +141,7 @@ public class PhotoRest {
             photo.setAuthor(null);
             photo.setRawURI(null);
             return Response.status(200)
-                    .header("Content-Type", "application/json")
+//                    .header("Content-Type", "application/json")
                     .entity(photo)
                     .build();
         } catch (Exception e) {
