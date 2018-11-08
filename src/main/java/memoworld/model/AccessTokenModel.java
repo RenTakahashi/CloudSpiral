@@ -45,7 +45,7 @@ public class AccessTokenModel implements AutoCloseable {
     public AccessToken register(Account account) {
         tokens.deleteMany(Filters.eq("user_id", account.getUserId()));
 
-        AccessToken token = new AccessToken(account);
+        AccessToken token = new AccessToken();
 
         Document document = toDocument(token);
         document.append("id", newId());

@@ -59,7 +59,7 @@ public class AccessTokenModelTest {
     @Test
     public void notRegisteredTokenTest() {
         try (AccessTokenModel model = new AccessTokenModel()) {
-            AccessToken accessToken = new AccessToken(TEST_ACCOUNT);
+            AccessToken accessToken = new AccessToken();
             assertFalse(model.validate(accessToken.getAccessToken()));
         }
     }

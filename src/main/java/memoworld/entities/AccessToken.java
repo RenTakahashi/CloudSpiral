@@ -24,9 +24,6 @@ public class AccessToken {
     private Date expiresAt;
 
     public AccessToken() {
-    }
-
-    public AccessToken(Account account) {
         setAccessToken(generateAccessToken());
 
         Calendar calendar = GregorianCalendar.getInstance();
