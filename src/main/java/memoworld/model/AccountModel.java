@@ -1,6 +1,6 @@
 package memoworld.model;
 
-import com.mongodb.MongoClient;
+//import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
@@ -21,17 +21,16 @@ import java.util.Map;
 public class AccountModel implements AutoCloseable {
 	private MongoCollection<Document> uids;
 	private MongoCollection<Document> accounts;
-	private MongoClient client;
+
 	
 	public AccountModel() {
-		this.client = new MongoClient("localhost", 27017);
 		accounts = MongoClientPool.getInstance().collection("accounts");
 		uids = MongoClientPool.getInstance().collection("uid");
 		
 	}
 	
 	public void close() {
-		this.client.close();
+
 	}
 		
 	public Account findById (int id) {

@@ -12,6 +12,11 @@ import javax.ws.rs.core.Response;
 
 @Path("/accounts")
 public class AccountRest {
+	int largecount = 0;
+	int smallcount = 0;
+	int othercount = 0;
+
+	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response postAccount(
@@ -26,6 +31,22 @@ public class AccountRest {
 	if(pass.length() < 5) {
 		return errorMessage(400, "too short password");
 		}
+	int passlen = pass.length();
+	for (int m = 0; m < passlen; m++) {
+		char firstchar = pass.charAt(m);
+		if(Character.isUpperCase(firstchar) == true) {
+			largecount++;
+		}else if(Character.isLowerCase(firstchar)){
+			smallcount++;
+		}else {
+			othercount++;
+		}
+	}
+//	int password1 = largecount + othercount;
+//	int password2 = smallcount + othercount;
+	if (largecount == 0||smallcount == 0) {
+		return errorMessage(400, "パスワードに大文字と小文字の両方を含めてください。");
+	}
 		try (AccountModel model = new AccountModel()) {
 			Account account = model.register(new Account(pass,name,aid));
 			return Response.status(201).entity(account).build();
