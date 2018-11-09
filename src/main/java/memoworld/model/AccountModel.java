@@ -19,14 +19,14 @@ import java.util.Map;
 
 
 public class AccountModel implements AutoCloseable {
-	private MongoCollection<Document> aids;
+	private MongoCollection<Document> uids;
 	private MongoCollection<Document> accounts;
 	private MongoClient client;
 	
 	public AccountModel() {
 		this.client = new MongoClient("localhost", 27017);
 		accounts = MongoClientPool.getInstance().collection("accounts");
-		aids = MongoClientPool.getInstance().collection("aid");
+		uids = MongoClientPool.getInstance().collection("uid");
 		
 	}
 	
@@ -37,7 +37,7 @@ public class AccountModel implements AutoCloseable {
 	public Account findById (int id) {
 		
 		Document document = accounts
-				.find(Filters.eq("aid",id)).first();
+				.find(Filters.eq("uid",id)).first();
 		return toAccount(document);
 	}
 	
@@ -48,7 +48,7 @@ public class AccountModel implements AutoCloseable {
 	}
 	
 	public boolean deleteAccounts(int id) {
-		DeleteResult result = this.accounts.deleteOne(Filters.eq("aid", id));
+		DeleteResult result = this.accounts.deleteOne(Filters.eq("uid", id));
 		return result.getDeletedCount() > 0;
 	}
 	
@@ -58,8 +58,8 @@ public class AccountModel implements AutoCloseable {
 			return null;
 		}
 		Account act = new Account();
-		act.setAid(document.getInteger("aid"));
-		act.setUid(document.getString("uid"));
+		act.setUid(document.getInteger("uid"));
+		act.setAid(document.getString("aid"));
 		act.setName(document.getString("name"));
 		act.setPass(document.getString("pass"));
 		return act;
@@ -80,16 +80,16 @@ public class AccountModel implements AutoCloseable {
 	}
 	
 	public int newId() {
-		if(aids.count() == 0L )
+		if(uids.count() == 0L )
 			return 0;
-		return aids.find().sort(Sorts.descending("aid")).first().getInteger("aid",0);
+		return uids.find().sort(Sorts.descending("uid")).first().getInteger("uid",0);
 		
 	}
 	public Account register(Account account) {
-		account.setAid(newId() + 1);
+		account.setUid(newId() + 1);
 		accounts.insertOne(toDocument(account));
-		Document idDoc = new Document("aid", account.getAid());
-		aids.insertOne(idDoc);
+		Document idDoc = new Document("uid", account.getUid());
+		uids.insertOne(idDoc);
 		return account;
 	}
 }

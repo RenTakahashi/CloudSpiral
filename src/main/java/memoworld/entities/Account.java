@@ -8,10 +8,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Account {
-	@XmlElement(name = "aid")
-	private int aid;
 	@XmlElement(name = "uid")
-	private String uid;
+	private int uid;
+	@XmlElement(name = "aid")
+	private String aid;
 	@XmlElement(name = "location")
 	private String location;	
 	@XmlElement(name = "name")
@@ -23,30 +23,30 @@ public class Account {
 	public Account(String pass) {
 		this.pass = pass;
 	}
-	public Account(String pass, String name, String uid) {
+	public Account(String pass, String name, String aid) {
 		this.pass = pass;
 		this.name = name;
-		this.uid = uid;
-	}
-	public Account(int aid, String pass, String name, String uid) {
 		this.aid = aid;
+	}
+	public Account(int uid, String pass, String name, String aid) {
+		this.uid = uid;
 		this.pass = pass;
 		this.name = name;
-		this.uid = uid;
+		this.aid = aid;
 	}
 	//アカウントidの取得とセット
-	public int getAid() {
-		return aid;
-	}
-	public void setAid(int aid) {
-		this.aid = aid;
-	}
-	//ユニークidの取得とセット
-	public String getUid() {
+	public int getUid() {
 		return uid;
 	}
-	public void setUid(String uid) {
+	public void setUid(int uid) {
 		this.uid = uid;
+	}
+	//ユニークidの取得とセット
+	public String getAid() {
+		return aid;
+	}
+	public void setAid(String aid) {
+		this.aid = aid;
 	}
 	//Locationの取得とセット
 	public String getLocation() {

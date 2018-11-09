@@ -17,16 +17,17 @@ public class AccountRest {
 	public Response postAccount(
 			@FormParam("pass") String pass
 			,@FormParam("name") String name
-			,@FormParam("uid") String uid
+			,@FormParam("aid") String aid
 			) {
 	if(pass == null || pass.trim().equals(""))
 		return errorMessage(400, "empty password");
 	if(name == null || name.trim().equals(""))
 		return errorMessage(400, "empty name");
-	if(pass.length() < 5)
+	if(pass.length() < 5) {
 		return errorMessage(400, "too short password");
+		}
 		try (AccountModel model = new AccountModel()) {
-			Account account = model.register(new Account(pass,name,uid));
+			Account account = model.register(new Account(pass,name,aid));
 			return Response.status(201).entity(account).build();
 		}
 		
@@ -42,33 +43,37 @@ public class AccountRest {
 		
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{aid}")
+	@Path("{uid}")
 	public Response getAccount(
-			@PathParam("aid") String idString) {
+			@PathParam("uid") String idString) {
 	try (AccountModel model = new AccountModel()) {
-		int aid = toInteger(idString);
-		if (aid <= 0)
+		int uid = toInteger(idString);
+		if (uid <= 0) {
 			return errorMessage(400, "Bad request");
-		Account account = model.findById(aid);
-		if(account == null)
+			}
+		Account account = model.findById(uid);
+		if(account == null) {
 			return errorMessage(404, "Not found");
-			return Response.status(200).entity(account).build();
+			}
+		return Response.status(200).entity(account).build();
 	
 		}
 	}
 	
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{aid}")
+	@Path("{uid}")
 	public Response deleteAccounts(
-			@PathParam("aid") String idString) {
+			@PathParam("uid") String idString) {
 	try (AccountModel model = new AccountModel()){
-	int aid = toInteger(idString);
-	if(aid <= 0)
+	int uid = toInteger(idString);
+	if(uid <= 0) {
 		return errorMessage(400, "Bad request");
-	if (!model.deleteAccounts(aid))
+	}
+	if (!model.deleteAccounts(uid)) {
 		return errorMessage(400, "Bad request");
-		return Response.status(200).build();
+	}
+	return Response.status(200).build();
 		
 		}
 	}
