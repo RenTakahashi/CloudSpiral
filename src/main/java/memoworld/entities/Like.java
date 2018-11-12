@@ -9,8 +9,8 @@ public class Like {
     @XmlElement(name = "lid")
     private int lid;
     //いいねをしたtraveloguesのid
-    @XmlElement(name = "tid")
-    private String tid;
+    @XmlElement(name = "traveloguesid")
+    private int traveloguesid;
     @XmlElement(name = "date")
     private Date date;
     @XmlElement(name = "author")
@@ -21,9 +21,9 @@ public class Like {
         date = new Date();
     }
 
-    public Like(String tid) {
+    public Like(int traveloguesid) {
         date = new Date();
-        this.tid = tid;
+        this.traveloguesid = traveloguesid;
     }
 
     public Date getDate() {
@@ -39,15 +39,16 @@ public class Like {
     }
 
     public void setLid(int lid) {
-        this.lid = lid;
+        this.lid = lid;  
     }
     
-    public String getTid() {
-    	return tid;
+    public int getTraveloguesid() {
+    	return traveloguesid;
     }
     
-    public void setTid(String tid) {
-    	this.tid = tid;
+    public void setTraveloguesid(int traveloguesid) {
+    	this.traveloguesid = traveloguesid;
+   	
     }
 
     public String getAuthor() {

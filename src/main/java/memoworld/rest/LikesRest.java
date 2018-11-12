@@ -13,12 +13,12 @@ public class LikesRest {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response postLike(
-            @FormParam("tid") String tid) {
-        if (tid == null || tid.trim().equals(""))
-            return errorMessage(404, "Not found");
-        
+            @FormParam("traveloguesid") int traveloguesid) {
+        //if (tid == null || tid.trim().equals(""))
+         //   return errorMessage(400, "Not found");
+       
         try (LikeModel model = new LikeModel()) {
-            Like like = model.register(new Like(tid));
+            Like like = model.register(new Like(traveloguesid));
             return Response.status(201)
                     .entity(like)
                     .build();

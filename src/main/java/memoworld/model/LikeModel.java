@@ -28,7 +28,7 @@ public class LikeModel implements AutoCloseable {
     }
 
     public void close() {
-    	
+        
     }
 
     public Like findById(int lid) {
@@ -57,7 +57,7 @@ public class LikeModel implements AutoCloseable {
             return null;
         Like like = new Like();
         like.setLid(document.getInteger("lid", 0));
-        like.setTid(document.getString("tid"));
+        like.setTraveloguesid(document.getInteger("traveloguesid"));
         like.setDate(document.getDate("date"));
         like.setAuthor(document.getString("author"));
         return like;
@@ -68,7 +68,7 @@ public class LikeModel implements AutoCloseable {
             return null;
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("lid", like.getLid());
-        map.put("tid", like.getTid());
+        map.put("traveloguesid", like.getTraveloguesid());
         map.put("author", like.getAuthor());
         map.put("date", like.getDate());
         return new Document(map);
