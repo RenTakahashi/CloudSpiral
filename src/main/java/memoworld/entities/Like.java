@@ -6,10 +6,11 @@ import java.util.Date;
 
 @XmlRootElement
 public class Like {
-    @XmlElement(name = "id")
-    private int id;
-    //@XmlElement(name = "location")
-    //private String location;
+    @XmlElement(name = "lid")
+    private int lid;
+    //いいねをしたtraveloguesのid
+    @XmlElement(name = "tid")
+    private String tid;
     @XmlElement(name = "date")
     private Date date;
     @XmlElement(name = "author")
@@ -20,9 +21,9 @@ public class Like {
         date = new Date();
     }
 
-    public Like(String author) {
+    public Like(String tid) {
         date = new Date();
-        this.author = author;
+        this.tid = tid;
     }
 
     public Date getDate() {
@@ -33,22 +34,21 @@ public class Like {
         this.date = date;
     }
 
-    public int getId() {
-        return id;
+    public int getLid() {
+        return lid;
     }
 
-    public void setId(int id) {
-        this.id = id;
-        //setLocation();
+    public void setLid(int lid) {
+        this.lid = lid;
     }
     
-    //public String getLocation() {
-    	//return location;
-    //}
+    public String getTid() {
+    	return tid;
+    }
     
-    //public void setLocation() {
-    	//this.location = "/likes/" + Integer.toString(id);
-    //}
+    public void setTid(String tid) {
+    	this.tid = tid;
+    }
 
     public String getAuthor() {
         return author;

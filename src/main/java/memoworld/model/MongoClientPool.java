@@ -17,7 +17,7 @@ public class MongoClientPool {
         this.client =
                 new MongoClient("localhost", 27017);
         this.database =
-                this.client.getDatabase("lama");
+                this.client.getDatabase("memoworld");
         closeOnExit();
     }
 

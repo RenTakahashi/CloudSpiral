@@ -1,6 +1,6 @@
 package memoworld.model;
 
-import com.mongodb.MongoClient;
+
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
@@ -17,27 +17,24 @@ import java.util.List;
 import java.util.Map;
 
 public class LikeModel implements AutoCloseable {
-    private MongoCollection<Document> ids;
+    private MongoCollection<Document> lids;
     private MongoCollection<Document> likes;
-    private MongoClient client;
 
     public LikeModel() {
-        this.client =
-                new MongoClient("localhost", 27017);
         likes = MongoClientPool.getInstance()
                 .collection("likes");
-        ids = MongoClientPool.getInstance()
-                .collection("ids");
+        lids = MongoClientPool.getInstance()
+                .collection("lids");
     }
 
     public void close() {
-        this.client.close();
+    	
     }
 
-    public Like findById(int id) {
+    public Like findById(int lid) {
 
         Document document = likes
-                .find(Filters.eq("id", id))
+                .find(Filters.eq("lid", lid))
                 .first();
 
         return toLike(document);
@@ -49,8 +46,8 @@ public class LikeModel implements AutoCloseable {
 		return new Likes(list);
 	}
 
-    public boolean deleteLikes(int id) {
-		DeleteResult result = this.likes.deleteOne(Filters.eq("id", id));		
+    public boolean deleteLikes(int lid) {
+		DeleteResult result = this.likes.deleteOne(Filters.eq("lid", lid));		
 		return result.getDeletedCount() > 0;
 	}
 	
@@ -59,9 +56,10 @@ public class LikeModel implements AutoCloseable {
         if (document == null)
             return null;
         Like like = new Like();
-        like.setId(document.getInteger("id", 0));
-        like.setAuthor(document.getString("author"));
+        like.setLid(document.getInteger("lid", 0));
+        like.setTid(document.getString("tid"));
         like.setDate(document.getDate("date"));
+        like.setAuthor(document.getString("author"));
         return like;
     }
 
@@ -69,27 +67,28 @@ public class LikeModel implements AutoCloseable {
         if (like == null)
             return null;
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("id", like.getId());
+        map.put("lid", like.getLid());
+        map.put("tid", like.getTid());
         map.put("author", like.getAuthor());
         map.put("date", like.getDate());
         return new Document(map);
     }
 
     public int newId() {
-        if (ids.count() == 0L)
+        if (lids.count() == 0L)
             return 0;
-        return ids.find()
-                .sort(Sorts.descending("id"))
+        return lids.find()
+                .sort(Sorts.descending("lid"))
                 .first()
-                .getInteger("id", 0);
+                .getInteger("lid", 0);
     }
 
     public Like register(Like like) {
-        like.setId(newId() + 1);
+        like.setLid(newId() + 1);
         likes.insertOne(toDocument(like));
         Document idDoc =
-                new Document("id", like.getId());
-        ids.insertOne(idDoc);
+                new Document("lid", like.getLid());
+        lids.insertOne(idDoc);
         return like;
     }
 }
