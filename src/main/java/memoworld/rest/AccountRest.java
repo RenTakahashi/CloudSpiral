@@ -12,46 +12,32 @@ import javax.ws.rs.core.Response;
 
 @Path("/accounts")
 public class AccountRest {
-	int largecount = 0;
-	int smallcount = 0;
-	int othercount = 0;
-
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response postAccount(
-			@FormParam("pass") String pass
+			@FormParam("password") String password
 			,@FormParam("name") String name
-			,@FormParam("aid") String aid
+			,@FormParam("user_id") String user_id
 			) {
-	if(pass == null || pass.trim().equals(""))
-		return errorMessage(400, "empty password");
-	if(name == null || name.trim().equals(""))
-		return errorMessage(400, "empty name");
-	if(pass.length() < 5) {
-		return errorMessage(400, "too short password");
-		}
-	int passlen = pass.length();
-	for (int m = 0; m < passlen; m++) {
-		char firstchar = pass.charAt(m);
-		if(Character.isUpperCase(firstchar) == true) {
-			largecount++;
-		}else if(Character.isLowerCase(firstchar)){
-			smallcount++;
-		}else {
-			othercount++;
-		}
-	}
-//	int password1 = largecount + othercount;
-//	int password2 = smallcount + othercount;
-	if (largecount == 0||smallcount == 0) {
-		return errorMessage(400, "パスワードに大文字と小文字の両方を含めてください。");
-	}
+		if(password == null || password.trim().equals(""))
+			return errorMessage(400, "empty password");
+		if(password.length() < 5) 
+			return errorMessage(400, "too short password");
+		if(password.equals(password.toLowerCase())|| password.equals(password.toUpperCase()))
+			return errorMessage(400, "パスワードに大文字と小文字を含めてください");
+		if(name == null || name.trim().equals(""))
+			return errorMessage(400, "empty name");
 		try (AccountModel model = new AccountModel()) {
-			Account account = model.register(new Account(pass,name,aid));
-			return Response.status(201).entity(account).build();
+//			Account d = model.findById(user_id);
+//			System.out.println(d.getUser_id());
+//			System.out.println(user_id);
+//			if(user_id.equals(d.getUser_id())) {
+//				return errorMessage(400, "すでにアカウントが存在します。");				
+//			}
+			Account account = model.register(new Account(password,name,user_id));
+			return Response.status(201).entity(account).build();	
 		}
-		
 	}
 	
 	@GET
@@ -61,63 +47,24 @@ public class AccountRest {
 			return Response.ok(model.getAccounts()).build();
 		}
 	}
-		
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{uid}")
-	public Response getAccount(
-			@PathParam("uid") String idString) {
-	try (AccountModel model = new AccountModel()) {
-		int uid = toInteger(idString);
-		if (uid <= 0) {
-			return errorMessage(400, "Bad request");
-			}
-		Account account = model.findById(uid);
-		if(account == null) {
-			return errorMessage(404, "Not found");
-			}
-		return Response.status(200).entity(account).build();
-	
-		}
-	}
 	
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{uid}")
 	public Response deleteAccounts(
-			@PathParam("uid") String idString) {
-	try (AccountModel model = new AccountModel()){
-	int uid = toInteger(idString);
-	if(uid <= 0) {
-		return errorMessage(400, "Bad request");
-	}
-	if (!model.deleteAccounts(uid)) {
-		return errorMessage(400, "Bad request");
-	}
-	return Response.status(200).build();
+			@PathParam("user_id") String user_id
+			){
 		
+		try (AccountModel model = new AccountModel()){
+			if(user_id.length() <= 0) {
+				return errorMessage(400, "Bad request");
+			}
+			if (!model.deleteAccounts(user_id)) {
+				return errorMessage(400, "Bad request");
+			}
+		return Response.status(200).build();
 		}
 	}
-	
-	public Response errorMessage(int statusCode, String message) {
+		public Response errorMessage(int statusCode, String message) {
 		return Response.status(statusCode).entity(new ErrorMessage(message)).build();
-		}
-	
-	private int toInteger(String string) {
-		try {
-			return Integer.parseInt(string);
-		}catch(NumberFormatException e){
-			return -1;
-		}
 	}
 }
-
-
-
-
-
-
-
-
-
-

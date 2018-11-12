@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class MongoClientPool{
 	private static final MongoClientPool
-			INSTANCE = new MongoClientPool();
+	INSTANCE = new MongoClientPool();
 	private MongoClient client;
 	private MongoDatabase database;
 	
@@ -23,8 +23,7 @@ public class MongoClientPool{
 		return INSTANCE;
 	}
 	
-	public MongoCollection<Document>
-	collection(String name) {
+	public MongoCollection<Document> collection(String name) {
 		return database.getCollection(name);
 	}
 	
@@ -36,11 +35,4 @@ public class MongoClientPool{
 	public MongoDatabase getDatabase() {
 		return database;
 	}
-	
 }
-
-
-
-
-
-

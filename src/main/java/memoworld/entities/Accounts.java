@@ -8,13 +8,10 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlRootElement
 public class Accounts {
-	
 	@XmlElement(name = "accounts")
 	private List<Account> accounts = new ArrayList<>();
-	
 	public Accounts() {
 	}
-	
 	public Accounts(List<Account> list) {
 		this.accounts = list;
 	}

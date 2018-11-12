@@ -8,52 +8,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Account {
-	@XmlElement(name = "uid")
-	private int uid;
-	@XmlElement(name = "aid")
-	private String aid;
-	@XmlElement(name = "location")
-	private String location;	
+	@XmlElement(name = "user_id")
+		private String user_id;
 	@XmlElement(name = "name")
-	private String name;
-	@XmlElement(name = "pass")
-	private String pass;
+		private String name;
+	@XmlElement(name = "password")
+		private String password;
+	
 	public Account() {
 	}
-	public Account(String pass) {
-		this.pass = pass;
+	public Account(String password) {
+		this.password = password;
 	}
-	public Account(String pass, String name, String aid) {
-		this.pass = pass;
+	public Account(String password, String name, String user_id) {
+		this.password = password;
 		this.name = name;
-		this.aid = aid;
+		this.user_id = user_id;
 	}
-	public Account(int uid, String pass, String name, String aid) {
-		this.uid = uid;
-		this.pass = pass;
-		this.name = name;
-		this.aid = aid;
+	//user_idの取得とセット
+	public String getUser_id() {
+		return user_id;
 	}
-	//アカウントidの取得とセット
-	public int getUid() {
-		return uid;
-	}
-	public void setUid(int uid) {
-		this.uid = uid;
-	}
-	//ユニークidの取得とセット
-	public String getAid() {
-		return aid;
-	}
-	public void setAid(String aid) {
-		this.aid = aid;
-	}
-	//Locationの取得とセット
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation() {
-		this.location = "/accounts/" + aid;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
 	//名前の取得とセット
 	public String getName() {
@@ -63,13 +40,12 @@ public class Account {
 		this.name = name;
 	}
 	//パスワードの取得とセット
-	public String getPass() {
-		return pass;
+	public String getPassword() {
+		return password;
 	}
-	public void setPass(String pass) {
-		this.pass = pass;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-
 }
 
 

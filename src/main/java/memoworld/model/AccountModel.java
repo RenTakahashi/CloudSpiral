@@ -1,9 +1,7 @@
 package memoworld.model;
 
-//import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Sorts;
 import com.mongodb.client.result.DeleteResult;
 
 import memoworld.entities.Account;
@@ -16,79 +14,55 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
 public class AccountModel implements AutoCloseable {
-	private MongoCollection<Document> uids;
 	private MongoCollection<Document> accounts;
-
 	
 	public AccountModel() {
-		accounts = MongoClientPool.getInstance().collection("accounts");
-		uids = MongoClientPool.getInstance().collection("uid");
-		
+		accounts = MongoClientPool.getInstance().collection("accounts");		
 	}
 	
 	public void close() {
-
 	}
-		
-	public Account findById (int id) {
-		
-		Document document = accounts
-				.find(Filters.eq("uid",id)).first();
+	//指定したIDのアカウント情報を取得するためのメソッド
+	public Account findById (String id) {		
+		Document document = accounts.find(Filters.eq("user_id",id)).first();
 		return toAccount(document);
-	}
-	
+	}		
+	//アカウントの一覧を取得するためのメソッド
 	public Accounts getAccounts() {
 		List<Account> list = new ArrayList<>();
 		this.accounts.find().map(AccountModel::toAccount).into(list);
 		return new Accounts(list);
 	}
-	
-	public boolean deleteAccounts(int id) {
-		DeleteResult result = this.accounts.deleteOne(Filters.eq("uid", id));
+	//IDを指定して削除できるようにするためのメソッド
+	public boolean deleteAccounts(String id) {
+		DeleteResult result = this.accounts.deleteOne(Filters.eq("user_id", id));
 		return result.getDeletedCount() > 0;
 	}
 	
-	private static Account toAccount(Document document) {
-		
+	private static Account toAccount(Document document) {		
 		if(document == null) {
 			return null;
 		}
 		Account act = new Account();
-		act.setUid(document.getInteger("uid"));
-		act.setAid(document.getString("aid"));
+		act.setUser_id(document.getString("user_id"));
 		act.setName(document.getString("name"));
-		act.setPass(document.getString("pass"));
+		act.setPassword(document.getString("password"));
 		return act;
 	}
 	
-	
 	private Document toDocument (Account account) {
 		if(account == null) return null;
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("aid", account.getAid());
-		map.put("uid", account.getUid());
-		map.put("location", account.getLocation());
+				Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user_id", account.getUser_id());
 		map.put("name", account.getName());
-		map.put("pass", account.getPass());
+		map.put("pass", account.getPassword());
 		return new Document(map);
 		
 	}
-	
-	public int newId() {
-		if(uids.count() == 0L )
-			return 0;
-		return uids.find().sort(Sorts.descending("uid")).first().getInteger("uid",0);
-		
-	}
+	//toDocumentで生成したアカウント情報をDBに保存するメソッド
 	public Account register(Account account) {
-		account.setUid(newId() + 1);
 		accounts.insertOne(toDocument(account));
-		Document idDoc = new Document("uid", account.getUid());
-		uids.insertOne(idDoc);
 		return account;
 	}
 }
