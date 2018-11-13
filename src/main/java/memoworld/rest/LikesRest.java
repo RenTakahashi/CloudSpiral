@@ -37,14 +37,14 @@ public class LikesRest {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{lid}")
+    @Path("{traveloguesid}")
     public Response getLike(
-            @PathParam("lid") String idString) {
+            @PathParam("traveloguesid") String idString) {
         try (LikeModel model = new LikeModel()) {
-            int lid = toInteger(idString);
-            if (lid <= 0)
+            int traveloguesid = toInteger(idString);
+            if (traveloguesid <= 0)
                 return errorMessage(400, "Bad request");
-            Like like = model.findById(lid);
+            Like like = model.findById(traveloguesid);
             if (like == null)
                 return errorMessage(404, "Not found");
             return Response.status(200)

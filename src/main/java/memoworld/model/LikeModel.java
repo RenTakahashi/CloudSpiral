@@ -1,10 +1,14 @@
 package memoworld.model;
 
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.util.JSON;
 
 import memoworld.entities.Likes;
 import memoworld.model.LikeModel;
@@ -31,12 +35,16 @@ public class LikeModel implements AutoCloseable {
         
     }
 
-    public Like findById(int lid) {
-
+    public Like findById(int traveloguesid) {
+    	//Document searchDcument = new Document();
+    	//searchDcument.append("traveloguesid",traveloguesid );
+    	//String before = JSON.serialize(likes.find(searchDocument));
+    	
         Document document = likes
-                .find(Filters.eq("lid", lid))
+                .find(Filters.eq("traveloguesid", traveloguesid))
                 .first();
-
+       
+    	
         return toLike(document);
     }
 	
