@@ -1,24 +1,24 @@
 package memoworld.model;
 
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.FindIterable;
+
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.result.DeleteResult;
-import com.mongodb.util.JSON;
+
 
 import memoworld.entities.Likes;
 import memoworld.model.LikeModel;
 import memoworld.entities.Like;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class LikeModel implements AutoCloseable {
     private MongoCollection<Document> lids;
@@ -31,21 +31,7 @@ public class LikeModel implements AutoCloseable {
                 .collection("lids");
     }
 
-    public void close() {
-        
-    }
-
-    public Like findById(int traveloguesid) {
-    	//Document searchDcument = new Document();
-    	//searchDcument.append("traveloguesid",traveloguesid );
-    	//String before = JSON.serialize(likes.find(searchDocument));
-    	
-        Document document = likes
-                .find(Filters.eq("traveloguesid", traveloguesid))
-                .first();
-       
-    	
-        return toLike(document);
+    public void close() {  
     }
 	
     public Likes getLikes() {
@@ -53,6 +39,14 @@ public class LikeModel implements AutoCloseable {
 		this.likes.find().map(LikeModel::toLike).into(list);
 		return new Likes(list);
 	}
+    
+    //traveloguesidが引数で与えられた値と同じものを取得する
+    public Likes getFindeq(int traveloguesid) {
+    	List<Like> list = new ArrayList<>();
+    	Bson checkquery  =  Filters.eq("traveloguesid", traveloguesid);
+    		 this.likes.find(checkquery).map(LikeModel::toLike).into(list);
+		return new Likes(list);
+    }
 
     public boolean deleteLikes(int lid) {
 		DeleteResult result = this.likes.deleteOne(Filters.eq("lid", lid));		

@@ -8,13 +8,15 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+
+
 @Path("likes")
 public class LikesRest {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response postLike(
             @FormParam("traveloguesid") int traveloguesid) {
-        //if (tid == null || tid.trim().equals(""))
+       // if (traveloguesid == null || traveloguesid.trim().equals(""))
          //   return errorMessage(400, "Not found");
        
         try (LikeModel model = new LikeModel()) {
@@ -34,25 +36,19 @@ public class LikesRest {
 					.build();
 		}
     }
-
+    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{traveloguesid}")
-    public Response getLike(
-            @PathParam("traveloguesid") String idString) {
-        try (LikeModel model = new LikeModel()) {
-            int traveloguesid = toInteger(idString);
-            if (traveloguesid <= 0)
-                return errorMessage(400, "Bad request");
-            Like like = model.findById(traveloguesid);
-            if (like == null)
-                return errorMessage(404, "Not found");
-            return Response.status(200)
-                    .entity(like)
-                    .build();
-
-        }
+    public Response getLikes2(
+    		@PathParam("traveloguesid")String idString) {
+		try (LikeModel model = new LikeModel()) {
+			int traveloguesid = toInteger(idString);
+			return Response.ok(model.getFindeq(traveloguesid))
+					.build();
+		}
     }
+    
     
 
     public Response errorMessage(int statusCode,
