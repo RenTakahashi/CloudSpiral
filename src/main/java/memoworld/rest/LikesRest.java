@@ -40,7 +40,7 @@ public class LikesRest {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{traveloguesid}")
-    public Response getLikes2(
+    public Response getLike(
     		@PathParam("traveloguesid")String idString) {
 		try (LikeModel model = new LikeModel()) {
 			int traveloguesid = toInteger(idString);
