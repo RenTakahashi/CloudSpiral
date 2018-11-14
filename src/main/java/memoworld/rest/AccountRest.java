@@ -20,25 +20,25 @@ public class AccountRest {
 			,@FormParam("name") String name
 			,@FormParam("user_id") String user_id
 			) {
-		if(password == null || password.trim().equals(""))
+		if(password.equals(null) || password.trim().equals(""))
 			return errorMessage(400, "empty password");
 		if(password.length() < 5) 
 			return errorMessage(400, "too short password");
 		if(password.equals(password.toLowerCase())|| password.equals(password.toUpperCase()))
 			return errorMessage(400, "パスワードに大文字と小文字を含めてください");
-		if(name == null || name.trim().equals(""))
+		if(name.equals(null) || name.trim().equals(""))
 			return errorMessage(400, "empty name");
+		if(user_id.equals(null) || user_id.trim().equals(""))
+			return errorMessage(400, "empty user_id");
 		try (AccountModel model = new AccountModel()) {
-//			Account d = model.findById(user_id);
-//			System.out.println(d.getUser_id());
-//			System.out.println(user_id);
-//			if(user_id.equals(d.getUser_id())) {
-//				return errorMessage(400, "すでにアカウントが存在します。");				
-//			}
-			Account account = model.register(new Account(password,name,user_id));
-			return Response.status(201).entity(account).build();	
+			Account d = model.findByUser_Id(user_id);
+			if(d == null) {
+				Account account = model.register(new Account(password,name,user_id));
+				return Response.status(201).entity(account).build();
+			}
+			return errorMessage(400, "すでにアカウントが存在します。");
+			}
 		}
-	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -47,24 +47,51 @@ public class AccountRest {
 			return Response.ok(model.getAccounts()).build();
 		}
 	}
-	
+	//DB_IDを指定したアカウントを取得する
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{db_id}")
+    public Response getAccount(
+            @PathParam("db_id") String idString) {
+        try (AccountModel model = new AccountModel()) {
+        	int db_id = toInteger(idString);
+            if (db_id <= 0) {
+                return errorMessage(400, "Bad request");
+            }
+            Account account = model.findByDb_Id(db_id);
+            if (account == null) {
+            	return errorMessage(404, "Not found");
+            }
+            return Response.status(200).entity(account).build();
+        }
+    }
+	//DB_IDを指定してアカウントを削除する
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteAccounts(
-			@PathParam("user_id") String user_id
-			){
-		
+	@Path("{db_id}")
+	public Response deleteAccount(
+			@PathParam("db_id") String idString){		
 		try (AccountModel model = new AccountModel()){
-			if(user_id.length() <= 0) {
+			int db_id = toInteger(idString);
+			if(db_id <= 0) {
 				return errorMessage(400, "Bad request");
 			}
-			if (!model.deleteAccounts(user_id)) {
+			if (!model.deleteAccounts(db_id)) {
 				return errorMessage(400, "Bad request");
 			}
-		return Response.status(200).build();
+			return Response.status(200).build();
 		}
 	}
-		public Response errorMessage(int statusCode, String message) {
+
+	public Response errorMessage(int statusCode, String message) {
 		return Response.status(statusCode).entity(new ErrorMessage(message)).build();
 	}
+	
+	private int toInteger(String string) {
+        try {
+            return Integer.parseInt(string);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
 }
