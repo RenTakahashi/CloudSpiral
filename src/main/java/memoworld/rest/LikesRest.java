@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 public class LikesRest {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
+    //@Consumes(MediaType.APPLICATION_JSON)
     public Response postLike(
     		@FormParam("traveloguesid")int traveloguesid) {
        //TODO taraveloguesidの旅行記が存在するかの判定を行う
