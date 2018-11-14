@@ -33,6 +33,13 @@ public class LikeModel implements AutoCloseable {
 
     public void close() {  
     }
+    
+    public Like findById(int traveloguesid) {
+        Document document = likes
+                .find(Filters.eq("traveloguesid", traveloguesid))
+                .first();
+        return toLike(document);
+    }
 	
     public Likes getLikes() {
 		List<Like> list = new ArrayList<>();

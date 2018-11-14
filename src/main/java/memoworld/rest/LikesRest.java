@@ -15,16 +15,18 @@ public class LikesRest {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response postLike(
-            @FormParam("traveloguesid") int traveloguesid) {
-       // if (traveloguesid == null || traveloguesid.trim().equals(""))
-         //   return errorMessage(400, "Not found");
+    		@FormParam("traveloguesid")int traveloguesid) {
+       //TODO taraveloguesidの旅行記が存在するかの判定を行う
+       //なければ404を返す
        
         try (LikeModel model = new LikeModel()) {
             Like like = model.register(new Like(traveloguesid));
             return Response.status(201)
                     .entity(like)
                     .build();
-        }
+    	}
+    	
+    	
     }
     
     
@@ -44,6 +46,9 @@ public class LikesRest {
     		@PathParam("traveloguesid")String idString) {
 		try (LikeModel model = new LikeModel()) {
 			int traveloguesid = toInteger(idString);
+			Like like =  model.findById(traveloguesid);
+			if(like == null)
+				return errorMessage(404, "Not found");
 			return Response.ok(model.getFindeq(traveloguesid))
 					.build();
 		}
