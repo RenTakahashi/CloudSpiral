@@ -12,7 +12,7 @@ public class ErrorMessageTest{
 		ErrorMessage em1 = new ErrorMessage();
 		em1.setMessage(message);
 		ErrorMessage em2 = new ErrorMessage();
-		em1.setMessage(message);
+		em2.setMessage(message);
 		assertEquals(em1.getMessage(), em2.getMessage());
 		assertEquals(message, em2.getMessage());
 	}
