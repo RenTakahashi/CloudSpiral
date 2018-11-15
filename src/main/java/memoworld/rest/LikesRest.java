@@ -47,9 +47,7 @@ public class LikesRest {
     		@PathParam("traveloguesid")String idString) {
 		try (LikeModel model = new LikeModel()) {
 			int traveloguesid = toInteger(idString);
-			Like like =  model.findById(traveloguesid);
-			if(like == null)
-				return errorMessage(404, "Not found");
+			//TODO traveloguesidが旅行記のコレクションに対して存在するかの確認を行う
 			return Response.ok(model.getFindeq(traveloguesid))
 					.build();
 		}
