@@ -15,11 +15,17 @@ public class AccountRest {
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response postAccount(
-			@FormParam("password") String password
-			,@FormParam("name") String name
-			,@FormParam("user_id") String user_id
+//			@FormParam("password") String password
+//			,@FormParam("name") String name
+//			,@FormParam("user_id") String user_id
+			Account account
 			) {
+		String password = account.getPassword();
+		String name = account.getName();
+		String user_id = account.getUser_id();
+		
 		if(password.equals(null) || password.trim().equals(""))
 			return errorMessage(400, "empty password");
 		if(password.length() < 5) 
@@ -33,7 +39,7 @@ public class AccountRest {
 		try (AccountModel model = new AccountModel()) {
 			Account d = model.findByUser_Id(user_id);
 			if(d == null) {
-				Account account = model.register(new Account(password,name,user_id));
+			 account = model.register(new Account(password,name,user_id));
 				return Response.status(201).entity(account).build();
 			}
 			return errorMessage(400, "すでにアカウントが存在します。");

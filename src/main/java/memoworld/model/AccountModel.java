@@ -28,8 +28,12 @@ public class AccountModel implements AutoCloseable {
 	}
 	//指定したIDのアカウント情報を取得するためのメソッド
 	public Account findByDb_Id (int id) {		
+		try {
 		Document document = accounts.find(Filters.eq("db_id",id)).first();
 		return toAccount(document);
+		}catch(NullPointerException e) {
+			return null;
+		}
 	}
 	
 	//指定したIDのアカウント情報を取得するためのメソッド
