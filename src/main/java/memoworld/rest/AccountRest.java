@@ -18,9 +18,6 @@ public class AccountRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response postAccount(
-//			@FormParam("password") String password
-//			,@FormParam("name") String name
-//			,@FormParam("user_id") String user_id
 			Account account
 			) {
 		String password = account.getPassword();
@@ -28,15 +25,15 @@ public class AccountRest {
 		String user_id = account.getUser_id();
 		String saftyPassword = PasswordUtil.getSafetyPassword(password, user_id);
 		
-		if(password.equals(null) || password.trim().equals(""))
+		if(password == null || password.trim().equals(""))
 			return errorMessage(400, "empty password");
 		if(password.length() < 5) 
 			return errorMessage(400, "too short password");
 		if(password.equals(password.toLowerCase())|| password.equals(password.toUpperCase()))
 			return errorMessage(400, "パスワードに大文字と小文字を含めてください");
-		if(name.equals(null) || name.trim().equals(""))
+		if(name == null || name.trim().equals(""))
 			return errorMessage(400, "empty name");
-		if(user_id.equals(null) || user_id.trim().equals(""))
+		if(user_id == null || user_id.trim().equals(""))
 			return errorMessage(400, "empty user_id");
 		try (AccountModel model = new AccountModel()) {
 			Account d = model.findByUser_Id(user_id);

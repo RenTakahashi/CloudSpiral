@@ -3,9 +3,6 @@ package memoworld.entities;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
-
-
 @XmlRootElement
 public class Account {
 	@XmlElement(name = "db_id")
