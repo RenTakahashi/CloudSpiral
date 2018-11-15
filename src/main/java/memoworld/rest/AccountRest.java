@@ -2,6 +2,7 @@
 package memoworld.rest;
 
 import memoworld.entities.Account;
+import memoworld.entities.PasswordUtil;
 import memoworld.entities.ErrorMessage;
 import memoworld.model.AccountModel;
 
@@ -25,6 +26,7 @@ public class AccountRest {
 		String password = account.getPassword();
 		String name = account.getName();
 		String user_id = account.getUser_id();
+		String saftyPassword = PasswordUtil.getSafetyPassword(password, user_id);
 		
 		if(password.equals(null) || password.trim().equals(""))
 			return errorMessage(400, "empty password");
@@ -39,7 +41,7 @@ public class AccountRest {
 		try (AccountModel model = new AccountModel()) {
 			Account d = model.findByUser_Id(user_id);
 			if(d == null) {
-			 account = model.register(new Account(password,name,user_id));
+			 account = model.register(new Account(saftyPassword,name,user_id));
 				return Response.status(201).entity(account).build();
 			}
 			return errorMessage(400, "すでにアカウントが存在します。");
