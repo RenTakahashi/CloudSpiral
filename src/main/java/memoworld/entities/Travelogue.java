@@ -2,7 +2,10 @@ package memoworld.entities;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import java.util.ArrayList;
 import java.util.Date;
+
 
 @XmlRootElement
 public class Travelogue {
@@ -18,7 +21,10 @@ public class Travelogue {
     private String photos;
     @XmlElement(name = "likes")
     private String likes;
-
+    @XmlElement(name = "photos_id")
+    private ArrayList<Integer> photos_id = new ArrayList<Integer>();
+    
+    
     public Travelogue() {
         date = new Date();
     }
@@ -26,6 +32,7 @@ public class Travelogue {
     public Travelogue(String title) {
     	this.title=  title;
         date = new Date();
+        
     }
 
     public Date getDate() {
@@ -79,4 +86,13 @@ public class Travelogue {
     public void setLikes(String likes) {
     	this.likes = likes;
     }
+    
+    public ArrayList<Integer> getPhotos_id() {
+    	return photos_id;
+    }
+    
+    public void setPhotos_id(ArrayList<Integer> photos_id) {
+    	this.photos_id = photos_id; 
+    }
+    
 }
