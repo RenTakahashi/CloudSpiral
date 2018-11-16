@@ -21,10 +21,11 @@ public class TraveloguesRest {
         	travelogue.getTitle();
         	travelogue.getDate();
         	travelogue.getPhotos_id();
+        	Travelogue result =	model.register(travelogue);
+        	result.setPhotos_id(null);
         	
-        		model.register(travelogue);
         	return Response.status(201)
-                    .entity(travelogue)
+                    .entity(result)
                     .build();
         }
     }
