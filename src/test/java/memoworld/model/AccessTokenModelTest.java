@@ -28,9 +28,9 @@ public class AccessTokenModelTest {
     private static final Account TEST_ACCOUNT = new Account();
 
     static {
-        TEST_ACCOUNT.setUserId("test");
+        TEST_ACCOUNT.setUser_id("test");
         TEST_ACCOUNT.setPassword("9f735e0df9a1ddc702bf0a1a7b83033f9f7153a00c29de82cedadc9957289b05");
-        TEST_ACCOUNT.setUserName("テスト");
+        TEST_ACCOUNT.setName("テスト");
     }
 
     private int itemCount;

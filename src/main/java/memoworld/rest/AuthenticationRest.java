@@ -21,9 +21,9 @@ public class AuthenticationRest {
         // TODO: アカウントDBにuser_idとpasswordの組が登録されているか?　なければ401
         // 仮実装 ここから
         Account account = new Account();
-        account.setUserId(authentication.getUserId());
+        account.setUser_id(authentication.getUserId());
         account.setPassword(authentication.getPassword());
-        account.setUserName(authentication.getUserId());
+        account.setName(authentication.getUserId());
         // 仮実装 ここまで
 
         AccessTokenModel model = new AccessTokenModel();

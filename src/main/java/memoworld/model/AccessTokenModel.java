@@ -43,13 +43,13 @@ public class AccessTokenModel implements AutoCloseable {
      * @return 発行されたアクセストークンオブジェクト
      */
     public AccessToken register(Account account) {
-        tokens.deleteMany(Filters.eq("user_id", account.getUserId()));
+        tokens.deleteMany(Filters.eq("user_id", account.getUser_id()));
 
         AccessToken token = new AccessToken();
 
         Document document = toDocument(token);
         document.append("id", newId());
-        document.append("user_id", account.getUserId());
+        document.append("user_id", account.getUser_id());
         tokens.insertOne(document);
 
         return token;
