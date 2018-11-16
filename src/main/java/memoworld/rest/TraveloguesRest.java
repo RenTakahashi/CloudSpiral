@@ -14,12 +14,12 @@ import javax.ws.rs.core.Response;
 public class TraveloguesRest {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postTravelogue(Travelogue travelogue){
+    //@Consumes(MediaType.APPLICATION_JSON)
+    public Response postTravelogue(
+    		@FormParam("title") String title){
         
         try (TravelogueModel model = new TravelogueModel()) {
-        	travelogue.getTitle();
-        	model.register(travelogue);
-        	
+        	Travelogue travelogue = model.register(new Travelogue(title));        	
         	return Response.status(201)
                     .entity(travelogue)
                     .build();
