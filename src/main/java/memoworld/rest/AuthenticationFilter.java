@@ -1,5 +1,7 @@
 package memoworld.rest;
 
+import memoworld.model.AccessTokenModel;
+
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -51,9 +53,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     private void validateToken(String token) throws Exception {
         //TODO: tokenの認証(多分下みたいな感じになるはず)
-//        AccessTokenModel model = new AccessTokenModel();
-//        if (!model.validate(token)) {
-//            throw new Exception();
-//        }
+        AccessTokenModel model = new AccessTokenModel();
+        if (!model.validate(token)) {
+            throw new Exception();
+        }
     }
 }

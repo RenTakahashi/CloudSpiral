@@ -5,13 +5,17 @@ import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
+import memoworld.entities.Account;
 import memoworld.entities.ErrorMessage;
 import memoworld.entities.Location;
 import memoworld.entities.Photo;
+import memoworld.model.AccessTokenModel;
 import memoworld.model.PhotoModel;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.awt.image.BufferedImage;
@@ -23,16 +27,25 @@ import java.util.Base64;
 
 @Path("/photos")
 public class PhotoRest {
+    private static final String AUTHENTICATION_SCHEME = "Bearer";
+
     @POST
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postPhoto(Photo photo) {
+    public Response postPhoto(@Context HttpHeaders headers, Photo photo) {
         try {
             // 写真をデコードして画像として正しいかをチェック
             PhotoModel model = new PhotoModel();
             byte[] base64 = Base64.getDecoder().decode(photo.getRawImage());
             toBufferedImage(base64);
+
+            // 投稿者情報の取得
+            String authorizationHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
+            String token = authorizationHeader.substring(AUTHENTICATION_SCHEME.length()).trim();
+            AccessTokenModel accessTokenModel = new AccessTokenModel();
+            Account account = accessTokenModel.getAccount(token);
+            photo.setAuthor(account.getName());
 
             // exifから情報取得
             boolean isDefaultLocation = photo.getLocation() == null;

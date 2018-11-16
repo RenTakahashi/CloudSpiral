@@ -77,6 +77,14 @@ public class AccessTokenModel implements AutoCloseable {
         return tokens.count(filter);
     }
 
+    public Account getAccount(String accessToken){
+        Document document = tokens
+                .find(Filters.eq("access_token", accessToken))
+                .first();
+        AccountModel model = new AccountModel();
+        return model.findByUser_Id(document.getString("user_id"));
+    }
+
     /**
      * 期限切れのトークンを削除する
      */
