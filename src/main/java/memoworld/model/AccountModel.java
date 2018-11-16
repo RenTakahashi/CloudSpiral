@@ -4,10 +4,9 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.result.DeleteResult;
-
 import memoworld.entities.Account;
-import memoworld.model.AccountModel;
 import memoworld.entities.Accounts;
+import memoworld.entities.PasswordUtil;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -45,7 +44,29 @@ public class AccountModel implements AutoCloseable {
 			return null;
 		}
 	}
-	
+
+	/**
+	 * ユーザIDが登録されていて、パスワードが合っているときに Account を返す
+	 * @param userId ユーザID
+	 * @param rawPassword 平文パスワード
+	 * @return Account
+	 */
+	public Account findByUserIdAndPassword(String userId, String rawPassword) {
+		Account account = findByUser_Id(userId);
+		if (account == null) {
+			// IDが登録されていない
+			return null;
+		}
+
+		String safetyPassword = PasswordUtil.getSafetyPassword(rawPassword, userId);
+		if (!account.getPassword().equals(safetyPassword)) {
+			// パスワードが合っていない
+			return null;
+		}
+
+		return account;
+	}
+
 	//アカウントの一覧を取得するためのメソッド
 	public Accounts getAccounts() {
 		List<Account> list = new ArrayList<>();
@@ -77,7 +98,7 @@ public class AccountModel implements AutoCloseable {
 		map.put("db_id", account.getDb_id());
 		map.put("user_id", account.getUser_id());
 		map.put("name", account.getName());
-		map.put("pass", account.getPassword());
+		map.put("password", account.getPassword());
 		return new Document(map);	
 	}
 	
