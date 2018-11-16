@@ -1,4 +1,5 @@
 var initTemplate = function(pageTitle, buttonName) {
+	//headerとfooterの準備
 	$("#header").append(
 			'<header class="sticky-top mx-auto" style="width: 400px;">'
 			+ '<nav aria-label="breadcrumb">'
@@ -19,9 +20,12 @@ var initTemplate = function(pageTitle, buttonName) {
 				+ '</a>'
 				+ '</footer>');
 	}
-	
 }
 
+/*
+ * ボタン処理がいらない場合は，第2引数を書かない
+ * 例：initTemplate("みんなの投稿");
+ */
 $(document).ready(function(){
 	initTemplate("みんなの投稿", "旅行記投稿");
 });
