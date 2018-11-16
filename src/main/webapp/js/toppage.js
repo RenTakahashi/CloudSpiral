@@ -1,4 +1,7 @@
-var endpoint = '/memo'
+//var endpoint = '/memo';
+
+/*ページを読み込んだ時の初期化処理
+ * APIを叩いてjsonを読み込む*/
 var initToppage = function() {
 	$.ajax({
 		//type: 'GET',
@@ -15,7 +18,8 @@ var initToppage = function() {
 				}}
 	});
 }
-
+/*ページを読み込んだ時の初期化処理
+ * htmlに旅行記を表示させる*/
 var addTravelogue = function(title, date, author, photoID) {
 	$('#cards')
 	.append('<img src="' + photoID + '" class="rounded float-left" class="img-thumbnail">'
@@ -23,13 +27,11 @@ var addTravelogue = function(title, date, author, photoID) {
 			+ '<div class="card-body">'
 			+ '<h5 class="card-title">' + title + '</5>'
 			+ '<h6 class="card-subtitle">' + date + '</5>'
-			+ '<p class="card-text">by' + author + '</p>'
+			+ '<p class="card-text">by ' + author + '</p>'
 			+ '</div>'
 			+ '</div>');
-
 }
-
+/*初期化処理*/
 $(document).ready(function(){
 	initToppage();
-	//addTravelogue("aaaa", "2018/9/18", "itimon","https://www.sria.co.jp/blog/wp-content/uploads/2014/07/javascript.png");
 });
