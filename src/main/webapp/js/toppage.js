@@ -22,8 +22,8 @@ var initToppage = function() {
  * htmlに旅行記を表示させる*/
 var addTravelogue = function(title, date, author, photoID) {
 	$('#cards')
-	.append('<img src="' + photoID + '" class="rounded float-left" class="img-thumbnail">'
-			+ '<div class="card">'
+	.append('<div class="card">'
+			+ '<img src="' + photoID + '" class="rounded float-left" class="img-thumbnail">'
 			+ '<div class="card-body">'
 			+ '<h5 class="card-title">' + title + '</5>'
 			+ '<h6 class="card-subtitle">' + date + '</5>'
