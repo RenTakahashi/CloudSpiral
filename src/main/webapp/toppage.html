@@ -11,14 +11,20 @@
 </head>
 <body>
 	<!-- アプリ名表示 -->
-	<nav aria-label="breadcrumb">
-	  <ol class="breadcrumb">
-	    <li class="breadcrumb-item active" aria-current="page">Memoworld</li>
-	    <li class="breadcrumb-item active" aria-current="page">みんなの投稿</li>
-	  </ol>
-	</nav>
+	<div class="mx-auto" style="width: 400px;">
+	<header class="sticky-top">
+		<nav aria-label="breadcrumb">
+		  <ol class="breadcrumb">
+		    <li class="breadcrumb-item active" aria-current="page">Memoworld</li>
+		    <li class="breadcrumb-item active" aria-current="page">みんなの投稿</li>
+		  </ol>
+		</nav>
+	</header>
 	<!-- 旅行記表示 -->
 	<div id="cards"></div>
-	<a class="btn btn-secondary" href="post.html" role="button">旅行記投稿</a>	
+	<footer class="fixed-bottom">
+		<a class="btn btn-secondary float-right" href="post.html" role="button">旅行記投稿</a>	
+    </footer>
+    </div>
 </body>
 </html>
