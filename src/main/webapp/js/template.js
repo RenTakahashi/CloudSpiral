@@ -27,5 +27,5 @@ var initTemplate = function(pageTitle, buttonName) {
  * 例：initTemplate("みんなの投稿");
  */
 $(document).ready(function(){
-	initTemplate("みんなの投稿", "旅行記投稿");
+	initTemplate("タイトルテンプレート", "左下ボタンテンプレート");
 });
