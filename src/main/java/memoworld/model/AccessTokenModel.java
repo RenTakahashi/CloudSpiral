@@ -78,6 +78,7 @@ public class AccessTokenModel implements AutoCloseable {
     }
 
     public Account getAccount(String accessToken){
+        removeExpiredTokens();
         Document document = tokens
                 .find(Filters.eq("access_token", accessToken))
                 .first();
