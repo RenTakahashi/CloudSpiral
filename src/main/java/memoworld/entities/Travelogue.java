@@ -17,12 +17,9 @@ public class Travelogue {
     private Date date;
     @XmlElement(name = "author")
     private String author;
-    @XmlElement(name = "photos")
-    private String photos;
-    @XmlElement(name = "likes")
-    private String likes;
+    
     @XmlElement(name = "photos_id")
-    private ArrayList<Integer> photos_id = new ArrayList<Integer>();
+    private ArrayList<Integer> photos_id = new ArrayList<>();
     
     
     public Travelogue() {
@@ -71,21 +68,7 @@ public class Travelogue {
         this.author = author;
     }
     
-    public String getPhotos() {
-    	return photos;
-    }
     
-    public void setPhotos(String photos) {
-    	this.photos = photos;
-    }
-    
-    public String getLikes() {
-    	return likes;
-    }
-    
-    public void setLikes(String likes) {
-    	this.likes = likes;
-    }
     
     public ArrayList<Integer> getPhotos_id() {
     	return photos_id;

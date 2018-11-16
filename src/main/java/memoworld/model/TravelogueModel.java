@@ -60,8 +60,7 @@ public class TravelogueModel implements AutoCloseable {
         travel.setTitle(document.getString("title"));
         travel.setDate(document.getDate("date"));
         travel.setAuthor(document.getString("author"));
-        travel.setPhotos(document.getString("photos"));
-        travel.setLikes(document.getString("likes"));
+        
         
       
         return travel;
@@ -76,8 +75,7 @@ public class TravelogueModel implements AutoCloseable {
         map.put("title", travelogue.getTitle());
         map.put("date", travelogue.getDate());
         map.put("author", travelogue.getAuthor());
-        map.put("photos", travelogue.getPhotos());
-        map.put("likes", travelogue.getLikes());
+        
         
         return new Document(map);
     }
