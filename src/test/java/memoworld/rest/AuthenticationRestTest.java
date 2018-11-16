@@ -2,10 +2,7 @@ package memoworld.rest;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
-import memoworld.entities.AccessToken;
-import memoworld.entities.Account;
-import memoworld.entities.Authentication;
-import memoworld.entities.ErrorMessage;
+import memoworld.entities.*;
 import memoworld.model.AccessTokenModel;
 import memoworld.model.AccountModel;
 import memoworld.model.MongoClientPool;
@@ -25,14 +22,19 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 public class AuthenticationRestTest extends JerseyTest {
-    private static final Account TEST_ACCOUNT = new Account("Password", "Test User", "testuser");
+    private static final String TEST_USER_ID = "testuser";
+    private static final String TEST_PASSWORD = "Password";
+    private static final String TEST_SAFETY_PASSWORD = PasswordUtil.getSafetyPassword(TEST_PASSWORD, TEST_USER_ID);
+    private static final Account TEST_ACCOUNT = new Account(TEST_SAFETY_PASSWORD, "Test User", TEST_USER_ID);
+
     private static final Authentication TEST_REQUEST_BODY = new Authentication();
 
     static {
-        TEST_REQUEST_BODY.setUserId(TEST_ACCOUNT.getUser_id());
-        TEST_REQUEST_BODY.setPassword(TEST_ACCOUNT.getPassword());
+        TEST_REQUEST_BODY.setUserId(TEST_USER_ID);
+        TEST_REQUEST_BODY.setPassword(TEST_PASSWORD);
     }
 
+    private int accountCount;
     private int accessTokenCount;
 
     @Test
@@ -66,6 +68,7 @@ public class AuthenticationRestTest extends JerseyTest {
 
         // テスト用ユーザーの登録
         try (AccountModel model = new AccountModel()) {
+            accountCount = model.newId();
             model.register(TEST_ACCOUNT);
         }
 
@@ -77,21 +80,38 @@ public class AuthenticationRestTest extends JerseyTest {
     @After
     public void tearDown() throws Exception {
         super.tearDown();
+
         MongoCollection<Document> tokens = MongoClientPool.getInstance().collection("access_tokens");
         tokens.deleteMany(Filters.gte("id", accessTokenCount));
+
+        MongoCollection<Document> accounts = MongoClientPool.getInstance().collection("accounts");
+        accounts.deleteMany(Filters.gte("db_id", accountCount));
     }
 
     @Test
     public void unexistingUserTest() {
         Authentication authentication = new Authentication();
         authentication.setUserId("unexistinguser");
-        authentication.setPassword(TEST_ACCOUNT.getPassword());
+        authentication.setPassword(TEST_PASSWORD);
 
         Response response = post(authentication);
         assertEquals(response.getStatus(), 401);
         ErrorMessage message = response.readEntity(ErrorMessage.class);
         assertThat(message.getMessage(),
                    allOf(containsString("user_id"), containsString("wrong")));
+    }
+
+    @Test
+    public void wrongPasswordTest() {
+        Authentication authentication = new Authentication();
+        authentication.setUserId(TEST_USER_ID);
+        authentication.setPassword("WrongPassword");
+
+        Response response = post(authentication);
+        assertEquals(response.getStatus(), 401);
+        ErrorMessage message = response.readEntity(ErrorMessage.class);
+        assertThat(message.getMessage(),
+                   allOf(containsString("password"), containsString("wrong")));
     }
 
     private Response post(Authentication body) {

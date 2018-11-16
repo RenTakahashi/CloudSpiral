@@ -23,12 +23,10 @@ public class AuthenticationRest {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postAuthentication(Authentication authentication) {
         AccountModel accountModel = new AccountModel();
-        Account account = accountModel.findByUser_Id(authentication.getUserId());
+        Account account = accountModel.findByUserIdAndPassword(authentication.getUserId(), authentication.getPassword());
         if (account == null) {
             return Response.status(UNAUTHORIZED).entity(new ErrorMessage("user_id or password is wrong.")).build();
         }
-
-        // TODO パスワード確認
 
         AccessTokenModel model = new AccessTokenModel();
         AccessToken token = model.register(account);
