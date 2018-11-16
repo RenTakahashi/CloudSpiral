@@ -3,7 +3,11 @@ package memoworld.rest;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import memoworld.entities.AccessToken;
+import memoworld.entities.Account;
+import memoworld.entities.Authentication;
+import memoworld.entities.ErrorMessage;
 import memoworld.model.AccessTokenModel;
+import memoworld.model.AccountModel;
 import memoworld.model.MongoClientPool;
 import org.bson.Document;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -21,7 +25,13 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 public class AuthenticationRestTest extends JerseyTest {
-    private static final String TEST_REQUEST_BODY = "{\"user_id\":\"test\",\"password\":\"9f735e0df9a1ddc702bf0a1a7b83033f9f7153a00c29de82cedadc9957289b05\"}";
+    private static final Account TEST_ACCOUNT = new Account("Password", "Test User", "testuser");
+    private static final Authentication TEST_REQUEST_BODY = new Authentication();
+
+    static {
+        TEST_REQUEST_BODY.setUserId(TEST_ACCOUNT.getUser_id());
+        TEST_REQUEST_BODY.setPassword(TEST_ACCOUNT.getPassword());
+    }
 
     private int accessTokenCount;
 
@@ -53,6 +63,12 @@ public class AuthenticationRestTest extends JerseyTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
+
+        // テスト用ユーザーの登録
+        try (AccountModel model = new AccountModel()) {
+            model.register(TEST_ACCOUNT);
+        }
+
         try (AccessTokenModel model = new AccessTokenModel()) {
             accessTokenCount = model.newId();
         }
@@ -65,7 +81,20 @@ public class AuthenticationRestTest extends JerseyTest {
         tokens.deleteMany(Filters.gte("id", accessTokenCount));
     }
 
-    private Response post(String body) {
+    @Test
+    public void unexistingUserTest() {
+        Authentication authentication = new Authentication();
+        authentication.setUserId("unexistinguser");
+        authentication.setPassword(TEST_ACCOUNT.getPassword());
+
+        Response response = post(authentication);
+        assertEquals(response.getStatus(), 401);
+        ErrorMessage message = response.readEntity(ErrorMessage.class);
+        assertThat(message.getMessage(),
+                   allOf(containsString("user_id"), containsString("wrong")));
+    }
+
+    private Response post(Authentication body) {
         return target("/authentication")
                 .request()
                 .post(Entity.entity(body, MediaType.APPLICATION_JSON));
