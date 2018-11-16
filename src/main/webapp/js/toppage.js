@@ -1,10 +1,12 @@
 var endpoint = '/memo'
 var initToppage = function() {
 	$.ajax({
-		type: 'POST',
-		url: endpoint + '/travelogues',
+		//type: 'GET',
+		url: 'js/photo.json',
+		//url: endpoint + '/travelogues',
 		success: function(json) {
-			addTravelogue(json.title, json.date, json.photos[0]);
+			//console.log(json);
+			addTravelogue(json.title, json.date, json.author, json.photos[0]);
 		}
 	});
 }
@@ -23,6 +25,6 @@ var addTravelogue = function(title, date, author, photoID) {
 }
 
 $(document).ready(function(){
-	//initToppage();
-	addTravelogue("aaaa", "2018/9/18", "itimon","https://www.sria.co.jp/blog/wp-content/uploads/2014/07/javascript.png");
+	initToppage();
+	//addTravelogue("aaaa", "2018/9/18", "itimon","https://www.sria.co.jp/blog/wp-content/uploads/2014/07/javascript.png");
 });
