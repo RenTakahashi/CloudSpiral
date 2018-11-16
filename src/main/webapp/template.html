@@ -8,12 +8,43 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 		<script src="js/jquery-3.2.1.js"></script>
 		<script src="js/template.js"></script>
+		
+		<!-- 使いたいスクリプトを追加 -->
+		
 	</head>
 	<body>
 		<div id="header"></div>
 		
 		<main class="sticky-top mx-auto" style="width: 400px;">
-			<!-- ページ内容をここに書く -->
+			<!--
+			 ページ内容をここに書く 
+			 mainの中は自由に変えてもらって大丈夫
+			 共通しそうなUIを用意したので，適宜使うこと
+			-->
+			
+			<!-- ボタンUI -->
+			<a class="btn btn-secondary" href="#" role="button">ボタンテンプレート</a>
+			
+			<!-- カードUI -->
+			<div class="card">
+				 <div class="card-body">
+				 	<p class="card-text"><small class="text-muted">2018-09-18</small></p>
+				 	<h5 class="card-title">Title</h5>
+				 </div>
+			 </div>
+			 
+			 <!-- フォームUI -->
+			 <form>
+				  <div class="form-group">
+				    <label for="userID">ユーザID</label>
+				    <input type="text" class="form-control" id="userID" placeholder="ユーザIDを入力">
+				  </div>
+				  <div class="form-group">
+				    <label for="password">パスワード</label>
+				    <input type="text" class="form-control" id="password" placeholder="パスワードを入力する">
+				  </div>
+			</form>
+			
 		</main>
 		
 		<div id="footer"></div>
