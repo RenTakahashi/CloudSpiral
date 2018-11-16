@@ -5,9 +5,14 @@ var initToppage = function() {
 		url: 'js/photo.json',
 		//url: endpoint + '/travelogues',
 		success: function(json) {
-			//console.log(json);
-			addTravelogue(json.title, json.date, json.author, json.photos[0]);
-		}
+			for( var i=0; i<json.length; i++){
+				var travelogue = json[i];
+				addTravelogue(
+						travelogue.title,
+						travelogue.date,
+						travelogue.author,
+						travelogue.photos[0]);
+				}}
 	});
 }
 
