@@ -94,6 +94,7 @@ public class AccountModel implements AutoCloseable {
 		accounts.insertOne(toDocument(account));
 		Document idDoc = new Document("db_id", account.getDb_id());
 		db_ids.insertOne(idDoc);
+		account.setPassword(null);
 		return account;
 	}
 }
