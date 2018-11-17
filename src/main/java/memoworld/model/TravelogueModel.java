@@ -41,6 +41,7 @@ public class TravelogueModel implements AutoCloseable {
     public Travelogues getTravelogues() {
 		List<Travelogue> list = new ArrayList<>();
 		this.travelogues.find().map(TravelogueModel::toTravelogue).into(list);
+	
 		return new Travelogues(list);
 	}
     
@@ -60,9 +61,7 @@ public class TravelogueModel implements AutoCloseable {
         travel.setTitle(document.getString("title"));
         travel.setDate(document.getDate("date"));
         travel.setAuthor(document.getString("author"));
-        
-        
-      
+        travel.setPhotos_id((ArrayList<Integer>) document.get("photos_id"));
         return travel;
     }
 
@@ -75,7 +74,7 @@ public class TravelogueModel implements AutoCloseable {
         map.put("title", travelogue.getTitle());
         map.put("date", travelogue.getDate());
         map.put("author", travelogue.getAuthor());
-        
+        map.put("photos_id",travelogue.getPhotos_id());
         
         return new Document(map);
     }

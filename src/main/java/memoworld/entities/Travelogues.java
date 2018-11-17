@@ -6,6 +6,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+
+
 @XmlRootElement
 public class Travelogues {
 	
@@ -14,7 +16,8 @@ public class Travelogues {
 	
 	public Travelogues() {
 	}
-
+	
+	
 	public Travelogues(List<Travelogue> list) {
 		this.travelogues = list;
 	}

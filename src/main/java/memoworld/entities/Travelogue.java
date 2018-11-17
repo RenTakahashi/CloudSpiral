@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
+
 @XmlRootElement
 public class Travelogue {
     @XmlElement(name = "id")
@@ -17,10 +18,14 @@ public class Travelogue {
     private Date date;
     @XmlElement(name = "author")
     private String author;
-    
+    //@XmlElement(name = "photos")
+    //private ArrayList<Photo> phots = new ArrayList<>();
+    @XmlElement(name = "likes")
+    private ArrayList<Like> likes = new ArrayList<>();
     @XmlElement(name = "photos_id")
     private ArrayList<Integer> photos_id = new ArrayList<>();
     
+   
     
     public Travelogue() {
         date = new Date();
@@ -68,6 +73,13 @@ public class Travelogue {
         this.author = author;
     }
     
+    public ArrayList<Like> getLikes() {
+    	return likes;
+    }
+    
+    public void setLikes(ArrayList<Like> list) {
+    	this.likes = list; 
+    }
     
     
     public ArrayList<Integer> getPhotos_id() {

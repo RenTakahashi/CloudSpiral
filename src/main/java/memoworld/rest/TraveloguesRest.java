@@ -23,7 +23,6 @@ public class TraveloguesRest {
         	travelogue.getPhotos_id();
         	Travelogue result =	model.register(travelogue);
         	result.setPhotos_id(null);
-        	
         	return Response.status(201)
                     .entity(result)
                     .build();
@@ -39,7 +38,7 @@ public class TraveloguesRest {
 					.build();
 		}
     }
-
+    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
