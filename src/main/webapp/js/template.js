@@ -1,7 +1,7 @@
 var initTemplate = function(pageTitle, buttonName) {
 	//headerとfooterの準備
-	$("#header").append(
-			'<header class="sticky-top mx-auto" style="width: 400px;">'
+	$("body").prepend(
+			'<header class="fixed-top mx-auto" style="width: 400px;">'
 			+ '<nav aria-label="breadcrumb">'
 			+ '<ol class="breadcrumb">'
 			+ '<li class="breadcrumb-item active" aria-current="page">Memoworld</li>'
@@ -12,7 +12,7 @@ var initTemplate = function(pageTitle, buttonName) {
 			+ '</nav>'
 			+ '</header>');
 	if (buttonName != undefined){
-		$("#footer").append(
+		$("body").append(
 				'<footer class="fixed-bottom mx-auto" style="width: 400px;">'
 				+ '<!-- ボタンの処理を変更する -->'
 				+ '<a class="btn btn-secondary float-right" href="post.html" role="button">'
