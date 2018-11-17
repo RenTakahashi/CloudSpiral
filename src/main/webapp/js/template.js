@@ -1,7 +1,7 @@
 var initTemplate = function(pageTitle, buttonName) {
 	//headerとfooterの準備
 	$("body").prepend(
-			'<header class="fixed-top mx-auto" style="width: 400px;">'
+			'<header class="fixed-top">'
 			+ '<nav aria-label="breadcrumb">'
 			+ '<ol class="breadcrumb">'
 			+ '<li class="breadcrumb-item active" aria-current="page">Memoworld</li>'
@@ -13,7 +13,7 @@ var initTemplate = function(pageTitle, buttonName) {
 			+ '</header>');
 	if (buttonName != undefined){
 		$("body").append(
-				'<footer class="fixed-bottom mx-auto" style="width: 400px;">'
+				'<footer class="fixed-bottom">'
 				+ '<!-- ボタンの処理を変更する -->'
 				+ '<a class="btn btn-secondary float-right" href="post.html" role="button">'
 				+ buttonName
@@ -27,5 +27,5 @@ var initTemplate = function(pageTitle, buttonName) {
  * 例：initTemplate("みんなの投稿");
  */
 $(document).ready(function(){
-	initTemplate("タイトルテンプレート", "左下ボタンテンプレート");
+	initTemplate("タイトルテンプレート", "右下ボタンテンプレート");
 });
