@@ -25,7 +25,6 @@ public class AuthenticationRestTest extends JerseyTest {
     private static final String TEST_USER_ID = "testuser";
     private static final String TEST_PASSWORD = "Password";
     private static final String TEST_SAFETY_PASSWORD = PasswordUtil.getSafetyPassword(TEST_PASSWORD, TEST_USER_ID);
-    private static final Account TEST_ACCOUNT = new Account(TEST_SAFETY_PASSWORD, "Test User", TEST_USER_ID);
 
     private static final Authentication TEST_REQUEST_BODY = new Authentication();
 
@@ -69,7 +68,8 @@ public class AuthenticationRestTest extends JerseyTest {
         // テスト用ユーザーの登録
         try (AccountModel model = new AccountModel()) {
             accountCount = model.newId();
-            model.register(TEST_ACCOUNT);
+            Account testUser = new Account(TEST_SAFETY_PASSWORD, "Test User", TEST_USER_ID);;
+            model.register(testUser);
         }
 
         try (AccessTokenModel model = new AccessTokenModel()) {
