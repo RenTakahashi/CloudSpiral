@@ -2,30 +2,37 @@
 //user_idとpasswordを送る
 
 $('#send').click(function() {
-	console.log($('#user_id').val());
-	console.log($('#password').val());
-	console.log($('#name').val());
-	//	let data = {
-//		      user_id: $('#user_id').val(),
-//		      password: $('#password').val()
-//	};
-//	console.log(data);
+	var account = {user_id: $('#user_id').val(), password: $('#password').val()};
+	console.log(account);
+	console.log(JSON.stringify(account));
 	$.ajax({
 		type: 'POST',
-        contentType: 'application/JSON',
-        dataType : 'JSON',
-		url: 'http://localhost:8080/memoworld/api/accounts',		
-		data: { user_id : $('#user_id').val(), password : $('#password').val(), name : $('#name').val()},
+		url: '/memoworld/api/authentication',
+		data: JSON.stringify(account),
 		success: function(json) {
-			console.log("送信成功!!");
-			console.log($('#user_id').val());
-			console.log($('#password').val());
-			console.log($('#name').val());
-			console.log("clicked!!");
+			console.log("success!!");
 			console.log(json);
 		}
-	})
+	});
 });
+
+
+//$('#send').click(function() {
+//	console.log($('#user_id').val());
+//	console.log($('#password').val());
+//	let account = {user_id:$('#user_id').val(), password:$('#password').val()};	
+//	console.log(account);
+//	$.ajax({
+//		type: 'POST',
+//		url: 'http://localhost:8080/memoworld/api/authentication',
+//		data: JSON.stringify(account),
+//		success: function(json) {
+//			console.log("送信成功!!");
+//			console.log("clicked!!");
+//			console.log(json);
+//		}
+//	});
+//});
 
 
 //$('#send').click(function() {
