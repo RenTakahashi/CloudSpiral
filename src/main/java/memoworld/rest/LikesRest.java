@@ -1,10 +1,14 @@
 package memoworld.rest;
 
+import memoworld.entities.Account;
 import memoworld.entities.Like;
 import memoworld.entities.ErrorMessage;
+import memoworld.model.AccessTokenModel;
 import memoworld.model.LikeModel;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -12,10 +16,22 @@ import javax.ws.rs.core.Response;
 
 @Path("likes")
 public class LikesRest {
+    private static final String AUTHENTICATION_SCHEME = "Bearer";
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postLike(Like like) {
+    public Response postLike(@Context HttpHeaders headers, Like like) {
+
+        // 投稿者情報の取得
+        String authorizationHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
+        if (authorizationHeader != null &&
+                authorizationHeader.toLowerCase().startsWith(AUTHENTICATION_SCHEME.toLowerCase() + " ")){
+            String token = authorizationHeader.substring(AUTHENTICATION_SCHEME.length()).trim();
+            AccessTokenModel accessTokenModel = new AccessTokenModel();
+            Account account = accessTokenModel.getAccount(token);
+            like.setAuthor(account.getName());
+        }
        //TODO taraveloguesidの旅行記が存在するかの判定を行う
        //なければ404を返す
        
