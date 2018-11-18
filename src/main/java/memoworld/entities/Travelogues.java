@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Travelogues {
 	
 	@XmlElement(name="travelogues")
-	private List<Travelogue> travelogues = new ArrayList<>();
+	public List<Travelogue> travelogues = new ArrayList<>();
 	
 	public Travelogues() {
 	}

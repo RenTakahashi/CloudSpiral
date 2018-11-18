@@ -1,9 +1,11 @@
 package memoworld.rest;
 
 import memoworld.entities.Travelogue;
+import memoworld.entities.Travelogues;
 import memoworld.entities.ErrorMessage;
+import memoworld.model.LikeModel;
+import memoworld.model.PhotoModel;
 import memoworld.model.TravelogueModel;
-
 
 
 import javax.ws.rs.*;
@@ -34,8 +36,30 @@ public class TraveloguesRest {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTraveloges() {
 		try (TravelogueModel model = new TravelogueModel()) {
-			return Response.ok(model.getTravelogues())
-					.build();
+			Travelogue travelogue = new Travelogue();
+			LikeModel likemodel = new LikeModel();
+			Travelogues travelogues = new Travelogues();
+			PhotoModel photomodel = new PhotoModel();
+			
+			int LastId = (int)model.Collcount();
+			int LastLid = (int)likemodel.Collcount();
+			int LastPid = (int)photomodel.Collcount();
+			
+			for(int i = 1; i <=  LastId ; i++) {
+					travelogue = model.findById(i);
+				for(int j = 1; j <= LastLid; j++) {
+					travelogue.likes.add(likemodel.findByLid(j));
+				}
+				for(int k = 1; k <= LastPid ; k++) {
+					travelogue.photos.add(photomodel.findById(k));
+				}
+				travelogues.travelogues.add(travelogue);	
+			}
+				photomodel.close();
+				likemodel.close();
+				return Response.status(201)
+						.entity(travelogues)
+						.build();
 		}
     }
     
@@ -47,9 +71,24 @@ public class TraveloguesRest {
 		try (TravelogueModel model = new TravelogueModel()) {
 			int id = toInteger(idString);
 			Travelogue travelogue = model.findById(id);
+			LikeModel likemodel = new LikeModel();
+			PhotoModel photomodel = new PhotoModel();
+			
+			int LastLid = (int)likemodel.Collcount();
+			int LastPid = (int)photomodel.Collcount();
+			
+			for(int i = 1; i <= LastLid; i++) {
+				travelogue.likes.add(likemodel.findByLid(i));
+			}
+			for(int j = 1; j <= LastPid; j++) {
+				travelogue.photos.add(photomodel.findById(j));
+			}
+			likemodel.close();
+			photomodel.close();
 			if(travelogue == null)
 				return errorMessage(404, "Not found");
-			return Response.ok(model.findById(id))
+			return Response.status(201)
+					.entity(travelogue)
 					.build();
 		}
     }

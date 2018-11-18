@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class TravelogueModel implements AutoCloseable {
     private MongoCollection<Document> ids;
-    private MongoCollection<Document> travelogues;
+    public MongoCollection<Document> travelogues;
 
     public TravelogueModel() {
         travelogues = MongoClientPool.getInstance()
@@ -37,7 +37,13 @@ public class TravelogueModel implements AutoCloseable {
         return toTravelogue(document);
     }
     
-	
+    //traveloguesの要素数を返す
+	public long Collcount() {
+		long count = travelogues.count();
+		return count;
+	}
+    
+    
     public Travelogues getTravelogues() {
 		List<Travelogue> list = new ArrayList<>();
 		this.travelogues.find().map(TravelogueModel::toTravelogue).into(list);
@@ -45,7 +51,7 @@ public class TravelogueModel implements AutoCloseable {
 		return new Travelogues(list);
 	}
     
-    
+   
     
     public boolean deleteTravelogues(int id) {
 		DeleteResult result = this.travelogues.deleteOne(Filters.eq("id", id));		
@@ -75,7 +81,6 @@ public class TravelogueModel implements AutoCloseable {
         map.put("date", travelogue.getDate());
         map.put("author", travelogue.getAuthor());
         map.put("photos_id",travelogue.getPhotos_id());
-        
         return new Document(map);
     }
 
