@@ -1,0 +1,16 @@
+body {
+    padding-top: 4.5rem;
+    padding-bottom: 3rem;
+}
+
+header, footer{
+    font-size: 1.6rem;	
+}
+
+html {
+    font-size: 2rem;
+}
+
+a {
+    font-size: 2rem;
+}
