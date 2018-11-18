@@ -27,31 +27,44 @@
 			 mainの中は自由に変えてもらって大丈夫
 			 共通しそうなUIを用意したので，適宜使うこと
 			-->
-			<div class="row col-md-12">
+			
 			<!-- カードUI -->
-				<div class="card">
-					<div class="card-body">
-					 	<small class="text-muted">2018-09-18</small>
-					 	<h5 class="card-title">カードテンプレート</h5>
-					 	<h7 class="card-text">コメントを適当に書くんああああああああああああああああああああああああああああああああああ</h7>
-					</div>
+			<div class="card row col-md-12">
+				<div class="card-body">
+				 	<small class="text-muted">2018-09-18</small>
+				 	<h5 class="card-title">カードテンプレート</h5>
+				 	<h7 class="card-text">コメントを適当に書くんああああああああああああああああああああああああああああああああああ</h7>
 				</div>
 			</div>
+			
 			<!-- ボタンUI -->
-			<a class="btn btn-secondary float-left" href="#" role="button">左ボタンテンプレート</a>
+			<a class="btn btn-secondary" href="#" role="button">ボタンテンプレート</a>
 			<a class="btn btn-secondary float-right" href="#" role="button">右ボタンテンプレート</a>
 
-			
 			<!-- フォームUI -->
+			<!-- 縦並びフォーム -->
 			<form>
-				  <div class="form-group">
-				    <label for="userID">フォームテンプレート1</label>
-				    <input type="text" class="form-control" id="formtemplate1" placeholder="フォームテンプレート">
-				  </div>
+				<div class="form-group row col-md-6">
+					<div class="form-group">
+					    <label for="formtemplate1">フォームテンプレート1</label>
+					    <input type="text" class="form-control" id="formtemplate1" placeholder="フォームテンプレート1">
+					</div>
+				</div>
 				  <div class="form-group">
 				    <label for="formtemplate2">フォームテンプレート2</label>
-				    <input type="text" class="form-control" id="formtemplate2" placeholder="フォームテンプレート">
+				    <input type="text" class="form-control" id="formtemplate2" placeholder="フォームテンプレート2">
 				  </div>
+			</form>
+			<!-- 横並びフォーム -->
+			<form class="form-inline">
+				<div class="form-group mx-2">
+				  <label for="formtemplate3">テンプレ3</label>
+				  <input type="text" class="form-control" id="formtemplate3" placeholder="フォームテンプレート3">
+				</div>
+				<div class="form-group mx-2">
+				  <label for="formtemplate4">テンプレ4</label>
+				  <input type="text" class="form-control" id="formtemplate4" placeholder="フォームテンプレート4">
+				</div>
 			</form>
 
 		</main>	
