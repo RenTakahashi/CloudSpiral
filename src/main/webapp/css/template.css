@@ -1,6 +1,6 @@
-body {
-    padding-top: 4.5rem;
-    padding-bottom: 3rem;
+body{
+    margin-top: 5rem;
+    margin-bottom: 3rem;
 }
 
 header, footer{
@@ -11,6 +11,8 @@ html {
     font-size: 2rem;
 }
 
-a {
+a{
     font-size: 2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
