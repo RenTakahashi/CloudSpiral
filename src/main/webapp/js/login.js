@@ -22,4 +22,3 @@ $('#send').click(function() {
 		}
 	});
 });
-
