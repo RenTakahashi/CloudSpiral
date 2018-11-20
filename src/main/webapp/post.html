@@ -26,6 +26,10 @@
 				height: 4.5rem;	/* = (number of visible lines) * (line-height) * 1rem */
 				overflow: hidden;
 			}
+
+			.font-size-4x {
+				font-size: 4rem;
+			}
 		</style>
 		<script>
 			function initMap() {
@@ -47,6 +51,30 @@
 				$('[id^=map-]').each(function(i) {
 					$(this).height($(this).width() * 0.75);
 				});
+			}
+
+			function selectPhoto() {
+				console.log('ここでファイル選択APIを呼び出す');
+
+				$('#photo-property-form').removeClass('d-none');
+				$('#photo-property-form').addClass('d-flex');
+			}
+
+			function addPhoto() {
+				console.log('ここで POST /api/photos する');
+			}
+
+			function resetPhoto() {
+				$('#photo-property-form').removeClass('d-flex');
+				$('#photo-property-form').addClass('d-none');
+
+				console.log('ここで入力データをクリアする');
+			}
+
+			function selectLocation() {
+				console.log('ここで撮影場所指定モーダルを表示する');
+
+				$('#photo-taken-location');
 			}
 
 			$(window).resize(function() {
@@ -115,29 +143,38 @@
 							</div>
 						</div>
 						<div id="new-photo" class="card mb-1">
-							<div class="row d-flex flex-wrap" style="height: 9rem;">
-								<div class="col text-center" style="height: 100%">
-									選択するやつ
+							<div class="row" style="height: 11rem;">
+								<div class="col d-flex h-100 text-center text-muted" onclick="selectPhoto()">
+									<div class="m-auto">
+										<div><span class="far fa-image font-size-4x"></span></div>
+										<p>タップして写真を選択</p>
+									</div>
+									<img src="20181104_003_small.jpg" class="img-keep-ratio m-auto d-none" />
 								</div>
-								<div class="col-md-7 collapse" style="height: 100%">
-									<p class="card-text photo-description mb-1">
-										ここにテキストボックス
-									</p>
-									<p class="my-1">
-										<span class="fas fa-clock d-inline-block text-center" title="撮影日時" style="width: 1rem"></span>
-										時刻選択（デフォは撮影時刻）
-									</p>
-									<p class="mt-1 mb-0">
-										<span class="fas fa-map-marker-alt d-inline-block text-center" title="撮影場所" style="width: 1rem"></span>
-										(xx.xxxx, xx.xxxx) <!-- TODO: 逆引きする？ -->
-									</p>
+								<div id="photo-property-form" class="col h-100 d-none">
+									<div class="w-100 m-auto">
+										<textarea class="card-text form-control w-100 photo-description mb-1" rows="3" placeholder="写真の説明"></textarea>
+										<div class="input-group my-1">
+											<label for="photo-taken-date" class="input-group-prepend input-group-text">
+												<span class="fas fa-clock" title="撮影日時" style="width:1rem"	></span>
+											</label>
+											<input type="datetime-local" id="photo-taken-date" class="form-control"/>
+										</div>
+										<p class="input-group mt-1 mb-0">
+											<label for="photo-taken-location" class="input-group-prepend input-group-text">
+												<span class="fas fa-map-marker-alt" title="撮影場所" style="width:1rem"></span>
+											</label>
+											<input type="text" id="photo-taken-location" class="form-control" placeholder="xx.xxxx, xx.xxxx" onclick="selectLocation()" />
+											 <!-- TODO: 逆引きする？ -->
+										</p>
+									</div>
 								</div>
 							</div>
 							<div class="card-footer">
-								<button type="reset" id="reset-photo-button" class="btn btn-secondary">
+								<button type="reset" id="reset-photo-button" class="btn btn-secondary" onclick="resetPhoto()">
 									<span class="fas fa-eraser"></span> リセット
 								</button>
-								<button type="button" id="add-photo-button" class="btn btn-primary float-right">
+								<button type="button" id="add-photo-button" class="btn btn-primary float-right" onclick="addPhoto()">
 									<span class="fas fa-plus"></span> 追加
 								</button>
 							</div>
