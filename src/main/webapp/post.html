@@ -102,14 +102,19 @@
                         <input type="file" id="file-input" class="d-none" tabindex="-1" accept="image/*" />
                         <div class="photo-property-form col h-100 d-none">
                             <div class="w-100 m-auto">
-                                <div class="input-group my-1 pr-1">
+                                <div class="input-group my-1">
                                     <label for="photo-taken-date" class="input-group-prepend input-group-text">
-                                        <span class="fas fa-clock" title="撮影日時" style="width:1rem"></span>
+                                        <span class="fas fa-calendar-alt" title="撮影日" style="width:1rem"></span>
                                     </label>
-                                    <input type="datetime-local" id="photo-taken-date" class="form-control"
-                                           value="2018-01-01T12:00"/>
+                                    <input type="date" id="photo-taken-date" class="form-control" value="2018-01-01"/>
                                 </div>
-                                <p class="input-group my-1 pr-1">
+                                <div class="input-group my-1">
+                                    <label for="photo-taken-time" class="input-group-prepend input-group-text">
+                                        <span class="fas fa-clock" title="撮影時刻" style="width:1rem"></span>
+                                    </label>
+                                    <input type="time" id="photo-taken-time" class="form-control" value="12:00:00"/>
+                                </div>
+                                <p class="input-group my-1">
                                     <label for="photo-taken-location" class="input-group-prepend input-group-text">
                                         <span class="fas fa-map-marker-alt" title="撮影場所" style="width:1rem"></span>
                                     </label>
