@@ -62,7 +62,7 @@ $(document).ready(function(){
 
         console.log('ここで選択されたファイルを取得する');
 
-        let file = event.target.files[0];
+        const file = event.target.files[0];
         if (!file.type.startsWith('image/')) {
             alert('画像ファイルを選択してください');
 
@@ -73,9 +73,14 @@ $(document).ready(function(){
         $('#selected-photo').attr('src', 'img/nowloading.png');
         const reader = new FileReader();
         reader.addEventListener('load', function(event) {
-            $('#selected-photo').attr('src', reader.result);
+            const base64Img = btoa(new Uint8Array(reader.result)
+                .reduce((data, byte) => data + String.fromCharCode(byte), ''));
+            const dataUrl = 'data:' + file.type + ';base64,' + base64Img;
+            $('#selected-photo').attr('src', dataUrl);
+            const data = EXIF.readFromBinaryFile(reader.result);
+            console.log(data);
         });
-        console.log(reader.readAsDataURL(file));
+        reader.readAsArrayBuffer(file);
 
         hideElement('#select-photo-button');
         showElement('.photo-property-form, #selected-photo-area', 'd-flex');
