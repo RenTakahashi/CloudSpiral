@@ -1,196 +1,233 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous" />
-		<script src="js/common.js"></script>
-		<link rel="stylesheet" href="css/common.css" />
-		<title>旅行記作成</title>
-		<style>
-			.img-keep-ratio {
-				max-width: 100%;
-				max-height: 100%;
-				width: auto;
-				height: auto;
-			}
+<head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"/>
+    <script src="js/common.js"></script>
+    <link rel="stylesheet" href="css/common.css"/>
+    <title>旅行記作成</title>
+    <style>
+        .img-keep-ratio {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+        }
 
-			.photo-description {
-				display: -webkit-box;
-				-webkit-box-orient: vertical;
-				-webkit-line-clamp: 3;	/* 3行分 */
-				line-height: 1.5;
-				height: 4.5rem;	/* = (number of visible lines) * (line-height) * 1rem */
-				overflow: hidden;
-			}
+        .photo-description {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;	/* 3行分 */
+            line-height: 1.5;
+            height: 4.5rem;	/* = (number of visible lines) * (line-height) * 1rem */
+            overflow: hidden;
+        }
 
-			.font-size-4x {
-				font-size: 4rem;
-			}
-		</style>
-		<script>
-			function initMap() {
-				const defaultLocation = {lat: -34.397, lng: 150.644};	// TODO: 初期値は現在地
+        .font-size-4x {
+            font-size: 4rem;
+        }
+    </style>
+    <script>
+        function initMap() {
+            const defaultLocation = {lat: -34.397, lng: 150.644};	// TODO: 初期値は現在地
 
-				// 旅程プレビュー用地図
-				let mapPreview = new google.maps.Map(document.getElementById('map-preview'), {
-					center: defaultLocation,
-					zoom: 10
-				});
-				new google.maps.Marker({
-					position: defaultLocation,
-					map: mapPreview,
-					title: 'Hello World!'
-				});
-			}
+            // 旅程プレビュー用地図
+            let mapPreview = new google.maps.Map(document.getElementById('map-preview'), {
+                center: defaultLocation,
+                zoom: 10
+            });
+            new google.maps.Marker({
+                position: defaultLocation,
+                map: mapPreview,
+                title: 'Hello World!'
+            });
+        }
 
-			function adjustMapSize() {
-				$('[id^=map-]').each(function(i) {
-					$(this).height($(this).width() * 0.75);
-				});
-			}
+        function adjustMapSize() {
+            $('[id^=map-]').each(function(i) {
+                $(this).height($(this).width() * 0.75);
+            });
+        }
 
-			function selectPhoto() {
-				console.log('ここでファイル選択APIを呼び出す');
+        function selectPhoto() {
+            $('#file-input').click();
+        }
 
-				$('#photo-property-form').removeClass('d-none');
-				$('#photo-property-form').addClass('d-flex');
-			}
+        function addPhoto() {
+            console.log('ここで POST /api/photos する');
+        }
 
-			function addPhoto() {
-				console.log('ここで POST /api/photos する');
-			}
+        function resetPhoto() {
+            $('.photo-property-form').removeClass('d-flex');
+            $('.photo-property-form').addClass('d-none');
 
-			function resetPhoto() {
-				$('#photo-property-form').removeClass('d-flex');
-				$('#photo-property-form').addClass('d-none');
+            console.log('ここで入力データをクリアする');
+        }
 
-				console.log('ここで入力データをクリアする');
-			}
+        function selectLocation() {
+            console.log('ここで撮影場所指定モーダルを表示する');
 
-			function selectLocation() {
-				console.log('ここで撮影場所指定モーダルを表示する');
+            $('#photo-taken-location');
+        }
 
-				$('#photo-taken-location');
-			}
+        function getFile(e) {
+            console.log('ここで選択されたファイルを取得する');
+            console.log(e);
 
-			$(window).resize(function() {
-				adjustMapSize();
-			});
-			$(document).ready(function(){
-				initTemplate('旅行記作成', '<span class="fas fa-upload"></span> 投稿');
+            $('.photo-property-form').removeClass('d-none');
+            $('.photo-property-form').addClass('d-flex');
+        }
 
-				adjustMapSize();
+        $(window).resize(function() {
+            adjustMapSize();
+        });
+        $(document).ready(function(){
+            initTemplate('旅行記作成', '<span class="fas fa-upload"></span> 投稿');
 
-				$('#add-photo-modal').on('shown.bs.modal', function() {
-					adjustMapSize();
-				});
-			});
-		</script>
-	</head>
-	<body>
-		<main class="container-fluid">
+            adjustMapSize();
 
-			<div class="row">
-				<div class="col">
-					<form class="form-group mb-4">
-						<input type="text" id="travelogue-title" class="form-control form-control-lg" placeholder="タイトル">
-					</form>
+            $('#add-photo-modal').on('shown.bs.modal', function() {
+                adjustMapSize();
+            });
+        });
+    </script>
+</head>
+<body>
+<main class="container-fluid">
 
-					<div id="photo-list" class="form-group mb-4">
-						<!-- TODO: ここをJSで生成する -->
-						<div class="card my-2 px-1">
-							<div class="row" style="height: 10rem">
-								<div class="col d-flex h-100">
-									<img src="DSC_0072.JPG" class="img-keep-ratio m-auto" />
-								</div>
-								<div class="col my-auto">
-									<p class="card-text photo-description mb-1">
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-									</p>
-									<p class="my-1">
-										<span class="fas fa-clock d-inline-block text-center" title="撮影日時" style="width: 1rem"></span>
-										xxxx/xx/xx xx:xx
-									</p>
-									<p class="mt-1 mb-0">
-										<span class="fas fa-map-marker-alt d-inline-block text-center" title="撮影場所" style="width: 1rem"></span>
-										(xx.xxxx, xx.xxxx) <!-- TODO: 逆引きする？ -->
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="card my-2 px-1">
-							<div class="row" style="height: 10rem">
-								<div class="col d-flex h-100">
-									<img src="20181104_003_small.jpg" class="img-keep-ratio m-auto" />
-								</div>
-								<div class="col my-auto">
-									<p class="card-text photo-description mb-1">
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-									</p>
-									<p class="my-1">
-										<span class="fas fa-clock d-inline-block text-center" title="撮影日時" style="width: 1rem"></span>
-										xxxx/xx/xx xx:xx
-									</p>
-									<p class="mt-1 mb-0">
-										<span class="fas fa-map-marker-alt d-inline-block text-center" title="撮影場所" style="width: 1rem"></span>
-										(xx.xxxx, xx.xxxx) <!-- TODO: 逆引きする？ -->
-									</p>
-								</div>
-							</div>
-						</div>
-						<div id="new-photo" class="card mb-1">
-							<div class="row" style="height: 11rem;">
-								<div class="col d-flex h-100 text-center text-muted" onclick="selectPhoto()">
-									<div class="m-auto">
-										<div><span class="far fa-image font-size-4x"></span></div>
-										<p>タップして写真を選択</p>
-									</div>
-									<img src="20181104_003_small.jpg" class="img-keep-ratio m-auto d-none" />
-								</div>
-								<div id="photo-property-form" class="col h-100 d-none">
-									<div class="w-100 m-auto">
-										<textarea class="card-text form-control w-100 photo-description mb-1" rows="3" placeholder="写真の説明"></textarea>
-										<div class="input-group my-1">
-											<label for="photo-taken-date" class="input-group-prepend input-group-text">
-												<span class="fas fa-clock" title="撮影日時" style="width:1rem"	></span>
-											</label>
-											<input type="datetime-local" id="photo-taken-date" class="form-control"/>
-										</div>
-										<p class="input-group mt-1 mb-0">
-											<label for="photo-taken-location" class="input-group-prepend input-group-text">
-												<span class="fas fa-map-marker-alt" title="撮影場所" style="width:1rem"></span>
-											</label>
-											<input type="text" id="photo-taken-location" class="form-control" placeholder="xx.xxxx, xx.xxxx" onclick="selectLocation()" />
-											 <!-- TODO: 逆引きする？ -->
-										</p>
-									</div>
-								</div>
-							</div>
-							<div class="card-footer">
-								<button type="reset" id="reset-photo-button" class="btn btn-secondary" onclick="resetPhoto()">
-									<span class="fas fa-eraser"></span> リセット
-								</button>
-								<button type="button" id="add-photo-button" class="btn btn-primary float-right" onclick="addPhoto()">
-									<span class="fas fa-plus"></span> 追加
-								</button>
-							</div>
-						</div>
-					</div>
+    <div class="row">
+        <div class="col">
+            <form class="form-group mb-4">
+                <input type="text" id="travelogue-title" class="form-control form-control-lg" placeholder="タイトル">
+            </form>
 
-					<div class="card mb-5">
-						<h5 class="card-header card-title">旅程地図プレビュー</h5>
-						<div id="map-preview" class="card-body"></div>
-					</div>
-				</div>
-			</div>
+            <div id="photo-list" class="form-group mb-4">
+                <!-- TODO: ここをJSで生成する -->
+                <div class="card my-2 px-1">
+                    <div class="row" style="height: 10rem">
+                        <div class="col d-flex h-100">
+                            <img src="DSC_0072.JPG" class="img-keep-ratio m-auto"/>
+                        </div>
+                        <div class="col my-auto">
+                            <p class="card-text photo-description mb-1">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum.
+                            </p>
+                            <p class="my-1">
+                                <span class="fas fa-clock d-inline-block text-center" title="撮影日時"
+                                      style="width: 1rem"></span>
+                                xxxx/xx/xx xx:xx
+                            </p>
+                            <p class="mt-1 mb-0">
+                                <span class="fas fa-map-marker-alt d-inline-block text-center" title="撮影場所"
+                                      style="width: 1rem"></span>
+                                (xx.xxxx, xx.xxxx) <!-- TODO: 逆引きする？ -->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card my-2 px-1">
+                    <div class="row" style="height: 10rem">
+                        <div class="col d-flex h-100">
+                            <img src="20181104_003_small.jpg" class="img-keep-ratio m-auto"/>
+                        </div>
+                        <div class="col my-auto">
+                            <p class="card-text photo-description mb-1">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum.
+                            </p>
+                            <p class="my-1">
+                                <span class="fas fa-clock d-inline-block text-center" title="撮影日時"
+                                      style="width: 1rem"></span>
+                                xxxx/xx/xx xx:xx
+                            </p>
+                            <p class="mt-1 mb-0">
+                                <span class="fas fa-map-marker-alt d-inline-block text-center" title="撮影場所"
+                                      style="width: 1rem"></span>
+                                (xx.xxxx, xx.xxxx) <!-- TODO: 逆引きする？ -->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div id="new-photo" class="card mb-1">
+                    <div class="row" style="height: 9rem">
+                        <div class="col d-flex h-100 text-center text-muted" onclick="selectPhoto()">
+                            <div id="select-photo-button" class="m-auto">
+                                <div><span class="far fa-image font-size-4x"></span></div>
+                                <p>タップして写真を選択</p>
+                            </div>
+                            <img src="20181104_003_small.jpg" id="selected-photo" class="img-keep-ratio m-auto d-none"/>
+                        </div>
+                        <input type="file" id="file-input" class="d-none" tabindex="-1" onchange="getFile(this)"/>
+                        <div class="photo-property-form col h-100 d-none">
+                            <div class="w-100 m-auto">
+                                <div class="input-group my-1 pr-1">
+                                    <label for="photo-taken-date" class="input-group-prepend input-group-text">
+                                        <span class="fas fa-clock" title="撮影日時" style="width:1rem"></span>
+                                    </label>
+                                    <input type="datetime-local" id="photo-taken-date" class="form-control"
+                                           value="2018-01-01T12:00"/>
+                                </div>
+                                <p class="input-group my-1 pr-1">
+                                    <label for="photo-taken-location" class="input-group-prepend input-group-text">
+                                        <span class="fas fa-map-marker-alt" title="撮影場所" style="width:1rem"></span>
+                                    </label>
+                                    <input type="text" id="photo-taken-location" class="form-control"
+                                           placeholder="xx.xxxx, xx.xxxx" onclick="selectLocation()"/>
+                                    <!-- TODO: 逆引きする？ -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col photo-property-form d-none mx-1">
+                            <textarea class="form-control photo-description mb-1" rows="5"
+                                      placeholder="写真の説明"></textarea>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="reset" id="reset-photo-button" class="btn btn-secondary" onclick="resetPhoto()">
+                            <span class="fas fa-eraser"></span> リセット
+                        </button>
+                        <button type="button" id="add-photo-button" class="btn btn-primary float-right"
+                                onclick="addPhoto()">
+                            <span class="fas fa-plus"></span> 追加
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-		</main>
+            <div class="card mb-5">
+                <h5 class="card-header card-title">旅程地図プレビュー</h5>
+                <div id="map-preview" class="card-body"></div>
+            </div>
+        </div>
+    </div>
 
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeH3QEuI3KqOwBkkjJ6nYe-jQBTWGDQdw&callback=initMap" async defer></script>
-	</body>
+</main>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeH3QEuI3KqOwBkkjJ6nYe-jQBTWGDQdw&callback=initMap" async
+        defer></script>
+</body>
 
 </html>
