@@ -61,38 +61,14 @@
             });
         }
 
-        function selectPhoto() {
-            $('#file-input').click();
-        }
-
-        function addPhoto() {
-            console.log('ここで POST /api/photos する');
-        }
-
-        function resetPhoto() {
-            $('.photo-property-form').removeClass('d-flex');
-            $('.photo-property-form').addClass('d-none');
-
+        function clearInputData() {
             console.log('ここで入力データをクリアする');
-        }
-
-        function selectLocation() {
-            console.log('ここで撮影場所指定モーダルを表示する');
-
-            $('#photo-taken-location');
-        }
-
-        function getFile(e) {
-            console.log('ここで選択されたファイルを取得する');
-            console.log(e);
-
-            $('.photo-property-form').removeClass('d-none');
-            $('.photo-property-form').addClass('d-flex');
         }
 
         $(window).resize(function() {
             adjustMapSize();
         });
+
         $(document).ready(function(){
             initTemplate('旅行記作成', '<span class="fas fa-upload"></span> 投稿');
 
@@ -100,6 +76,36 @@
 
             $('#add-photo-modal').on('shown.bs.modal', function() {
                 adjustMapSize();
+            });
+
+            // ファイル選択ボタンがタップされたらファイル選択ダイアログを開く
+            $('#select-photo-button').on('click', function() {
+                $('#file-input').click();
+            });
+
+            $('#file-input').on('change', function(event) {
+                console.log('ここで選択されたファイルを取得する');
+                console.log(event.target.files);
+
+                $('.photo-property-form').removeClass('d-none');
+                $('.photo-property-form').addClass('d-flex');
+            });
+
+            $('#photo-taken-location').on('click', function() {
+                console.log('ここで撮影場所指定モーダルを表示する');
+            });
+
+            $('#reset-photo-button').on('click', function() {
+                $('.photo-property-form').removeClass('d-flex');
+                $('.photo-property-form').addClass('d-none');
+
+                clearInputData();
+            });
+
+            $('#add-photo-button').on('click', function() {
+                console.log('ここで POST /api/photos する');
+
+                clearInputData();
             });
         });
     </script>
@@ -171,14 +177,16 @@
                 </div>
                 <div id="new-photo" class="card mb-1">
                     <div class="row" style="height: 9rem">
-                        <div class="col d-flex h-100 text-center text-muted bg-light" onclick="selectPhoto()">
-                            <div id="select-photo-button" class="m-auto">
-                                <div><span class="far fa-image font-size-4x"></span></div>
-                                <p>タップして写真を選択</p>
-                            </div>
-                            <img src="20181104_003_small.jpg" id="selected-photo" class="img-keep-ratio m-auto d-none"/>
+                        <div id="select-photo-button" class="col d-flex h-100 text-center text-muted bg-light">
+                            <p class="m-auto">
+                                <span class="far fa-image font-size-4x"></span><br />
+                                タップして写真を選択
+                            </p>
                         </div>
-                        <input type="file" id="file-input" class="d-none" tabindex="-1" onchange="getFile(this)"/>
+                        <div id="selected-photo-area" class="col d-none h-100 text-center">
+                            <img src="20181104_003_small.jpg" id="selected-photo" class="img-keep-ratio m-auto"/>
+                        </div>
+                        <input type="file" id="file-input" class="d-none" tabindex="-1" />
                         <div class="photo-property-form col h-100 d-none">
                             <div class="w-100 m-auto">
                                 <div class="input-group my-1 pr-1">
@@ -193,7 +201,7 @@
                                         <span class="fas fa-map-marker-alt" title="撮影場所" style="width:1rem"></span>
                                     </label>
                                     <input type="text" id="photo-taken-location" class="form-control"
-                                           placeholder="xx.xxxx, xx.xxxx" onclick="selectLocation()"/>
+                                           placeholder="xx.xxxx, xx.xxxx"/>
                                     <!-- TODO: 逆引きする？ -->
                                 </p>
                             </div>
@@ -206,11 +214,10 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="reset" id="reset-photo-button" class="btn btn-secondary" onclick="resetPhoto()">
+                        <button type="reset" id="reset-photo-button" class="btn btn-secondary">
                             <span class="fas fa-eraser"></span> リセット
                         </button>
-                        <button type="button" id="add-photo-button" class="btn btn-primary float-right"
-                                onclick="addPhoto()">
+                        <button type="button" id="add-photo-button" class="btn btn-primary float-right">
                             <span class="fas fa-plus"></span> 追加
                         </button>
                     </div>
