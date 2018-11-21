@@ -19,10 +19,6 @@ function adjustMapSize() {
     });
 }
 
-function clearInputData() {
-    console.log('ここで入力データをクリアする');
-}
-
 // $(selector) の d-none クラスを削除して、 displayType で指定されたクラスを追加する
 function showElement(selector, displayType) {
     $(selector).removeClass('d-none');
@@ -35,6 +31,8 @@ function hideElement(selector) {
     $(selector).removeClass((i, className) => (className.match(/\bd-\S+/g) || []).join(' '));
     $(selector).addClass('d-none');
 }
+
+let photoList = [];
 
 $(window).resize(function() {
     adjustMapSize();
@@ -60,13 +58,10 @@ $(document).ready(function(){
             return;
         }
 
-        console.log('ここで選択されたファイルを取得する');
-
         const file = event.target.files[0];
         if (!file.type.startsWith('image/')) {
             alert('画像ファイルを選択してください');
 
-            clearInputData();
             return;
         }
 
@@ -108,11 +103,10 @@ $(document).ready(function(){
         });
         reader.readAsArrayBuffer(file);
 
+        $('#photo-description').val('');
+
         hideElement('#select-photo-button');
         showElement('.photo-property-form, #selected-photo-area', 'd-flex');
-
-        // ファイルの選択状態をクリア（同じファイルを再選択可能にする）
-        $(this).val('');
     });
 
     $('#photo-taken-location').on('click', function() {
@@ -120,16 +114,22 @@ $(document).ready(function(){
     });
 
     $('#reset-photo-button').on('click', function() {
-        clearInputData();
         hideElement('.photo-property-form, #selected-photo-area');
-        showElement('#select-photo-button', 'd-flex')
+        showElement('#select-photo-button', 'd-flex');
+
+        // ファイルの選択状態をクリア
+        $('#file-input').val('');
     });
 
     $('#add-photo-button').on('click', function() {
         console.log('ここで POST /api/photos する');
 
-        clearInputData();
-        hideElement('.photo-property-form');
-        showElement('#select-photo-button', 'd-flex')
+        console.log('投稿できたら #photo-list にカードを追加する');
+
+        hideElement('.photo-property-form, #selected-photo-area');
+        showElement('#select-photo-button', 'd-flex');
+
+        // ファイルの選択状態をクリア
+        $('#file-input').val('');
     });
 });
