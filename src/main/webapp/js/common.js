@@ -15,7 +15,7 @@ var initTemplate = function(pageTitle, buttonName) {
 		$("body").append(
 				'<footer class="fixed-bottom mb-3">'
 				+ '<!-- ボタンの処理を変更する -->'
-				+ '<a class="btn btn-secondary float-right mx-3" href="post.html" role="button">'
+				+ '<a class="btn btn-primary float-right mx-3" href="post.html" role="button">'
 				+ buttonName
 				+ '</a>'
 				+ '</footer>');
