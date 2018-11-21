@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card my-2 px-1">
+                <div class="card my-2">
                     <div class="row" style="height: 10rem">
                         <div class="col d-flex h-100">
                             <img src="20181104_003_small.jpg" class="img-keep-ratio m-auto"/>
@@ -86,7 +86,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="new-photo" class="card mb-1 px-1">
+                <div id="new-photo" class="card container-fluid mb-1">
                     <div class="row" style="height: 10rem">
                         <div id="select-photo-button" class="col d-flex h-100 text-center text-muted bg-light">
                             <p class="m-auto">
@@ -94,7 +94,7 @@
                                 タップして写真を選択
                             </p>
                         </div>
-                        <div id="selected-photo-area" class="col d-none h-100 text-center">
+                        <div id="selected-photo-area" class="col d-none h-100 text-center px-1">
                             <img src="img/nowloading.png" id="selected-photo" class="img-keep-ratio m-auto"/>
                         </div>
                         <input type="file" id="file-input" class="d-none" tabindex="-1" accept="image/*" />
@@ -118,19 +118,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col photo-property-form d-none mx-1">
-                            <textarea class="form-control photo-description mb-1" rows="5"
+                    <div class="row photo-property-form d-none my-1">
+                        <div class="col">
+                            <textarea class="form-control photo-description" rows="5"
                                       placeholder="写真の説明"></textarea>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <button type="reset" id="reset-photo-button" class="btn btn-secondary">
-                            <span class="fas fa-eraser"></span> リセット
-                        </button>
-                        <button type="button" id="add-photo-button" class="btn btn-primary float-right">
-                            <span class="fas fa-plus"></span> 追加
-                        </button>
+                    <div class="row">
+                        <div class="col card-footer">
+                            <button type="reset" id="reset-photo-button" class="btn btn-secondary">
+                                <span class="fas fa-eraser"></span> リセット
+                            </button>
+                            <button type="button" id="add-photo-button" class="btn btn-primary float-right">
+                                <span class="fas fa-plus"></span> 追加
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
