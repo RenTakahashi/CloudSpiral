@@ -21,9 +21,19 @@ function adjustMapSize() {
 
 function clearInputData() {
     console.log('ここで入力データをクリアする');
+}
 
-    $('.photo-property-form').removeClass('d-flex');
-    $('.photo-property-form').addClass('d-none');
+// $(selector) の d-none クラスを削除して、 displayType で指定されたクラスを追加する
+function showElement(selector, displayType) {
+    $(selector).removeClass('d-none');
+    $(selector).addClass(displayType);
+}
+
+// $(selector) の d-**** クラスを削除して、 .d-none クラスを追加する
+// 参考: https://qiita.com/shouchida/items/01bada913bf660cdad03
+function hideElement(selector) {
+    $(selector).removeClass((i, className) => (className.match(/\bd-\S+/g) || []).join(' '));
+    $(selector).addClass('d-none');
 }
 
 $(window).resize(function() {
@@ -39,17 +49,39 @@ $(document).ready(function(){
         adjustMapSize();
     });
 
-    // ファイル選択ボタンがタップされたらファイル選択ダイアログを開く
-    $('#select-photo-button').on('click', function() {
+    // ファイル選択ボタンか選択済みの画像がタップされたらファイル選択ダイアログを開く
+    $('#select-photo-button, #selected-photo-area').on('click', function() {
         $('#file-input').click();
     });
 
     $('#file-input').on('change', function(event) {
-        console.log('ここで選択されたファイルを取得する');
-        console.log(event.target.files);
+        if (event.target.files.length === 0) {
+            // キャンセル
+            return;
+        }
 
-        $('.photo-property-form').removeClass('d-none');
-        $('.photo-property-form').addClass('d-flex');
+        console.log('ここで選択されたファイルを取得する');
+
+        let file = event.target.files[0];
+        if (!file.type.startsWith('image/')) {
+            alert('画像ファイルを選択してください');
+
+            clearInputData();
+            return;
+        }
+
+        $('#selected-photo').attr('src', 'img/nowloading.png');
+        const reader = new FileReader();
+        reader.addEventListener('load', function(event) {
+            $('#selected-photo').attr('src', reader.result);
+        });
+        console.log(reader.readAsDataURL(file));
+
+        hideElement('#select-photo-button');
+        showElement('.photo-property-form, #selected-photo-area', 'd-flex');
+
+        // ファイルの選択状態をクリア（同じファイルを再選択可能にする）
+        $(this).val('');
     });
 
     $('#photo-taken-location').on('click', function() {
@@ -58,11 +90,15 @@ $(document).ready(function(){
 
     $('#reset-photo-button').on('click', function() {
         clearInputData();
+        hideElement('.photo-property-form, #selected-photo-area');
+        showElement('#select-photo-button', 'd-flex')
     });
 
     $('#add-photo-button').on('click', function() {
         console.log('ここで POST /api/photos する');
 
         clearInputData();
+        hideElement('.photo-property-form');
+        showElement('#select-photo-button', 'd-flex')
     });
 });
