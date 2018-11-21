@@ -77,8 +77,13 @@ $(document).ready(function(){
                 .reduce((data, byte) => data + String.fromCharCode(byte), ''));
             const dataUrl = 'data:' + file.type + ';base64,' + base64Img;
             $('#selected-photo').attr('src', dataUrl);
+
             const data = EXIF.readFromBinaryFile(reader.result);
             console.log(data);
+
+            const dateTime = data.DateTimeOriginal.split(' ');
+            $('#photo-taken-date').val(dateTime[0].replace(/:/g, '-'));
+            $('#photo-taken-time').val(dateTime[1]);
         });
         reader.readAsArrayBuffer(file);
 
