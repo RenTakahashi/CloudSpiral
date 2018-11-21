@@ -81,8 +81,17 @@ $(document).ready(function(){
                 $('#photo-taken-date').val(dateTime[0].replace(/:/g, '-'));
                 $('#photo-taken-time').val(dateTime[1]);
             } else {
-                $('#photo-taken-date').val('');
-                $('#photo-taken-time').val('');
+                const dateTime = new Date(file.lastModified);
+                $('#photo-taken-date').val([
+                    dateTime.getFullYear(),
+                    ('0' + (dateTime.getMonth()+1).toString()).slice(-2),
+                    ('0' + dateTime.getDate().toString()).slice(-2)
+                ].join('-'));
+                $('#photo-taken-time').val([
+                    ('0' + dateTime.getHours().toString()).slice(-2),
+                    ('0' + dateTime.getMinutes().toString()).slice(-2),
+                    ('0' + dateTime.getSeconds().toString()).slice(-2)
+                ].join(':'));
             }
 
             if (data.GPSLatitude && data.GPSLongitude) {
