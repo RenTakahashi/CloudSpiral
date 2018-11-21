@@ -81,9 +81,30 @@ $(document).ready(function(){
             const data = EXIF.readFromBinaryFile(reader.result);
             console.log(data);
 
-            const dateTime = data.DateTimeOriginal.split(' ');
-            $('#photo-taken-date').val(dateTime[0].replace(/:/g, '-'));
-            $('#photo-taken-time').val(dateTime[1]);
+            if (data.DateTimeOriginal) {
+                const dateTime = data.DateTimeOriginal.split(' ');
+                $('#photo-taken-date').val(dateTime[0].replace(/:/g, '-'));
+                $('#photo-taken-time').val(dateTime[1]);
+            } else {
+                $('#photo-taken-date').val('');
+                $('#photo-taken-time').val('');
+            }
+
+            if (data.GPSLatitude && data.GPSLongitude) {
+                let latitude = data.GPSLatitude[0] + data.GPSLatitude[1] / 60 + data.GPSLatitude[2] / 3600;
+                if (data.GPSLatitudeRef === 'S') {
+                    latitude *= -1;
+                }
+
+                let longitude = data.GPSLongitude[0] + data.GPSLongitude[1] / 60 + data.GPSLongitude[2] / 3600;
+                if (data.GPSLongitudeRef === 'W') {
+                    longitude *= -1;
+                }
+
+                $('#photo-taken-location').val(latitude.toFixed(6) + ', ' + longitude.toFixed(6));
+            } else {
+                $('#photo-taken-location').val('');
+            }
         });
         reader.readAsArrayBuffer(file);
 
