@@ -1,4 +1,4 @@
-var initTemplate = function(pageTitle, buttonName) {
+var initTemplate = function(pageTitle, buttonName, nextPage) {
 	//headerとfooterの準備
 	$("body").prepend(
 			'<header class="fixed-top">'
@@ -15,7 +15,7 @@ var initTemplate = function(pageTitle, buttonName) {
 		$("body").append(
 				'<footer class="fixed-bottom mb-3">'
 				+ '<!-- ボタンの処理を変更する -->'
-				+ '<a class="btn btn-secondary float-right mx-3" href="post.html" role="button">'
+				+ '<a class="btn btn-secondary float-right mx-3" href="' + nextPage + '" role="button">'
 				+ buttonName
 				+ '</a>'
 				+ '</footer>');
