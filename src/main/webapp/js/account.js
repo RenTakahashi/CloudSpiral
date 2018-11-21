@@ -3,8 +3,6 @@
 
 $('#send').click(function() {
 	var new_account = {user_id: $('#user_id').val(), password: $('#password').val(), name: $('#name').val()};
-	console.log(new_account);
-	console.log(JSON.stringify(new_account));
 //	var access_token = '';
 	$.ajax({
 		type: 'POST',
@@ -17,6 +15,9 @@ $('#send').click(function() {
 			console.log(json.user_id);
 			console.log(json.db_id);			
 			console.log(json.name);
+			if(confirm("ログインページでログインしてください") == true){			
+				$('#success1').append('<script>location.href="account.html"</script>');
+			}
 		}
 	});
 });
