@@ -34,13 +34,13 @@
 
             <div id="photo-list" class="form-group mb-4">
                 <!-- TODO: ここをJSで生成する -->
-                <div class="card my-2 px-1">
-                    <div class="row" style="height: 10rem">
-                        <div class="col d-flex h-100">
-                            <img src="DSC_0072.JPG" class="img-keep-ratio m-auto"/>
+                <div id="photo-card-101" class="card">
+                    <div class="row">
+                        <div class="col">
+                            <img src="DSC_0072.JPG"/>
                         </div>
-                        <div class="col my-auto">
-                            <p class="card-text photo-description mb-1">
+                        <div class="col">
+                            <p class="card-text">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                                 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
                                 exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
@@ -48,26 +48,24 @@
                                 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
                                 mollit anim id est laborum.
                             </p>
-                            <p class="my-1">
-                                <span class="fas fa-clock d-inline-block text-center" title="撮影日時"
-                                      style="width: 1rem"></span>
+                            <p>
+                                <span class="fas fa-clock" title="撮影日時"></span>
                                 xxxx/xx/xx xx:xx
                             </p>
-                            <p class="mt-1 mb-0">
-                                <span class="fas fa-map-marker-alt d-inline-block text-center" title="撮影場所"
-                                      style="width: 1rem"></span>
+                            <p>
+                                <span class="fas fa-map-marker-alt" title="撮影場所"></span>
                                 xx.xxxx, xx.xxxx <!-- TODO: 逆引きする？ -->
                             </p>
                         </div>
                     </div>
                 </div>
-                <div class="card my-2 px-1">
-                    <div class="row" style="height: 10rem">
-                        <div class="col d-flex h-100">
-                            <img src="20181104_003_small.jpg" class="img-keep-ratio m-auto"/>
+                <div id="photo-card-102" class="card">
+                    <div class="row">
+                        <div class="col">
+                            <img src="20181104_003_small.jpg"/>
                         </div>
-                        <div class="col my-auto">
-                            <p class="card-text photo-description mb-1">
+                        <div class="col">
+                            <p class="card-text">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                                 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
                                 exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
@@ -75,14 +73,12 @@
                                 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
                                 mollit anim id est laborum.
                             </p>
-                            <p class="my-1">
-                                <span class="fas fa-clock d-inline-block text-center" title="撮影日時"
-                                      style="width: 1rem"></span>
+                            <p>
+                                <span class="fas fa-clock" title="撮影日時"></span>
                                 xxxx/xx/xx xx:xx
                             </p>
-                            <p class="mt-1 mb-0">
-                                <span class="fas fa-map-marker-alt d-inline-block text-center" title="撮影場所"
-                                      style="width: 1rem"></span>
+                            <p>
+                                <span class="fas fa-map-marker-alt" title="撮影場所"></span>
                                 xx.xxxx, xx.xxxx <!-- TODO: 逆引きする？ -->
                             </p>
                         </div>
@@ -92,14 +88,14 @@
                     <div class="row" style="height: 10rem">
                         <div id="select-photo-button" class="col d-flex h-100 text-center text-muted bg-light">
                             <p class="m-auto">
-                                <span class="far fa-image font-size-4x"></span><br />
+                                <span class="far fa-image font-size-4x"></span><br/>
                                 タップして写真を選択
                             </p>
                         </div>
                         <div id="selected-photo-area" class="col d-none h-100 text-center px-1">
                             <img src="img/nowloading.png" id="selected-photo" class="img-keep-ratio m-auto"/>
                         </div>
-                        <input type="file" id="file-input" class="d-none" tabindex="-1" accept="image/*" />
+                        <input type="file" id="file-input" class="d-none" tabindex="-1" accept="image/*"/>
                         <div class="photo-property-form col h-100 d-none">
                             <div class="w-100 m-auto">
                                 <div class="input-group my-1">
