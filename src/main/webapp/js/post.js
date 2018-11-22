@@ -227,15 +227,15 @@ $(document).ready(() => {
                 result.raw = inputPhotoData.raw;
                 result.date = new Date(result.date);
                 appendPhoto(result);
+
+                hideElement('.photo-property-form, #selected-photo-area');
+                showElement('#select-photo-button', 'd-flex');
+
+                // ファイルの選択状態をクリア
+                $('#file-input').val('');
             })
             .catch(result => {
                 console.error(result);
             });
-
-        hideElement('.photo-property-form, #selected-photo-area');
-        showElement('#select-photo-button', 'd-flex');
-
-        // ファイルの選択状態をクリア
-        $('#file-input').val('');
     });
 });
