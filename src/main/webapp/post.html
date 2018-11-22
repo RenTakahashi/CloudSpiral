@@ -24,74 +24,70 @@
 <body>
 <main class="container-fluid">
 
-    <div class="row">
-        <div class="col">
-            <form class="form-group mb-4">
-                <input type="text" id="travelogue-title" class="form-control form-control-lg" placeholder="タイトル">
-            </form>
+    <form class="form-group mb-4">
+        <input type="text" id="travelogue-title" class="form-control form-control-lg" placeholder="タイトル">
+    </form>
 
-            <div id="photo-list" class="form-group mb-4">
-                <div id="new-photo" class="card container-fluid mb-1">
-                    <div class="row" style="height: 10rem">
-                        <div id="select-photo-button" class="col d-flex h-100 text-center text-muted bg-light">
-                            <p class="m-auto">
-                                <span class="far fa-image font-size-4x"></span><br/>
-                                タップして写真を選択
-                            </p>
+    <div id="photo-list" class="form-group mb-4">
+        <div id="new-photo" class="card container-fluid mb-1">
+            <div class="row" style="height: 10rem">
+                <div id="select-photo-button" class="col d-flex h-100 text-center text-muted bg-light">
+                    <p class="m-auto">
+                        <span class="far fa-image font-size-4x"></span><br/>
+                        タップして写真を選択
+                    </p>
+                </div>
+                <div id="selected-photo-area" class="col d-none h-100 text-center px-1">
+                    <img src="img/nowloading.png" id="selected-photo" class="img-keep-ratio m-auto"/>
+                </div>
+                <input type="file" id="file-input" class="d-none" tabindex="-1" accept="image/*"/>
+                <div class="photo-property-form col h-100 d-none">
+                    <div class="w-100 m-auto">
+                        <div class="input-group my-1">
+                            <label for="photo-taken-date" class="input-group-prepend input-group-text">
+                                <span class="fas fa-calendar-alt" title="撮影日" style="width:1rem"></span>
+                            </label>
+                            <input type="date" id="photo-taken-date" class="form-control" value="2018-01-01"/>
                         </div>
-                        <div id="selected-photo-area" class="col d-none h-100 text-center px-1">
-                            <img src="img/nowloading.png" id="selected-photo" class="img-keep-ratio m-auto"/>
+                        <div class="input-group my-1">
+                            <label for="photo-taken-time" class="input-group-prepend input-group-text">
+                                <span class="fas fa-clock" title="撮影時刻" style="width:1rem"></span>
+                            </label>
+                            <input type="time" id="photo-taken-time" class="form-control" value="12:00:00"/>
                         </div>
-                        <input type="file" id="file-input" class="d-none" tabindex="-1" accept="image/*"/>
-                        <div class="photo-property-form col h-100 d-none">
-                            <div class="w-100 m-auto">
-                                <div class="input-group my-1">
-                                    <label for="photo-taken-date" class="input-group-prepend input-group-text">
-                                        <span class="fas fa-calendar-alt" title="撮影日" style="width:1rem"></span>
-                                    </label>
-                                    <input type="date" id="photo-taken-date" class="form-control" value="2018-01-01"/>
-                                </div>
-                                <div class="input-group my-1">
-                                    <label for="photo-taken-time" class="input-group-prepend input-group-text">
-                                        <span class="fas fa-clock" title="撮影時刻" style="width:1rem"></span>
-                                    </label>
-                                    <input type="time" id="photo-taken-time" class="form-control" value="12:00:00"/>
-                                </div>
-                                <p class="input-group my-1">
-                                    <label for="photo-taken-location" class="input-group-prepend input-group-text">
-                                        <span class="fas fa-map-marker-alt" title="撮影場所" style="width:1rem"></span>
-                                    </label>
-                                    <input type="text" id="photo-taken-location" class="form-control"
-                                           placeholder="xx.xxxx, xx.xxxx"/>
-                                    <!-- TODO: 逆引きする？ -->
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row photo-property-form d-none my-1">
-                        <div class="col">
-                            <textarea id="photo-description" class="form-control photo-description" rows="5"
-                                      placeholder="写真の説明"></textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col card-footer">
-                            <button type="reset" id="reset-photo-button" class="btn btn-secondary">
-                                <span class="fas fa-eraser"></span> リセット
-                            </button>
-                            <button type="button" id="add-photo-button" class="btn btn-primary float-right">
-                                <span class="fas fa-plus"></span> 追加
-                            </button>
-                        </div>
+                        <p class="input-group my-1">
+                            <label for="photo-taken-location" class="input-group-prepend input-group-text">
+                                <span class="fas fa-map-marker-alt" title="撮影場所" style="width:1rem"></span>
+                            </label>
+                            <input type="text" id="photo-taken-location" class="form-control"
+                                   placeholder="xx.xxxx, xx.xxxx"/>
+                            <!-- TODO: 逆引きする？ -->
+                        </p>
                     </div>
                 </div>
             </div>
-
-            <div class="card mb-5">
-                <h5 class="card-header card-title">旅程地図プレビュー</h5>
-                <div id="map-preview" class="card-body"></div>
+            <div class="row photo-property-form d-none my-1">
+                <div class="col">
+                    <textarea id="photo-description" class="form-control photo-description" rows="5"
+                              placeholder="写真の説明"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col card-footer">
+                    <button type="reset" id="reset-photo-button" class="btn btn-secondary">
+                        <span class="fas fa-eraser"></span> リセット
+                    </button>
+                    <button type="button" id="add-photo-button" class="btn btn-primary float-right">
+                        <span class="fas fa-plus"></span> 追加
+                    </button>
+                </div>
             </div>
         </div>
+    </div>
+
+    <div class="card mb-5">
+        <h5 class="card-header card-title">旅程地図プレビュー</h5>
+        <div id="map-preview" class="card-body"></div>
     </div>
 
 </main>
