@@ -50,9 +50,8 @@ public class LikeModel implements AutoCloseable {
     }
     
     //likesの要素数を返す
-   	public long Collcount() {
-   		long count = likes.count();
-   		return count;
+   	public long count() {
+   		return likes.count();
    	}
 	
     public Likes getLikes() {

@@ -38,9 +38,8 @@ public class TravelogueModel implements AutoCloseable {
     }
     
     //traveloguesの要素数を返す
-	public long Collcount() {
-		long count = travelogues.count();
-		return count;
+	public long count() {
+		return travelogues.count();
 	}
     
     
@@ -87,7 +86,7 @@ public class TravelogueModel implements AutoCloseable {
     public int newId() {
         if (ids.count() == 0L)
             return 0;
-        return ids.find()
+        return travelogues.find()
                 .sort(Sorts.descending("id"))
                 .first()
                 .getInteger("id", 0);

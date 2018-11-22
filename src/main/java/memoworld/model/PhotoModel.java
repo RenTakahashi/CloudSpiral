@@ -28,9 +28,8 @@ public class PhotoModel implements AutoCloseable {
     }
     
   //photosの要素数を返す
-   	public long Collcount() {
-   		long count = photos.count();
-   		return count;
+   	public long count() {
+   		return photos.count();
    	}
 
     private static Photo toPhoto(Document document) {
