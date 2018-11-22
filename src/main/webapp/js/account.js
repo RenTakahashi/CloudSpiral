@@ -2,8 +2,6 @@
 //user_idとpassword,名前を送る
 
 $('#send').click(function() {
-	console.log($('#password').val());
-	console.log($('#password1').val());
 if($('#password').val() == $('#password1').val()){
 	var account = {user_id: $('#user_id').val(), password: $('#password').val(), name: $('#name').val()};
 		$.ajax({
@@ -16,9 +14,6 @@ if($('#password').val() == $('#password1').val()){
 				if(confirm("ログインページでログインしてください") == true){			
 					$('#success1').append('<script>location.href="login.html"</script>');
 				}
-// window.sessionStorage.setItem([$('#user_id').val()],[json.access_token]);
-// var access_token = window.sessionStorage.getItem([$('#user_id').val()]);
-// console.log(access_token);
 			}
 		});
    	}else{
