@@ -5,7 +5,7 @@ var initTemplate = function(pageTitle, buttonName, nextPage) {
 			+ '<nav aria-label="breadcrumb">'
 			+ '<ol class="breadcrumb">'
 			+ '<li class="breadcrumb-item active" aria-current="page">'
-			+ '<a href="index.html">Memoworld</a>'
+			+ '<a href="index.html" style="color: gray; text-decoration:none">Memoworld</a>'
 			+ '</li>'
 			+ '<li class="breadcrumb-item active" aria-current="page">'
 			+ pageTitle
