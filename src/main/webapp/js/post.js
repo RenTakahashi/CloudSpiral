@@ -86,7 +86,7 @@ function appendPhoto(photoData) {
                         .prepend($('<span class="fas fa-clock">'));
     const locationElement = $('<p>')
                             .append($('<span class="fas fa-map-marker-alt">'))
-                            .append(photoData.location
+                            .append(photoData.location.latitude !== 0 || photoData.location.longitude !== 0 // うーん
                                 ? ' ' + photoData.location.latitude.toFixed(6) + ', ' + photoData.location.longitude.toFixed(6)
                                 : ' <span class="text-muted">(未設定)</span>');
     const cardElement =
