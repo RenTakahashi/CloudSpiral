@@ -36,16 +36,35 @@ function showLocationSettingModal() {
     console.log('ここで撮影場所指定モーダルを表示する');
 }
 
-function getAccessToken() {
-    console.log('ここで SessionStorage からアクセストークンを取得する');
-    console.log('今はテストで値を返す');
-    return 'lflsBL2Vwah8F5YX09dPMkFoSrknzidLeDgdv0O9Bu/HIAfkI2BoX+eiRR6dFtVhYYAExKTWWYUQh8l/sIB/gw==';
+// for debug
+function _authorize() {
+    return $.ajax({
+        type: 'POST',
+        url: './api/authentication',
+        contentType: 'application/json',
+        data: JSON.stringify({ user_id: 'hogefuga', password: 'Password' }),
+    })
+    .then(result => {
+        return result.access_token;
+    })
+    .catch(result => {
+        console.log(result);
+        return null;
+    });
 }
 
-function postPhoto(photoData) {
-    console.log('ここで POST /api/photos する');
-    const accessToken = getAccessToken();
-    // TODO エラー処理
+async function getAccessToken() {
+    console.log('ここで SessionStorage からアクセストークンを取得する');
+    console.log('今はテストで値を返す');
+    const token = await _authorize();
+    return token;
+}
+
+async function postPhoto(photoData) {
+    const accessToken = await getAccessToken();
+    if (!accessToken) {
+        return Promise.reject();
+    }
 
     return $.ajax({
         type: 'POST',
@@ -63,8 +82,6 @@ function getDataUrl(mime, base64) {
 }
 
 function appendPhoto(photoData) {
-    console.log(photoData);
-
     const localDateStr = photoData.date.toLocaleDateString();
     const localTimeStr = photoData.date.toLocaleTimeString();
     const localDateTimeStr = localDateStr + ' ' + localTimeStr;
