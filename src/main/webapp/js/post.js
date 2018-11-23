@@ -199,7 +199,7 @@ $(document).ready(() => {
                 location = { latitude: latitude, longitude: longitude };
                 $('#photo-taken-location').val(latitude.toFixed(6) + ', ' + longitude.toFixed(6));
             } else {
-                $('#photo-taken-location').val('');
+                $('#photo-taken-location').html('<span class="text-muted">タップして設定</span>');
             }
             inputPhotoData.location = location;
         });
