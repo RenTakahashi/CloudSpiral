@@ -31,7 +31,7 @@ public class PhotoRest {
 
     @POST
     @Secured
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postPhoto(@Context HttpHeaders headers, Photo photo) {
         try {
@@ -107,7 +107,7 @@ public class PhotoRest {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     @Path("{id}")
     public Response getPhoto(@PathParam("id") String idString) {
         try (PhotoModel model = new PhotoModel()) {
@@ -129,7 +129,7 @@ public class PhotoRest {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     @Path("{id}/raw")
     public Response getRawImage(@PathParam("id") String idString) {
         try (PhotoModel model = new PhotoModel()) {
