@@ -133,6 +133,10 @@ function appendPhotos(photoDataList) {
     photoDataList.forEach(appendPhoto);
 }
 
+function setLatLngToButton(latLng) {
+    $('#photo-taken-location').text(latLng.lat().toFixed(5) + ', ' + latLng.lng().toFixed(5));
+}
+
 // 現在地を取得する
 // 取得できなかったら null を返す
 function getCurrentLatLng() {
@@ -213,7 +217,7 @@ $(document).ready(() => {
                 }
 
                 inputPhotoData.latLng = new google.maps.LatLng(latitude, longitude);
-                $('#photo-taken-location').text(latitude.toFixed(5) + ', ' + longitude.toFixed(5));
+                setLatLngToButton(inputPhotoData.latLng);
             } else {
                 $('#photo-taken-location').html('<span class="text-muted">タップして設定</span>');
             }
@@ -244,8 +248,14 @@ $(document).ready(() => {
         locationSettingMap.setZoom(DEFAULT_LOCATION_SETTING_MAP_ZOOM);
     })
 
+    $('#select-location-button').on('click', () => {
+        inputPhotoData.latLng = selectableMarker.getPosition();
+        setLatLngToButton(inputPhotoData.latLng);
+        $('#location-setting-modal').modal('toggle');
+    })
+
     $('#photo-taken-location').on('click', () => {
-        $('#location-setting-modal').modal();
+        $('#location-setting-modal').modal('toggle');
     });
 
     $('#reset-photo-button').on('click', () => {
@@ -259,7 +269,7 @@ $(document).ready(() => {
     });
 
     $('#add-photo-button').on('click', () => {
-        $('button[id$=-photo-button], input[id^=photo-taken-], textarea#photo-description').prop('disabled', true);
+        $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description').prop('disabled', true);
 
         inputPhotoData.location = inputPhotoData.latLng != null
             ? { latitude: inputPhotoData.latLng.lat(), longitude: inputPhotoData.latLng.lng() }
@@ -282,7 +292,7 @@ $(document).ready(() => {
                 console.error(result);
             })
             .finally(() => {
-                $('button[id$=-photo-button], input[id^=photo-taken-], textarea#photo-description').prop('disabled', false);
+                $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description').prop('disabled', false);
             });
     });
 });
