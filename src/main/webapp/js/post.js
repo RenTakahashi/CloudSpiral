@@ -84,7 +84,7 @@ async function postPhoto(requestData) {
     return $.ajax({
         type: 'POST',
         url: './api/photos',
-        contentType: 'application/json',
+        contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(requestData),
         beforeSend: xhr => {
             xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
