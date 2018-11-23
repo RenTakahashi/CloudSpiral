@@ -1,10 +1,12 @@
-var endpoint = "";
+var endpoint = "./api/";
 /*
  * 旅行記リストを作成する
  * */
 var createTravelogueList = function(travelogue) {
-	//var [photo, photoDescription] = getPhoto(travelogue.photos[0]);
-	var photo = travelogue.photo;
+	//var photo = travelogue.photo;
+	//var photo = getPhoto(travelogue.photos[0]);
+	var photo = getPhoto(1);
+	console.log(photo);
 	$("#travelogue-lists").append(
 			'<div class="card"><div class="row"><div class="col d-flex">'
 			+ '<div class="col-md-6">'
@@ -33,12 +35,13 @@ var createTravelogueLists = function() {
  * 旅行記の写真を取得する
  * */
 var getPhoto = function(photoID) {
-	$.ajax({
+	return $.ajax({
 		type: 'GET',
-		url: endpoint + '/photos',
+		url: endpoint + 'photos/' + photoID + '/raw',
+		contentType: 'image/jpeg',
 		success: function(json) {
-			return [json.raw_uri, omitDescription(json.description)];
-		} 
+			return json.rawImage;
+		}
 	});
 }
 
@@ -63,6 +66,7 @@ var travelogues = [{
 $(document).ready(function(){
 	initTemplate("みんなの投稿", "投稿", "post.html");
 	for(var i=0; i < travelogues.length; i++){
+		console.log(i);
 		createTravelogueList(travelogues[i]);
 	}
 });
