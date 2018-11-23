@@ -32,14 +32,6 @@ function hideElement(selector) {
     $(selector).addClass('d-none');
 }
 
-// SessionStorage から投稿前の追加済み写真リストを復元する
-function restorePhotoList() {
-    console.log('ここで SessionStorage から投稿前の旅行記データを復元する');
-
-    console.log('今は空配列を返す');
-    return [];
-}
-
 function showLocationSettingModal() {
     console.log('ここで撮影場所指定モーダルを表示する');
 }
@@ -109,7 +101,7 @@ function appendPhotos(photoDataList) {
     photoDataList.forEach(appendPhoto);
 }
 
-let photoList;
+let photoList = [];
 let inputPhotoData = {};
 
 $(window).resize(() => {
@@ -118,9 +110,6 @@ $(window).resize(() => {
 
 $(document).ready(() => {
     initTemplate('旅行記作成', '<span class="fas fa-upload"></span> 投稿');
-
-    photoList = restorePhotoList();
-    appendPhotos(photoList);
 
     adjustMapSize();
 
