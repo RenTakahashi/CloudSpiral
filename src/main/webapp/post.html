@@ -45,19 +45,19 @@
                     <div class="w-100 m-auto">
                         <div class="input-group my-1">
                             <label for="photo-taken-date" class="input-group-prepend input-group-text">
-                                <span class="fas fa-calendar-alt" title="撮影日" style="width:1rem"></span>
+                                <span class="fas fa-calendar-alt w-1rem" title="撮影日"></span>
                             </label>
                             <input type="date" id="photo-taken-date" class="form-control" value="2018-01-01"/>
                         </div>
                         <div class="input-group my-1">
                             <label for="photo-taken-time" class="input-group-prepend input-group-text">
-                                <span class="fas fa-clock" title="撮影時刻" style="width:1rem"></span>
+                                <span class="fas fa-clock w-1rem" title="撮影時刻"></span>
                             </label>
                             <input type="time" id="photo-taken-time" class="form-control" value="12:00:00"/>
                         </div>
                         <p class="input-group my-1">
                             <label for="photo-taken-location" class="input-group-prepend input-group-text">
-                                <span class="fas fa-map-marker-alt" title="撮影場所" style="width:1rem"></span>
+                                <span class="fas fa-map-marker-alt w-1rem" title="撮影場所"></span>
                             </label>
                             <button type="button" id="photo-taken-location" class="form-control text-left"></button>
                         </p>
@@ -73,7 +73,7 @@
             <div class="row">
                 <div class="col card-footer">
                     <button type="reset" id="reset-photo-button" class="btn btn-secondary" disabled>
-                        <span class="fas fa-eraser"></span> リセット
+                        <span class="fas fa-eraser"></span> クリア
                     </button>
                     <button type="button" id="add-photo-button" class="btn btn-primary float-right" disabled>
                         <span class="fas fa-plus"></span> 追加
@@ -91,7 +91,7 @@
     <div id="location-setting-modal" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document" style="max-width: 80%">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-light">
                     <h5 class="modal-title">撮影場所を設定</h5>
                     <button type="button" id="location-setting-modal-close-button" class="close" data-dismiss="modal" aria-label="close">
                         <span aria-hidden="true">&times;</span>
@@ -100,9 +100,15 @@
                 <div class="modal-body">
                     <div id="location-setting-map"></div>
                 </div>
-                <div class="modal-footer clearfix">
-                    <button type="reset" id="reset-location-button" class="btn btn-secondary mr-auto">リセット</button>
-                    <button type="button" id="select-location-button" class="btn btn-primary">決定</button>
+                <div class="modal-footer bg-light clearfix">
+                    <button type="reset" id="reset-location-button" class="btn btn-secondary mr-auto">
+                        <span class="fas fa-undo w-1rem"></span>
+                        元に戻す
+                    </button>
+                    <button type="button" id="select-location-button" class="btn btn-primary">
+                        <span class="fas fa-map-marker-alt w-1rem"></span>
+                        決定
+                    </button>
                 </div>
             </div>
         </div>
