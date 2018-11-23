@@ -59,10 +59,7 @@
                             <label for="photo-taken-location" class="input-group-prepend input-group-text">
                                 <span class="fas fa-map-marker-alt" title="撮影場所" style="width:1rem"></span>
                             </label>
-                            <button type="button" id="photo-taken-location" class="form-control text-left">
-                                <span class="text-muted">タップして設定</span>
-                            </button>
-                            <!-- TODO: 逆引きする？ -->
+                            <button type="button" id="photo-taken-location" class="form-control text-left"></button>
                         </p>
                     </div>
                 </div>
@@ -88,13 +85,34 @@
 
     <div class="card mb-5">
         <h5 class="card-header card-title">旅程地図プレビュー</h5>
-        <div id="map-preview" class="card-body"></div>
+        <div id="preview-map" class="card-body"></div>
+    </div>
+
+    <div id="location-setting-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" style="max-width: 80%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">撮影場所を設定</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="location-setting-map"></div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="reset" class="btn btn-secondary mr-auto">リセット</button>
+                    <button type="button" class="btn btn-primary">決定</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </main>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeH3QEuI3KqOwBkkjJ6nYe-jQBTWGDQdw&callback=initMap" async
-        defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeH3QEuI3KqOwBkkjJ6nYe-jQBTWGDQdw&callback=initMap"
+        async defer></script>
 </body>
 
 </html>

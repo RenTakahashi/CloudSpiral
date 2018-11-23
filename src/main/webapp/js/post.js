@@ -1,22 +1,36 @@
 'use strict';
 
+const DEFAULT_LOCATION = {lat: 34.7018888889, lng: 135.494972222};
+
+let locationSettingMap;
+let previewMap = null;
+let selectableMarker = null;
+
+let photoList = [];
+let inputPhotoData = {};
+
 function initMap() {
-    const defaultLocation = {lat: -34.397, lng: 150.644};	// TODO: 初期値は現在地
+    // 撮影場所設定用地図
+    locationSettingMap = new google.maps.Map(document.getElementById('location-setting-map'), {
+        center: DEFAULT_LOCATION,
+        zoom: 16,
+    });
+    locationSettingMap.addListener('click', event => {
+        console.log(this);
+        console.log(event);
+        inputPhotoData.location = { latitude: event.latLng.lat, longitude: event.latLng.lng };
+        selectableMarker.setPosition(event.latLng);
+    });
 
     // 旅程プレビュー用地図
-    let mapPreview = new google.maps.Map(document.getElementById('map-preview'), {
-        center: defaultLocation,
-        zoom: 10
-    });
-    new google.maps.Marker({
-        position: defaultLocation,
-        map: mapPreview,
-        title: 'Hello World!'
-    });
+    /*previewMap = new google.maps.Map(document.getElementById('preview-map'), {
+        center: DEFAULT_LOCATION,
+        zoom: 14,
+    });*/
 }
 
 function adjustMapSize() {
-    $('[id^=map-]').each((i, element) => $(element).height($(element).width() * 0.75));
+    $('[id$=-map]').each((i, element) => $(element).height($(element).width() * 0.75));
 }
 
 // $(selector) の d-none クラスを削除して、 displayType で指定されたクラスを追加する
@@ -30,10 +44,6 @@ function showElement(selector, displayType) {
 function hideElement(selector) {
     $(selector).removeClass((i, className) => (className.match(/\bd-\S+/g) || []).join(' '));
     $(selector).addClass('d-none');
-}
-
-function showLocationSettingModal() {
-    console.log('ここで撮影場所指定モーダルを表示する');
 }
 
 // for debug
@@ -96,7 +106,7 @@ function appendPhoto(photoData) {
     const locationElement = $('<p>')
                             .append($('<span class="fas fa-map-marker-alt">'))
                             .append(photoData.location.latitude !== 0 || photoData.location.longitude !== 0 // うーん
-                                ? ' ' + photoData.location.latitude.toFixed(6) + ', ' + photoData.location.longitude.toFixed(6)
+                                ? ' ' + photoData.location.latitude.toFixed(5) + ', ' + photoData.location.longitude.toFixed(5)
                                 : ' <span class="text-muted">(未設定)</span>');
     const cardElement =
         $('<div class="card">')
@@ -118,9 +128,6 @@ function appendPhotos(photoDataList) {
     photoDataList.forEach(appendPhoto);
 }
 
-let photoList = [];
-let inputPhotoData = {};
-
 $(window).resize(() => {
     adjustMapSize();
 });
@@ -129,8 +136,6 @@ $(document).ready(() => {
     initTemplate('旅行記作成', '<span class="fas fa-upload"></span> 投稿');
 
     adjustMapSize();
-
-    //$('#add-photo-modal').on('shown.bs.modal', adjustMapSize);
 
     // ファイル選択ボタンか選択済みの画像がタップされたらファイル選択ダイアログを開く
     $('#select-photo-button, #selected-photo-area').on('click', () => {
@@ -197,7 +202,7 @@ $(document).ready(() => {
                 }
 
                 location = { latitude: latitude, longitude: longitude };
-                $('#photo-taken-location').val(latitude.toFixed(6) + ', ' + longitude.toFixed(6));
+                $('#photo-taken-location').text(latitude.toFixed(5) + ', ' + longitude.toFixed(5));
             } else {
                 $('#photo-taken-location').html('<span class="text-muted">タップして設定</span>');
             }
@@ -213,8 +218,26 @@ $(document).ready(() => {
         $('button[id$=-photo-button]').prop('disabled', false);
     });
 
+    $('#location-setting-modal').on('shown.bs.modal', () => {
+        adjustMapSize();
+
+        let position = DEFAULT_LOCATION;
+        if (inputPhotoData.location !== null) {
+            position = { lat: inputPhotoData.location.latitude, lng: inputPhotoData.location.longitude };
+        } else {
+            console.log('ここで現在地を取得する');
+        }
+
+        if (selectableMarker === null) {
+            selectableMarker = new google.maps.Marker({ position: position, map: locationSettingMap });
+        } else {
+            selectableMarker.setPosition(position);
+        }
+        locationSettingMap.setCenter(position);
+    });
+
     $('#photo-taken-location').on('click', () => {
-        showLocationSettingModal();
+        $('#location-setting-modal').modal();
     });
 
     $('#reset-photo-button').on('click', () => {
