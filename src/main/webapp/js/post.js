@@ -1,5 +1,6 @@
 'use strict';
 
+const DEFAULT_LOCATION_SETTING_MAP_ZOOM = 16;
 const DEFAULT_LOCATION = {lat: 34.7018888889, lng: 135.494972222};
 let DEFAULT_LATLNG;
 
@@ -16,7 +17,7 @@ function initMap() {
     // 撮影場所設定用地図
     locationSettingMap = new google.maps.Map(document.getElementById('location-setting-map'), {
         center: DEFAULT_LATLNG,
-        zoom: 16,
+        zoom: DEFAULT_LOCATION_SETTING_MAP_ZOOM,
     });
     locationSettingMap.addListener('click', event => {
         console.log(this);
@@ -235,6 +236,13 @@ $(document).ready(() => {
         selectableMarker.setPosition(latLng);
         locationSettingMap.setCenter(latLng);
     });
+
+    $('#reset-location-button').on('click', () => {
+        let latLng = inputPhotoData.latLng || getCurrentLatLng() || DEFAULT_LATLNG;
+        selectableMarker.setPosition(latLng);
+        locationSettingMap.setCenter(latLng);
+        locationSettingMap.setZoom(DEFAULT_LOCATION_SETTING_MAP_ZOOM);
+    })
 
     $('#photo-taken-location').on('click', () => {
         $('#location-setting-modal').modal();
