@@ -65,8 +65,15 @@ var travelogues = [{
 	  "description": "あいうえおかきくけこさしすせそ"
 	}];
 
+var changeFooterURL = function(){
+	if(window.sessionStorage.getItem(['access_token']) != null){
+		return "post.html";
+	}else{
+		return "login.html";
+	}
+}
+
 $(document).ready(function(){
-	initTemplate("みんなの投稿", "投稿", "post.html");
 	for(var i=0; i < travelogues.length; i++){
 		console.log(i);
 		createTravelogueList(travelogues[i]);
