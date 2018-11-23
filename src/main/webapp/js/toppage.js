@@ -7,8 +7,9 @@ var createTravelogueList = function(travelogue) {
 	//var photo = getPhoto(travelogue.photos[0]);
 	var photo = getPhoto(1);
 	console.log(photo);
+	console.log(travelogue.id);
 	$("#travelogue-lists").append(
-			'<a href="card.html" style="color: gray; text-decoration:none">'
+			'<a href="card.html?' + travelogue.id + '" style="color: gray; text-decoration:none">'
 			+ '<div class="card"><div class="row"><div class="col d-flex">'
 			+ '<div class="col-md-6">'
 			+ '<img class="img-keep-ratio my-4" height="250" src="'+ photo + '">'
