@@ -26,15 +26,15 @@ public class AccountRest {
 		String saftyPassword = PasswordUtil.getSafetyPassword(password, user_id);
 		
 		if(password == null || password.trim().equals(""))
-			return errorMessage(400, "empty password");
+			return errorMessage(430, "empty password");
 		if(password.length() < 5) 
-			return errorMessage(400, "too short password");
+			return errorMessage(431, "too short password");
 		if(password.equals(password.toLowerCase())|| password.equals(password.toUpperCase()))
-			return errorMessage(400, "パスワードに大文字と小文字を含めてください");
+			return errorMessage(432, "パスワードに大文字と小文字を含めてください");
 		if(name == null || name.trim().equals(""))
-			return errorMessage(400, "empty name");
+			return errorMessage(433, "empty name");
 		if(user_id == null || user_id.trim().equals(""))
-			return errorMessage(400, "empty user_id");
+			return errorMessage(434, "empty user_id");
 		try (AccountModel model = new AccountModel()) {
 			Account d = model.findByUser_Id(user_id);
 			if(d == null) {
