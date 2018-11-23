@@ -1,6 +1,6 @@
 var createTravelogueList = function(travelogue) {
 	//var [photo, photoDescription] = getPhoto(travelogue.photos[0]);
-	var [photo, photoDescription] =　[travelogue.photo, travelogue.desciption];
+	var [photo, photoDescription] = [travelogue.photo, travelogue.description];
 	$("#travelogue-lists").append(
 			'<div class="card"><div class="row"><div class="col d-flex">'
 			+ '<div>'
@@ -9,7 +9,6 @@ var createTravelogueList = function(travelogue) {
 			+ '<div class="card-body">'
 			+ '<small class="text-muted">' + travelogue.date + '</small>'
 			+ '<h5 class="card-title">' + travelogue.title + '</h5>'
-			+ '<p style="font-size: 0.8rem">' + photoDescription + '</p>'
 			+ '<p class="float-right" style="font-size: 0.6rem">by ' + travelogue.author + '</p>'
 			+ '</div></div></div></div>'
 			);
@@ -63,9 +62,7 @@ var travelogues = [{
 	}];
 
 $(document).ready(function(){
-	console.log(travelogues.length);
-	for(var i=0; travelogues.length; i++){
-		console.log(travelogues[i]);
+	for(var i=0; i < travelogues.length; i++){
 		createTravelogueList(travelogues[i]);
 	}
 });
