@@ -156,13 +156,18 @@ function appendPhoto(photoData) {
                         ));
 
     if (indexInsertTo >= 0) {
-        $('#photo-card-' + photoList[indexInsertTo].id).after(cardElement);
+        let targetElement = $('#photo-card-' + photoList[indexInsertTo].id);
+        $('html, body').animate({scrollTop: targetElement.position().top}).promise()
+            .then(() => {
+                return cardElement.insertAfter(targetElement).hide().fadeIn();
+            });
     } else {
-        $('#photo-list').prepend(cardElement);
+        let targetElement = $('#photo-list');
+        $('html, body').animate({scrollTop: targetElement.position().top}).promise()
+            .then(() => {
+                return cardElement.prependTo(targetElement).hide().fadeIn();
+            });
     }
-
-    // 写真追加フォームを一番下へ
-    //$('#photo-list').append($('#new-photo'));
 }
 
 function appendPhotos(photoDataList) {
