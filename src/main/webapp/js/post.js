@@ -1,30 +1,34 @@
 'use strict';
 
 const DEFAULT_LOCATION = {lat: 34.7018888889, lng: 135.494972222};
+let DEFAULT_LATLNG;
 
 let locationSettingMap;
 let previewMap = null;
-let selectableMarker = null;
+let selectableMarker;
 
 let photoList = [];
 let inputPhotoData = {};
 
 function initMap() {
+    DEFAULT_LATLNG = new google.maps.LatLng(DEFAULT_LOCATION);
+
     // 撮影場所設定用地図
     locationSettingMap = new google.maps.Map(document.getElementById('location-setting-map'), {
-        center: DEFAULT_LOCATION,
+        center: DEFAULT_LATLNG,
         zoom: 16,
     });
     locationSettingMap.addListener('click', event => {
         console.log(this);
         console.log(event);
-        inputPhotoData.location = { latitude: event.latLng.lat, longitude: event.latLng.lng };
         selectableMarker.setPosition(event.latLng);
     });
 
+    selectableMarker = new google.maps.Marker({ position: DEFAULT_LATLNG, map: locationSettingMap });
+
     // 旅程プレビュー用地図
     /*previewMap = new google.maps.Map(document.getElementById('preview-map'), {
-        center: DEFAULT_LOCATION,
+        center: DEFAULT_LATLNG,
         zoom: 14,
     });*/
 }
@@ -70,7 +74,7 @@ async function getAccessToken() {
     return token;
 }
 
-async function postPhoto(photoData) {
+async function postPhoto(requestData) {
     const accessToken = await getAccessToken();
     if (!accessToken) {
         return Promise.reject();
@@ -80,7 +84,7 @@ async function postPhoto(photoData) {
         type: 'POST',
         url: './api/photos',
         contentType: 'application/json',
-        data: JSON.stringify(photoData),
+        data: JSON.stringify(requestData),
         beforeSend: xhr => {
             xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         },
@@ -126,6 +130,13 @@ function appendPhoto(photoData) {
 
 function appendPhotos(photoDataList) {
     photoDataList.forEach(appendPhoto);
+}
+
+// 現在地を取得する
+// 取得できなかったら null を返す
+function getCurrentLatLng() {
+    console.log('ここで現在地を取得する');
+    return null;
 }
 
 $(window).resize(() => {
@@ -189,7 +200,6 @@ $(document).ready(() => {
             }
             inputPhotoData.date = dateTime;
 
-            let location = null;
             if (data.GPSLatitude && data.GPSLongitude) {
                 let latitude = data.GPSLatitude[0] + data.GPSLatitude[1] / 60 + data.GPSLatitude[2] / 3600;
                 if (data.GPSLatitudeRef === 'S') {
@@ -201,12 +211,11 @@ $(document).ready(() => {
                     longitude *= -1;
                 }
 
-                location = { latitude: latitude, longitude: longitude };
+                inputPhotoData.latLng = new google.maps.LatLng(latitude, longitude);
                 $('#photo-taken-location').text(latitude.toFixed(5) + ', ' + longitude.toFixed(5));
             } else {
                 $('#photo-taken-location').html('<span class="text-muted">タップして設定</span>');
             }
-            inputPhotoData.location = location;
         });
         reader.readAsArrayBuffer(file);
 
@@ -221,19 +230,10 @@ $(document).ready(() => {
     $('#location-setting-modal').on('shown.bs.modal', () => {
         adjustMapSize();
 
-        let position = DEFAULT_LOCATION;
-        if (inputPhotoData.location !== null) {
-            position = { lat: inputPhotoData.location.latitude, lng: inputPhotoData.location.longitude };
-        } else {
-            console.log('ここで現在地を取得する');
-        }
+        const latLng = inputPhotoData.latLng || getCurrentLocation() || DEFAULT_LOCATION;
 
-        if (selectableMarker === null) {
-            selectableMarker = new google.maps.Marker({ position: position, map: locationSettingMap });
-        } else {
-            selectableMarker.setPosition(position);
-        }
-        locationSettingMap.setCenter(position);
+        selectableMarker.setPosition(latLng);
+        locationSettingMap.setCenter(latLng);
     });
 
     $('#photo-taken-location').on('click', () => {
@@ -253,6 +253,9 @@ $(document).ready(() => {
     $('#add-photo-button').on('click', () => {
         $('button[id$=-photo-button], input[id^=photo-taken-], textarea#photo-description').prop('disabled', true);
 
+        inputPhotoData.location = inputPhotoData.latLng != null
+            ? { latitude: inputPhotoData.latLng.lat(), longitude: inputPhotoData.latLng.lng() }
+            : null;
         inputPhotoData.description = $('#photo-description').val();
 
         postPhoto(inputPhotoData)
