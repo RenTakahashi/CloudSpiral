@@ -209,6 +209,8 @@ $(document).ready(() => {
 
         hideElement('#select-photo-button');
         showElement('.photo-property-form, #selected-photo-area', 'd-flex');
+
+        $('button[id$=-photo-button]').prop('disabled', false);
     });
 
     $('#photo-taken-location').on('click', () => {
@@ -221,10 +223,12 @@ $(document).ready(() => {
 
         // ファイルの選択状態をクリア
         $('#file-input').val('');
+
+        $('button[id$=-photo-button]').prop('disabled', true);
     });
 
     $('#add-photo-button').on('click', () => {
-        // TODO: 画像未選択だったら拒否（というか押せなくする）
+        $('button[id$=-photo-button], input[id^=photo-taken-], textarea#photo-description').prop('disabled', true);
 
         inputPhotoData.description = $('#photo-description').val();
 
@@ -242,6 +246,9 @@ $(document).ready(() => {
             })
             .catch(result => {
                 console.error(result);
+            })
+            .finally(() => {
+                $('button[id$=-photo-button], input[id^=photo-taken-], textarea#photo-description').prop('disabled', false);
             });
     });
 });
