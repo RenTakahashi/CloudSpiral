@@ -5,7 +5,7 @@ const DEFAULT_LOCATION = {lat: 34.7018888889, lng: 135.494972222};
 let DEFAULT_LATLNG;
 
 let locationSettingMap;
-let previewMap = null;
+let previewMap;
 let selectableMarker;
 
 let photoList = [];
@@ -28,10 +28,10 @@ function initMap() {
     selectableMarker = new google.maps.Marker({ position: DEFAULT_LATLNG, map: locationSettingMap });
 
     // 旅程プレビュー用地図
-    /*previewMap = new google.maps.Map(document.getElementById('preview-map'), {
+    previewMap = new google.maps.Map(document.getElementById('preview-map'), {
         center: DEFAULT_LATLNG,
-        zoom: 14,
-    });*/
+        zoom: DEFAULT_LOCATION_SETTING_MAP_ZOOM,
+    });
 }
 
 function adjustMapSize() {
@@ -97,6 +97,8 @@ function getDataUrl(mime, base64) {
 }
 
 function appendPhoto(photoData) {
+    photoList.push(photoData);
+
     const localDateStr = photoData.date.toLocaleDateString();
     const localTimeStr = photoData.date.toLocaleTimeString();
     const localDateTimeStr = localDateStr + ' ' + localTimeStr;
@@ -135,6 +137,28 @@ function appendPhotos(photoDataList) {
 
 function setLatLngToButton(latLng) {
     $('#photo-taken-location').text(latLng.lat().toFixed(5) + ', ' + latLng.lng().toFixed(5));
+}
+
+function updatePreviewMap() {
+    const locations = photoList
+        .filter(x => x.location.latitude !== 0 || x.location.longitude !== 0)
+        .map(x => ({ lat: x.location.latitude, lng: x.location.longitude }));
+    let sumLocation = locations.reduce(
+        (sum, x) => ({ lat: sum.lat + x.lat, lng: sum.lng + x.lng }),
+        { lat: 0, lng: 0 });
+    previewMap.setCenter({
+        lat: sumLocation.lat / locations.length,
+        lng: sumLocation.lng / locations.length,
+    });
+    previewMap.setZoom(DEFAULT_LOCATION_SETTING_MAP_ZOOM);
+    const bounds = photoList.reduce(
+        (bound, x) => bound.extend({ lat: x.location.latitude, lng: x.location.longitude }),
+        new google.maps.LatLngBounds()
+    );
+    previewMap.fitBounds(bounds);
+    if (previewMap.getZoom() > DEFAULT_LOCATION_SETTING_MAP_ZOOM) {
+        previewMap.setZoom(DEFAULT_LOCATION_SETTING_MAP_ZOOM);
+    }
 }
 
 // 現在地を取得する
@@ -289,19 +313,31 @@ $(document).ready(() => {
             .then(result => {
                 result.raw = inputPhotoData.raw;
                 result.date = new Date(result.date);
+
+                result.marker = null;
+                if (inputPhotoData.location !== null) {
+                    result.marker = new google.maps.Marker({
+                        position: inputPhotoData.latLng,
+                        map: previewMap,
+                        label: result.description,
+                    });
+                }
+
                 appendPhoto(result);
+                updatePreviewMap();
 
                 hideElement('.photo-property-form, #selected-photo-area');
                 showElement('#select-photo-button', 'd-flex');
 
+                inputPhotoData = {};
+
                 // ファイルの選択状態をクリア
                 $('#file-input').val('');
+                $('#select-photo-button').prop('disabled', false);
             })
             .catch(result => {
                 console.error(result);
-            })
-            .finally(() => {
                 $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description').prop('disabled', false);
-            });
+            })
     });
 });
