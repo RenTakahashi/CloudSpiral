@@ -96,8 +96,37 @@ function getDataUrl(mime, base64) {
     return 'data:' + mime + ';base64,' + base64;
 }
 
+// photoData を photoList の何番目の後ろに入れればよいかを二分探索
+// photoList は .date の昇順になっていることを仮定
+function binarySearchInsertTo(photoData) {
+    let target = photoData.date;
+    if (photoList.length === 0 || target < photoList[0].date) {
+        return -1;
+    } else if (photoList[photoList.length - 1].date < target) {
+        return photoList.length - 1;
+    }
+
+    let range = [0, photoList.length];
+    while (true) {
+        console.log(range);
+        let [l, r] = range;
+        if (r - l === 1) {
+            return l;
+        }
+        let mid = Math.floor((l + r) / 2);
+        let pivot = photoList[mid].date;
+        if (target < pivot) {
+            range = [l, mid];
+        } else {
+            range = [mid, r];
+        }
+    };
+}
+
 function appendPhoto(photoData) {
-    photoList.push(photoData);
+    let indexInsertTo = binarySearchInsertTo(photoData);
+    console.log(indexInsertTo);
+    photoList.splice(indexInsertTo + 1, 0, photoData);
 
     const localDateStr = photoData.date.toLocaleDateString();
     const localTimeStr = photoData.date.toLocaleTimeString();
@@ -125,10 +154,15 @@ function appendPhoto(photoData) {
                         .append(dateElement)
                         .append(locationElement)
                         ));
-    $('#photo-list').append(cardElement);
+
+    if (indexInsertTo >= 0) {
+        $('#photo-card-' + photoList[indexInsertTo].id).after(cardElement);
+    } else {
+        $('#photo-list').prepend(cardElement);
+    }
 
     // 写真追加フォームを一番下へ
-    $('#photo-list').append($('#new-photo'));
+    //$('#photo-list').append($('#new-photo'));
 }
 
 function appendPhotos(photoDataList) {
