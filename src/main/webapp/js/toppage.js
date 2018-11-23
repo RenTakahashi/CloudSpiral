@@ -3,10 +3,10 @@ var createTravelogueList = function(travelogue) {
 	var [photo, photoDescription] = [travelogue.photo, travelogue.description];
 	$("#travelogue-lists").append(
 			'<div class="card"><div class="row"><div class="col d-flex">'
-			+ '<div>'
-			+ '<img class="img-keep-ratio my-4" src="'+ photo + '">'
+			+ '<div class="col-md-6">'
+			+ '<img class="img-keep-ratio my-4" height="250" src="'+ photo + '">'
 			+ '</div>'
-			+ '<div class="card-body">'
+			+ '<div class="card-body col-md-6">'
 			+ '<small class="text-muted">' + travelogue.date + '</small>'
 			+ '<h5 class="card-title">' + travelogue.title + '</h5>'
 			+ '<p class="float-right" style="font-size: 0.6rem">by ' + travelogue.author + '</p>'
