@@ -171,7 +171,16 @@ $(document).ready(() => {
             return;
         }
 
+        inputPhotoData = {};
+
+        $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description').prop('disabled', true);
+
         $('#selected-photo').attr('src', 'img/nowloading.png');
+        $('#photo-taken-date').val('');
+        $('#photo-taken-time').val('');
+        $('#photo-taken-location').text('');
+        $('#photo-description').val('');
+
         const reader = new FileReader();
         reader.addEventListener('load', event => {
             const base64Img = btoa(new Uint8Array(reader.result)
@@ -224,12 +233,10 @@ $(document).ready(() => {
         });
         reader.readAsArrayBuffer(file);
 
-        $('#photo-description').val('');
-
         hideElement('#select-photo-button');
         showElement('.photo-property-form, #selected-photo-area', 'd-flex');
 
-        $('button[id$=-photo-button]').prop('disabled', false);
+        $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description').prop('disabled', false);
     });
 
     $('#location-setting-modal').on('shown.bs.modal', () => {
@@ -261,6 +268,8 @@ $(document).ready(() => {
     $('#reset-photo-button').on('click', () => {
         hideElement('.photo-property-form, #selected-photo-area');
         showElement('#select-photo-button', 'd-flex');
+
+        inputPhotoData = {};
 
         // ファイルの選択状態をクリア
         $('#file-input').val('');
