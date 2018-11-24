@@ -19,7 +19,7 @@ var initTemplate = function(pageTitle, buttonName, nextPage, callback) {
 				+ '</button>');
 		button.click(() => {
 			if (typeof callback !== 'function') {
-				callback = (resolve, reject) => {};
+				callback = (resolve, reject) => { resolve(); };
 			}
 			new Promise(callback)
 				.then(() => { location.href = nextPage; });
