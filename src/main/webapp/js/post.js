@@ -225,7 +225,7 @@ $(document).ready(() => {
 
         // フォーム上に見えているのは UTC で、valueAsDate するとさらにオフセットが加算されてしまうので戻す
         let localTime = $('#photo-taken-time')[0].valueAsDate;
-        let utcTimeSeconds = localTime.setSeconds(localTime.getTimezoneOffset() * 60);
+        let utcTimeSeconds = localTime.setSeconds(localTime.getTimezoneOffset() * 60 + localTime.getSeconds());
 
         let utcDateTime = new Date($('#photo-taken-date')[0].valueAsNumber + utcTimeSeconds);
         inputPhotoData.date = utcDateTime;
