@@ -20,8 +20,6 @@ function initMap() {
         zoom: DEFAULT_LOCATION_SETTING_MAP_ZOOM,
     });
     locationSettingMap.addListener('click', event => {
-        console.log(this);
-        console.log(event);
         selectableMarker.setPosition(event.latLng);
     });
 
@@ -63,14 +61,13 @@ function _authorize() {
         return result.access_token;
     })
     .catch(result => {
-        console.log(result);
+        console.error(result);
         return null;
     });
 }
 
 async function getAccessToken() {
-    console.log('ここで SessionStorage からアクセストークンを取得する');
-    console.log('今はテストで値を返す');
+    console.log('TODO: ここで SessionStorage からアクセストークンを取得する');
     const token = await _authorize();
     return token;
 }
@@ -108,7 +105,6 @@ function binarySearchInsertTo(photoData) {
 
     let range = [0, photoList.length];
     while (true) {
-        console.log(range);
         let [l, r] = range;
         if (r - l === 1) {
             return l;
@@ -125,7 +121,6 @@ function binarySearchInsertTo(photoData) {
 
 function appendPhoto(photoData) {
     let indexInsertTo = binarySearchInsertTo(photoData);
-    console.log(indexInsertTo);
     photoList.splice(indexInsertTo + 1, 0, photoData);
 
     const localDateStr = photoData.date.toLocaleDateString();
@@ -203,7 +198,7 @@ function updatePreviewMap() {
 // 現在地を取得する
 // 取得できなかったら null を返す
 function getCurrentLatLng() {
-    console.log('ここで現在地を取得する');
+    console.log('TODO: ここで現在地を取得する');
     return null;
 }
 
