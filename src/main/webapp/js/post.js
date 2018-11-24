@@ -194,7 +194,7 @@ function showErrorPopup(message, closable) {
         $('<div class="alert alert-danger clearfix">')
         .append($('<h5 class="alert-heading">').text('エラー！'))
         .append($('<hr/>'))
-        .append($('<p class="mb-0">').html(message || 'Something went wrong!'))
+        .append($('<p class="mb-1">').html(message || 'Something went wrong!'))
         .appendTo($('#error-popup'))
         .hide()
         .fadeIn('fast');
@@ -202,8 +202,16 @@ function showErrorPopup(message, closable) {
         popup.prepend(
             $('<button type="button" class="close float-right" aria-label="Close">')
             .append($('<span aria-hidden="true">').html('&times;'))
-            .click(() => { popup.fadeOut('fast'); }))
+            .click(() => {
+                popup.fadeOut('fast')
+                    .then(() => { $('#error-popup').remove(this); })
+            }))
     }
+}
+
+function requireLogin(message) {
+    showErrorPopup(message);
+    $('main').fadeTo('fast', 0.5);
 }
 
 $(window).resize(() => {
@@ -214,10 +222,9 @@ $(document).ready(() => {
     initTemplate('旅行記作成', '<span class="fas fa-upload"></span> 投稿');
 
     if (!window.sessionStorage.access_token) {
-        showErrorPopup('旅行記を作成するにはログインが必要です。<br/>' +
-                       '<a href="login.html" class="alert-link">ここタップしてログインしてください。</a><br/>' +
-                       'アカウントがない場合は<a href="account.html" class="alert-link">こちら</a>から作成してください。');
-        $('main').fadeTo('fast', 0.5);
+        requireLogin('旅行記を作成するにはログインが必要です。<br/>' +
+                     '<a href="login.html" class="alert-link">ここタップしてログインしてください。</a><br/>' +
+                     'アカウントがない場合は<a href="account.html" class="alert-link">こちら</a>から作成してください。');
         return;
     }
 
@@ -259,7 +266,7 @@ $(document).ready(() => {
 
         inputPhotoData = {};
 
-        $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description').prop('disabled', true);
+        $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description, #file-input').prop('disabled', true);
 
         $('#selected-photo').attr('src', 'img/nowloading.png');
         $('#photo-taken-date').val('');
@@ -322,7 +329,7 @@ $(document).ready(() => {
         hideElement('#select-photo-button');
         showElement('.photo-property-form, #selected-photo-area', 'd-flex');
 
-        $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description').prop('disabled', false);
+        $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description, #file-input').prop('disabled', false);
     });
 
     $('#location-setting-modal').on('shown.bs.modal', () => {
@@ -364,7 +371,7 @@ $(document).ready(() => {
     });
 
     $('#add-photo-button').on('click', () => {
-        $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description').prop('disabled', true);
+        $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description, #file-input').prop('disabled', true);
 
         inputPhotoData.location = inputPhotoData.latLng != null
             ? { latitude: inputPhotoData.latLng.lat(), longitude: inputPhotoData.latLng.lng() }
@@ -398,9 +405,14 @@ $(document).ready(() => {
                 $('#select-photo-button').prop('disabled', false);
             })
             .catch(result => {
-                showErrorPopup(result.responseJSON.message, true);
                 console.debug(result);
-                $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description').prop('disabled', false);
+                if (result.status === 401) {
+                    requireLogin('アカウントの認証に失敗しました。<br/>' +
+                                 '<a href="login.html" class="alert-link">ここタップして再度ログインしてください。</a>');
+                } else {
+                    showErrorPopup(result.responseJSON.message, true);
+                    $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description, #file-input').prop('disabled', false);
+                }
             })
     });
 });
