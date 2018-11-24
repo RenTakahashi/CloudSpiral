@@ -49,33 +49,18 @@ function hideElement(selector) {
     $(selector).addClass('d-none');
 }
 
-// for debug
-function _authorize() {
-    return $.ajax({
-        type: 'POST',
-        url: './api/authentication',
-        contentType: 'application/json',
-        data: JSON.stringify({ user_id: 'hogefuga', password: 'Password' }),
-    })
-    .then(result => {
-        return result.access_token;
-    })
-    .catch(result => {
-        console.error(result);
-        return null;
-    });
+function getAccessToken() {
+    return window.sessionStorage.access_token;
 }
 
-async function getAccessToken() {
-    console.log('TODO: ここで SessionStorage からアクセストークンを取得する');
-    const token = await _authorize();
-    return token;
-}
-
-async function postPhoto(requestData) {
-    const accessToken = await getAccessToken();
+function postPhoto(requestData) {
+    const accessToken = getAccessToken();
     if (!accessToken) {
-        return Promise.reject();
+        return Promise.reject({
+            responseJSON: { // サーバが返すエラーと形式を合わせるため
+                message: 'ログインしてください'
+            }
+        });
     }
 
     return $.ajax({
@@ -202,6 +187,25 @@ function getCurrentLatLng() {
     return null;
 }
 
+// エラーポップアップ表示
+// 第2引数に true を入れると閉じるボタンが表示される
+function showErrorPopup(message, closable) {
+    let popup =
+        $('<div class="alert alert-danger clearfix">')
+        .append($('<h5 class="alert-heading">').text('エラー！'))
+        .append($('<hr/>'))
+        .append($('<p class="mb-0">').html(message || 'Something went wrong!'))
+        .appendTo($('#error-popup'))
+        .hide()
+        .fadeIn('fast');
+    if (closable) {
+        popup.prepend(
+            $('<button type="button" class="close float-right" aria-label="Close">')
+            .append($('<span aria-hidden="true">').html('&times;'))
+            .click(() => { popup.fadeOut('fast'); }))
+    }
+}
+
 $(window).resize(() => {
     adjustMapSize();
 });
@@ -209,6 +213,15 @@ $(window).resize(() => {
 $(document).ready(() => {
     initTemplate('旅行記作成', '<span class="fas fa-upload"></span> 投稿');
 
+    if (!window.sessionStorage.access_token) {
+        showErrorPopup('旅行記を作成するにはログインが必要です。<br/>' +
+                       '<a href="login.html" class="alert-link">ここタップしてログインしてください。</a><br/>' +
+                       'アカウントがない場合は<a href="account.html" class="alert-link">こちら</a>から作成してください。');
+        $('main').fadeTo('fast', 0.5);
+        return;
+    }
+
+    $('body').append('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeH3QEuI3KqOwBkkjJ6nYe-jQBTWGDQdw&callback=initMap" async defer>');
     adjustMapSize();
 
     // ファイル選択ボタンか選択済みの画像がタップされたらファイル選択ダイアログを開く
@@ -385,7 +398,8 @@ $(document).ready(() => {
                 $('#select-photo-button').prop('disabled', false);
             })
             .catch(result => {
-                console.error(result);
+                showErrorPopup(result.responseJSON.message, true);
+                console.debug(result);
                 $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description').prop('disabled', false);
             })
     });
