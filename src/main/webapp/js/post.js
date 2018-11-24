@@ -54,22 +54,13 @@ function getAccessToken() {
 }
 
 function postPhoto(requestData) {
-    const accessToken = getAccessToken();
-    if (!accessToken) {
-        return Promise.reject({
-            responseJSON: { // サーバが返すエラーと形式を合わせるため
-                message: 'ログインしてください'
-            }
-        });
-    }
-
     return $.ajax({
         type: 'POST',
         url: './api/photos',
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(requestData),
         beforeSend: xhr => {
-            xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+            xhr.setRequestHeader("Authorization", "Bearer " + getAccessToken());
         },
     });
 }
@@ -221,7 +212,7 @@ $(window).resize(() => {
 $(document).ready(() => {
     initTemplate('旅行記作成', '<span class="fas fa-upload"></span> 投稿');
 
-    if (!window.sessionStorage.access_token) {
+    if (!getAccessToken()) {
         requireLogin('旅行記を作成するにはログインが必要です。<br/>' +
                      '<a href="login.html" class="alert-link">ここタップしてログインしてください。</a><br/>' +
                      'アカウントがない場合は<a href="account.html" class="alert-link">こちら</a>から作成してください。');
