@@ -221,7 +221,22 @@ $(document).ready(() => {
         $('#file-input').click();
     });
 
-    $('#file-input').on('change', event => {
+    // 撮影日時が変更されたら inputPhotoData に反映させる
+    $('#photo-taken-date, #photo-taken-time').change(event => {
+        if (event.target.value === '') {
+            // incomplete date/time
+            return;
+        }
+
+        // フォーム上に見えているのは UTC で、valueAsDate するとさらにオフセットが加算されてしまうので戻す
+        let localTime = $('#photo-taken-time')[0].valueAsDate;
+        let utcTimeSeconds = localTime.setSeconds(localTime.getTimezoneOffset() * 60);
+
+        let utcDateTime = new Date($('#photo-taken-date')[0].valueAsNumber + utcTimeSeconds);
+        inputPhotoData.date = utcDateTime;
+    });
+
+    $('#file-input').change(event => {
         if (event.target.files.length === 0) {
             // キャンセル
             return;
