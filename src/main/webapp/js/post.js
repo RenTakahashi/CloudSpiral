@@ -185,8 +185,8 @@ function updatePreviewMap() {
         lng: sumLocation.lng / locations.length,
     });
     previewMap.setZoom(DEFAULT_LOCATION_SETTING_MAP_ZOOM);
-    const bounds = photoList.reduce(
-        (bound, x) => bound.extend({ lat: x.location.latitude, lng: x.location.longitude }),
+    const bounds = locations.reduce(
+        (bound, x) => bound.extend({ lat: x.lat, lng: x.lng }),
         new google.maps.LatLngBounds()
     );
     previewMap.fitBounds(bounds);
