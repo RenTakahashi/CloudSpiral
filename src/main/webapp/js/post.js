@@ -402,7 +402,7 @@ $(document).ready(() => {
 
                 // ファイルの選択状態をクリア
                 $('#file-input').val('');
-                $('#select-photo-button').prop('disabled', false);
+                $('#select-photo-button, #file-input').prop('disabled', false);
             })
             .catch(result => {
                 console.debug(result);
