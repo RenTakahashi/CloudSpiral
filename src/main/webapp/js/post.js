@@ -205,12 +205,27 @@ function requireLogin(message) {
     $('main').fadeTo('fast', 0.5);
 }
 
+function enableButton(selector) {
+    $(selector)
+        .prop('disabled', false)
+        .attr('aria-disabled', 'false')
+        .removeClass('disabled');
+}
+
+function disableButton(selector) {
+    $(selector)
+        .prop('disabled', true)
+        .attr('aria-disabled', 'true')
+        .addClass('disabled');
+}
+
 $(window).resize(() => {
     adjustMapSize();
 });
 
 $(document).ready(() => {
     initTemplate('旅行記作成', '<span class="fas fa-upload"></span> 投稿');
+    disableButton('body>footer>[role=button]');
 
     if (!getAccessToken()) {
         requireLogin('旅行記を作成するにはログインが必要です。<br/>' +
@@ -221,6 +236,15 @@ $(document).ready(() => {
 
     $('body').append('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeH3QEuI3KqOwBkkjJ6nYe-jQBTWGDQdw&callback=initMap" async defer>');
     adjustMapSize();
+
+
+    $('#travelogue-title').keyup((event) => {
+        if (event.target.value.length > 0 && photoList.length > 0) {
+            enableButton('body>footer>[role=button]');
+        } else {
+            disableButton('body>footer>[role=button]');
+        }
+    });
 
     // ファイル選択ボタンか選択済みの画像がタップされたらファイル選択ダイアログを開く
     $('#select-photo-button, #selected-photo-area').on('click', () => {
@@ -394,6 +418,10 @@ $(document).ready(() => {
                 // ファイルの選択状態をクリア
                 $('#file-input').val('');
                 $('#select-photo-button, #file-input').prop('disabled', false);
+
+                if ($('#travelogue-title').val().length > 0) {
+                    enableButton('body>footer>[role=button]');
+                }
             })
             .catch(result => {
                 console.debug(result);
