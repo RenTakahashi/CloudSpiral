@@ -14,18 +14,18 @@ var initTemplate = function(pageTitle, buttonName, nextPage, callback) {
 			+ '</nav>'
 			+ '</header>');
 	if (buttonName != undefined){
-	    let button = $('<button class="btn btn-primary float-right mx-3" role="button">'
-                + buttonName
-                + '</button>');
-        button.click(() => {
-            if (typeof callback !== 'function') {
-                callback = (resolve, reject) => {};
-            }
-            new Promise(callback)
-                .then(() => { location.href = nextPage; });
-        });
-        $('<footer class="fixed-bottom mb-3">')
-                .append(button)
-                .appendTo($('body'));
+		let button = $('<button class="btn btn-primary float-right mx-3" role="button">'
+				+ buttonName
+				+ '</button>');
+		button.click(() => {
+			if (typeof callback !== 'function') {
+				callback = (resolve, reject) => {};
+			}
+			new Promise(callback)
+				.then(() => { location.href = nextPage; });
+		});
+		$('<footer class="fixed-bottom mb-3">')
+				.append(button)
+				.appendTo($('body'));
 	}
 }
