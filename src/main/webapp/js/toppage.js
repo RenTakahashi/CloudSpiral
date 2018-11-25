@@ -8,16 +8,15 @@ var createTravelogueList = function(travelogue) {
 	var date = getDate(travelogue.date);
 	console.log(cardWidth);
 	$("#travelogue-lists").append(
-			'<a href="card.html?' + travelogue.id + '" style="color: gray; text-decoration:none">'
-			+ '<div class="card my-1">'
-			+ '<img class="center-block" style="width: 100%; height:' + cardWidth + 'px; object-fit: contain;" src="' + photo + '">'
-			+ '<div class="card-body card-img-overlay">'
-			+ '<div class="text-monospace" style="background: rgba(255,255,255,0.6);">'
+			'<a class="card my-1" href="card.html?' + travelogue.id + '" style="">'
+			+ '<img class="center-block" style="height:' + cardWidth + 'px;" src="' + photo + '">'
+			+ '<div class="card-body card-img-overlay text-monospace">'
+			+ '<div id="card-texts">'
 			+ '<small class="text-muted">' + date + '</small>'
 			+ '<h5 class="card-title">' + travelogue.title.substr(0,10) + '</h5>'
 			+ '<p class="text-right" style="font-size: 0.6rem">by ' + travelogue.author + '</p>'
 			+ '</div></div>'
-			+ '</div></a>'
+			+ '</a>'
 			);
 }
 

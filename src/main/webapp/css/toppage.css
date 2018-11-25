@@ -1,0 +1,13 @@
+a {
+	color: gray;
+	text-decoration: none;
+}
+
+img {
+	width: 100%;
+	object-fit: contain;
+}
+
+#card-texts {
+	background: rgba(255,255,255,0.6);
+}
