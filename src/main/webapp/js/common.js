@@ -23,7 +23,7 @@ var initTemplate = function(pageTitle, buttonName, nextPage, callback) {
 			}
 			new Promise(callback)
 				.then((nextPage) => { location.href = nextPage; })
-				.catch(() => { Promise.resolve(); });   // エラー時は遷移しない．エラー処理は callback 側の .catch() で行い，最後に reject(); すること
+				.catch(() => {});   // エラー時は遷移しない．エラー処理は callback 側の .catch() で行い，最後に reject(); すること
 		});
 		$('<footer class="fixed-bottom mb-3">')
 				.append(button)
