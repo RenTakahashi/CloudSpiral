@@ -4,17 +4,20 @@ var endpoint = "./api/";
  * */
 var createTravelogueList = function(travelogue) {
 	var photo = getPhoto(travelogue.photos[0]);
+	var cardWidth = $("#travelogue-lists").width() * 3/4;
+	console.log(cardWidth);
 	$("#travelogue-lists").append(
 			'<a href="card.html?' + travelogue.id + '" style="color: gray; text-decoration:none">'
-			+ '<div class="card"><div class="row"><div class="col d-flex">'
-			+ '<div class="col-md-6">'
-			+ '<img id="traveloguePhoto" class="img-keep-ratio my-4" height="250" src="' + photo + '">'
+			+ '<div class="card">'
+			+ '<div>'
+			+ '<img class="center-block" style="width: 100%; height:' + cardWidth + 'px; object-fit: contain;" src="' + photo + '">'
 			+ '</div>'
-			+ '<div class="card-body col-md-6">'
+			+ '<div class="card-body card-img-overlay">'
 			+ '<small class="text-muted">' + travelogue.date + '</small>'
 			+ '<h5 class="card-title">' + travelogue.title.substr(0,10) + '</h5>'
 			+ '<p class="float-right" style="font-size: 0.6rem">by ' + travelogue.author + '</p>'
-			+ '</div></div></div></div></a>'
+			+ '</div>'
+			+ '</div></a>'
 			);
 }
 
