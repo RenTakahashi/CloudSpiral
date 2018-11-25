@@ -277,7 +277,6 @@ $(document).ready(() => {
     $('body').append('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeH3QEuI3KqOwBkkjJ6nYe-jQBTWGDQdw&callback=initMap" async defer>');
     adjustMapSize();
 
-
     $('#travelogue-title').keyup((event) => {
         if (event.target.value.length > 0 && photoList.length > 0) {
             enableButton('body>footer>[role=button]');
@@ -390,7 +389,7 @@ $(document).ready(() => {
     $('#location-setting-modal').on('shown.bs.modal', () => {
         adjustMapSize();
 
-        const latLng = inputPhotoData.latLng || getCurrentLocation() || DEFAULT_LOCATION;
+        const latLng = inputPhotoData.latLng || getCurrentLatLng() || DEFAULT_LOCATION;
 
         selectableMarker.setPosition(latLng);
         locationSettingMap.setCenter(latLng);
