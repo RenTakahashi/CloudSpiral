@@ -19,10 +19,10 @@ var initTemplate = function(pageTitle, buttonName, nextPage, callback) {
 				+ '</button>');
 		button.click(() => {
 			if (typeof callback !== 'function') {
-				callback = (resolve, reject) => { resolve(); };
+				callback = (resolve, reject) => { resolve(nextPage); };
 			}
 			new Promise(callback)
-				.then(() => { location.href = nextPage; });
+				.then((nextPage) => { location.href = nextPage; });
 		});
 		$('<footer class="fixed-bottom mb-3">')
 				.append(button)
