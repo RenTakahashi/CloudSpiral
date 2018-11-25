@@ -31,7 +31,20 @@ function getTravelogue(id) {
 				+ '<p>' + result.title + '</p>'
 				+ '<p>by ' + result.author + '</p>'
 				);
+		for(var i = 0; i < result.photos.length; i++) {
+			$("#travel-photos").append(
+					'<div class="row">'
+					+ '<div class="col">' + '<img class="img-fluid" src="' + getPhoto(result.photos[i]) + '"></div>'
+					+ '<div class="col">' + '<p class="card-text">' + result.photos[i].description + '</p>'
+					+ '<p>' + getDate(result.photos[i].date) + '</p></div>'
+					+ '</div>'
+					);
+		}
 	});
+}
+
+var getPhoto = function(photos) {
+	return 'data:image/jpeg;base64,' + photos.raw;
 }
 
 function getDate(date) {
