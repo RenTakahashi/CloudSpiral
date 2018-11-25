@@ -3,23 +3,21 @@ var endpoint = "./api/";
  * 旅行記リストを作成する
  * */
 var createTravelogueList = function(travelogue) {
-	var photo = getPhoto(travelogue.photos[0]);
 	var cardWidth = $("#travelogue-lists").width() * 3/4;
-	var date = getDate(travelogue.date);
-	console.log(cardWidth);
 	$("#travelogue-lists").append(
 			'<a class="card my-1" href="card.html?' + travelogue.id + '" style="">'
-			+ '<img class="center-block" style="height:' + cardWidth + 'px;" src="' + photo + '">'
+			+ '<img class="center-block" style="height:' + cardWidth + 'px;" src="' + getPhoto(travelogue.photos[0]) + '">'
 			+ '<div class="card-body card-img-overlay text-monospace">'
 			+ '<div id="card-texts">'
-			+ '<small class="text-muted">' + date + '</small>'
+			+ '<small class="text-muted">' + getDate(travelogue.date) + '</small>'
 			+ '<h5 class="card-title">' + travelogue.title.substr(0,10) + '</h5>'
 			+ '<p class="text-right" style="font-size: 0.6rem">by ' + travelogue.author + '</p>'
 			+ '</div></div>'
 			+ '</a>'
 			);
-}
 
+	$(".progress").remove();
+}
 var createTravelogueLists = function() {
 	$.ajax({
 		type: 'GET',
@@ -56,6 +54,5 @@ var changeFooterURL = function(){
 	}
 }
 
-$(document).ready(function(){
-	createTravelogueLists();
-});
+createTravelogueLists();
+
