@@ -53,6 +53,6 @@ $(document).ready(() => {
 			'index.html',
 			);
 	getTravelogue(getTravelogueId());
-	$('body').append('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBYGt1-fgiPvuUN0I03NiMwrqxArfacZ0&callback=initMap" async defer>');
+	$('body').append('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeH3QEuI3KqOwBkkjJ6nYe-jQBTWGDQdw&callback=initMap" async defer>');
     adjustMapSize();
 });
