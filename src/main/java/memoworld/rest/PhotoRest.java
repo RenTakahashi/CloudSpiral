@@ -37,7 +37,7 @@ public class PhotoRest {
         try {
             // 写真をデコードして画像として正しいかをチェック
             PhotoModel model = new PhotoModel();
-            byte[] base64 = Base64.getDecoder().decode(photo.getRawImage());
+            byte[] base64 = Base64.getDecoder().decode(photo.getRaw());
             toBufferedImage(base64);
 
             // 投稿者情報の取得
@@ -93,7 +93,7 @@ public class PhotoRest {
 
             // レスポンスには画像データを入れない
             Photo result = model.register(photo);
-            result.setRawImage(null);
+            result.setRaw(null);
             return Response.status(201)
                     .entity(result)
                     .build();
@@ -119,7 +119,7 @@ public class PhotoRest {
                 return errorMessage(404, "Not found");
 
             // 画像データは返さないのでnullにする
-            photo.setRawImage(null);
+            photo.setRaw(null);
             return Response.status(200)
                     .entity(photo)
                     .build();
@@ -145,7 +145,7 @@ public class PhotoRest {
             photo.setDescription(null);
             photo.setLocation(null);
             photo.setAuthor(null);
-            photo.setRawURI(null);
+            photo.setRaw_uri(null);
             return Response.status(200)
                     .entity(photo)
                     .build();
