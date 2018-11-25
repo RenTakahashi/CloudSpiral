@@ -7,8 +7,8 @@ var createTravelogueList = function(travelogue) {
 	$("#travelogue-lists").append(
 			'<a class="card my-1" href="travelogue.html?' + travelogue.id + '" style="">'
 			+ '<img class="center-block" style="height:' + cardWidth + 'px;" src="' + getPhoto(travelogue.photos[0]) + '">'
-			+ '<div class="card-body card-img-overlay text-monospace">'
-			+ '<div id="card-texts">'
+			+ '<div class="card-body card-img-overlay text-monospace p-0 h-100 d-flex flex-column justify-content-end">'
+			+ '<div id="card-texts" class="px-3">'
 			+ '<small class="text-muted">' + getDate(travelogue.date) + '</small>'
 			+ '<h5 class="card-title">' + travelogue.title.substr(0,10) + '</h5>'
 			+ '<p class="text-right" style="font-size: 0.6rem">by ' + travelogue.author + '</p>'
