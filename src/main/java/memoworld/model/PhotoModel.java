@@ -7,7 +7,9 @@ import memoworld.entities.Location;
 import memoworld.entities.Photo;
 import org.bson.Document;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PhotoModel implements AutoCloseable {
@@ -26,6 +28,22 @@ public class PhotoModel implements AutoCloseable {
                 .first();
         return toPhoto(document);
     }
+
+    public ArrayList<Photo> findByIds(ArrayList<Integer> ids){
+        ArrayList<Photo> list = new ArrayList<>();
+        this.photos.find(Filters.in("id", ids))
+                .sort(Sorts.ascending("date"))
+                .map(PhotoModel::toPhoto)
+                .into(list);
+        if(list.size() != ids.size())
+            return null;
+        return list;
+    }
+    
+  //photosの要素数を返す
+   	public long count() {
+   		return photos.count();
+   	}
 
     private static Photo toPhoto(Document document) {
         if (document == null)
