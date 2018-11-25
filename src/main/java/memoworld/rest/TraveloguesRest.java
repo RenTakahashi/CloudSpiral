@@ -37,13 +37,9 @@ public class TraveloguesRest {
         	travelogue.getPhotos_id();
         	Travelogue result =	model.register(travelogue);
         	PhotoModel photomodel = new PhotoModel();
-        	for(int id : result.getPhotos_id()) {
-				Photo photo = photomodel.findById(id);
-				if (photo == null){
-					return errorMessage(404, "Not found photo");
-				}
-				result.photos.add(photo);
-			}
+            result.photos = photomodel.findByIds(travelogue.getPhotos_id());
+            if(result.photos == null)
+                return errorMessage(404, "Not found some photos");
         	result.setPhotos_id(null);
         	return Response.status(201)
                     .entity(result)
@@ -64,13 +60,9 @@ public class TraveloguesRest {
 			for(int i = 1; i <=  model.count() ; i++) {
 					travelogue = model.findById(i);
 				travelogue.likes = likemodel.getFindeq(travelogue.getId());
-				for(int id : travelogue.getPhotos_id()) {
-					Photo photo = photomodel.findById(id);
-					if (photo == null){
-						return errorMessage(404, "Not found photo");
-					}
-					travelogue.photos.add(photo);
-				}
+                travelogue.photos = photomodel.findByIds(travelogue.getPhotos_id());
+                if(travelogue.photos == null)
+                    return errorMessage(404, "Not found some photos");
 				travelogues.travelogues.add(travelogue);	
 			}
 				photomodel.close();
@@ -98,14 +90,9 @@ public class TraveloguesRest {
 			PhotoModel photomodel = new PhotoModel();
 			
 			travelogue.likes = likemodel.getFindeq(travelogue.getId());
-
-			for(int photo_id : travelogue.getPhotos_id()) {
-				Photo photo = photomodel.findById(photo_id);
-				if (photo == null){
-					return errorMessage(404, "Not found photo");
-				}
-				travelogue.photos.add(photo);
-			}
+			travelogue.photos = photomodel.findByIds(travelogue.getPhotos_id());
+            if(travelogue.photos == null)
+                return errorMessage(404, "Not found some photos");
 			likemodel.close();
 			photomodel.close();
 		
