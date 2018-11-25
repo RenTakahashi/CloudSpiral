@@ -19,10 +19,11 @@ var initTemplate = function(pageTitle, buttonName, nextPage, callback) {
 				+ '</button>');
 		button.click(() => {
 			if (typeof callback !== 'function') {
-				callback = (resolve, reject) => { resolve(); };
+				callback = (resolve, reject) => { resolve(nextPage); };
 			}
 			new Promise(callback)
-				.then(() => { location.href = nextPage; });
+				.then((nextPage) => { location.href = nextPage; })
+				.catch(() => {});   // エラー時は遷移しない．エラー処理は callback 側の .catch() で行い，最後に reject(); すること
 		});
 		$('<footer class="fixed-bottom mb-3">')
 				.append(button)

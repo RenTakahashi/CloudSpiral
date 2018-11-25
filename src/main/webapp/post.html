@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"/>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"/>
+    <script src="js/common.js"></script>
+    <link rel="stylesheet" href="css/common.css"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+    <script src="js/post.js"></script>
+    <link rel="stylesheet" href="css/post.css"/>
+    <title>旅行記作成</title>
+</head>
+<body>
+<main class="container-fluid">
+
+    <div class="form-group mb-4">
+        <input type="text" id="travelogue-title" class="form-control form-control-lg" placeholder="タイトル">
+    </div>
+
+    <div id="photo-list" class="form-group mb-4">
+        <div id="new-photo" class="card container-fluid mb-1">
+            <div class="row" style="height: 10rem">
+                <div id="select-photo-button" class="col d-flex h-100 text-center text-muted bg-light">
+                    <p class="m-auto">
+                        <span class="far fa-image font-size-4x"></span><br/>
+                        タップして写真を選択
+                    </p>
+                </div>
+                <div id="selected-photo-area" class="col d-none h-100 text-center px-1">
+                    <img src="img/nowloading.png" id="selected-photo" class="img-keep-ratio m-auto"/>
+                </div>
+                <input type="file" id="file-input" class="d-none" tabindex="-1" accept="image/*"/>
+                <div class="photo-property-form col h-100 d-none">
+                    <div class="w-100 m-auto">
+                        <div class="input-group my-1">
+                            <span for="photo-taken-date" class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <span class="fas fa-calendar-alt w-1rem" title="撮影日"></span>
+                                </span>
+                            </span>
+                            <input type="date" id="photo-taken-date" class="form-control" value="2018-01-01"/>
+                        </div>
+                        <div class="input-group my-1">
+                            <span for="photo-taken-time" class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <span class="fas fa-clock w-1rem" title="撮影時刻"></span>
+                                </span>
+                            </span>
+                            <input type="time" id="photo-taken-time" class="form-control" value="12:00:00"/>
+                        </div>
+                        <div class="input-group my-1">
+                            <span for="photo-taken-location" class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <span class="fas fa-map-marker-alt w-1rem" title="撮影場所"></span>
+                                </span>
+                            </span>
+                            <button type="button" id="photo-taken-location" class="form-control text-left"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row photo-property-form d-none my-1">
+                <div class="col">
+                    <textarea id="photo-description" class="form-control photo-description" rows="5"
+                              placeholder="写真の説明"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col card-footer">
+                    <button type="reset" id="reset-photo-button" class="btn btn-secondary" disabled>
+                        <span class="fas fa-eraser"></span> クリア
+                    </button>
+                    <button type="button" id="add-photo-button" class="btn btn-primary float-right" disabled>
+                        <span class="fas fa-plus"></span> 追加
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-5">
+        <h5 class="card-header card-title">旅程地図プレビュー</h5>
+        <div id="preview-map" class="card-body"></div>
+    </div>
+
+    <div id="location-setting-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" style="max-width: 95%">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title">撮影場所を設定</h5>
+                    <button type="button" id="location-setting-modal-close-button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="location-setting-map"></div>
+                </div>
+                <div class="modal-footer bg-light clearfix">
+                    <button type="reset" id="reset-location-button" class="btn btn-secondary mr-auto">
+                        <span class="fas fa-undo w-1rem"></span>
+                        リセット
+                    </button>
+                    <button type="button" id="select-location-button" class="btn btn-primary">
+                        <span class="fas fa-map-marker-alt w-1rem"></span>
+                        決定
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<div id="error-popup" class="fixed-top m-4" style="top: 3rem;"></div>
+
+</body>
+
+</html>

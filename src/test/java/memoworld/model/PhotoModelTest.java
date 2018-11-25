@@ -43,8 +43,8 @@ public class PhotoModelTest {
         assertEquals(p.getDescription(), p2.getDescription());
         assertEquals(p.getLocation().getLatitude(), p2.getLocation().getLatitude(), 0.000001);
         assertEquals(p.getLocation().getLongitude(), p2.getLocation().getLongitude(), 0.000001);
-        assertEquals(p.getRawURI(), p2.getRawURI());
-        assertEquals(p.getRawImage(), p2.getRawImage());
+        assertEquals(p.getRaw_uri(), p2.getRaw_uri());
+        assertEquals(p.getRaw(), p2.getRaw());
         assertEquals(p.getAuthor(), p2.getAuthor());
     }
 }
