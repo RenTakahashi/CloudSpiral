@@ -56,19 +56,19 @@ public class Photo {
         this.description = description;
     }
 
-    public String getRawURI() {
+    public String getRaw_uri() {
         return raw_uri;
     }
 
-    public void setRawURI(String raw_uri) {
+    public void setRaw_uri(String raw_uri) {
         this.raw_uri = raw_uri;
     }
 
-    public String getRawImage() {
+    public String getRaw() {
         return raw_image;
     }
 
-    public void setRawImage(String raw_image) {
+    public void setRaw(String raw_image) {
         this.raw_image = raw_image;
     }
 
