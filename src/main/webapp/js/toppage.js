@@ -5,7 +5,7 @@ var createTravelogueList = function(travelogue) {
 	var cardWidth = $("#travelogue-lists").width() * 3/4;//カードの高さを画面サイズに合わせる
 	//旅行記リスト作成
 	$("#travelogue-lists").append(
-			'<a class="card my-1" href="card.html?' + travelogue.id + '" style="">'
+			'<a class="card my-1" href="travelogue.html?' + travelogue.id + '" style="">'
 			+ '<img class="center-block" style="height:' + cardWidth + 'px;" src="' + getPhoto(travelogue.photos[0]) + '">'
 			+ '<div class="card-body card-img-overlay text-monospace">'
 			+ '<div id="card-texts">'
