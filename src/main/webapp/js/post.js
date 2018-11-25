@@ -219,12 +219,40 @@ function disableButton(selector) {
         .addClass('disabled');
 }
 
+function postTravelogue(title, photoIds) {
+    let requestData = {
+        title: title,
+        photos_id: photoIds,
+    };
+    return $.ajax({
+        type: 'POST',
+        url: './api/travelogues',
+        contentType: 'application/json; charset=UTF-8',
+        data: JSON.stringify(requestData),
+        beforeSend: xhr => {
+            xhr.setRequestHeader("Authorization", "Bearer " + getAccessToken());
+        },
+    });
+}
+
 $(window).resize(() => {
     adjustMapSize();
 });
 
 $(document).ready(() => {
-    initTemplate('旅行記作成', '<span class="fas fa-upload"></span> 投稿');
+    initTemplate(
+        '旅行記作成',
+        '<span class="fas fa-upload"></span> 投稿',
+        'index.html',
+        (resolve, reject) => {
+            postTravelogue(
+                $('#travelogue-title').val(),
+                photoList.map(x => x.id),
+            ).then(result => {
+                console.debug(JSON.stringify(result));
+                resolve();
+            });
+        });
     disableButton('body>footer>[role=button]');
 
     if (!getAccessToken()) {
