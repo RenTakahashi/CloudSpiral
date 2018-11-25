@@ -42,14 +42,5 @@ var getDate = function(date) {
 	return y + '/' + m + '/' + d; 
 }
 
-//ログインの有無でfooterのアクセス先を変更する
-var changeFooterURL = function(){
-	if(window.sessionStorage.access_token != null){
-		return "post.html";
-	}else{
-		return "login.html";
-	}
-}
-
 createTravelogueLists();
 
