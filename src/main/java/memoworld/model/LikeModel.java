@@ -40,6 +40,19 @@ public class LikeModel implements AutoCloseable {
                 .first();
         return toLike(document);
     }
+    
+    //TraveloguesのLikesにentityを入れる
+    public Like findByLid(int lid) {
+        Document document = likes
+                .find(Filters.eq("lid", lid))
+                .first();
+        return toLike(document);
+    }
+    
+    //likesの要素数を返す
+   	public long count() {
+   		return likes.count();
+   	}
 	
     public Likes getLikes() {
 		List<Like> list = new ArrayList<>();

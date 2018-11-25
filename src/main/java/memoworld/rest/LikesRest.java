@@ -19,8 +19,8 @@ public class LikesRest {
     private static final String AUTHENTICATION_SCHEME = "Bearer";
 
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
+    @Consumes(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     public Response postLike(@Context HttpHeaders headers, Like like) {
         // 投稿者情報の取得
         String authorizationHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
@@ -72,7 +72,7 @@ public class LikesRest {
     }
     
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     public Response getLikes() {
 		try (LikeModel model = new LikeModel()) {
 			return Response.ok(model.getLikes())
@@ -81,7 +81,7 @@ public class LikesRest {
     }
     
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     @Path("{traveloguesid}")
     public Response getLike(
     		@PathParam("traveloguesid")String idString) {

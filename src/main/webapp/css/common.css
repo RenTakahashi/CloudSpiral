@@ -1,0 +1,12 @@
+body{
+    margin-top: 5rem;
+    margin-bottom: 3rem;
+}
+
+header, footer{
+    font-size: 1.6rem;	
+}
+
+html {
+    font-size: 2rem;
+}

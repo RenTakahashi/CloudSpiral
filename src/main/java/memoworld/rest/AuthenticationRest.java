@@ -19,8 +19,8 @@ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 @Path("/authentication")
 public class AuthenticationRest {
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
+    @Consumes(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     public Response postAuthentication(Authentication authentication) {
         AccountModel accountModel = new AccountModel();
         Account account = accountModel.findByUserIdAndPassword(authentication.getUserId(), authentication.getPassword());
