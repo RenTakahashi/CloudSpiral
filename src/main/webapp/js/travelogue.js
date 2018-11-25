@@ -20,11 +20,26 @@ function getTravelogueId() {
 }
 
 function getTravelogue(id) {
-	return $ajax({
+	$.ajax({
 		type: 'GET',
-		url: './api/travelogues/'+id,
+		url: './api/travelogues/' + id,
 		contentType: 'application/json; chrset=UTF-8',
+		success: function(json) {
+			$("#travel-title").append(
+					'<p>' + getDate(json.date) + '</p>'
+					+ '<p>' + json.title + '</p>'
+					+ '<p>by ' + json.author + '</p>'
+					);
+		}
 	});
+}
+
+function getDate(date) {
+	let formatDate = new Date(date)
+	let y = formatDate.getFullYear();
+	let m = formatDate.getMonth() + 1;
+	let d = formatDate.getDate();
+	return y + '/' + m + '/' + d;
 }
 
 $(window).resize(() => {
@@ -37,7 +52,7 @@ $(document).ready(() => {
 			'',
 			'index.html',
 			);
-
+	getTravelogue(getTravelogueId());
 	$('body').append('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBYGt1-fgiPvuUN0I03NiMwrqxArfacZ0&callback=initMap" async defer>');
     adjustMapSize();
 });
