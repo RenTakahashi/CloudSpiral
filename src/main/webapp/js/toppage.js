@@ -8,7 +8,7 @@ var createTravelogueList = function(travelogue) {
 	console.log(cardWidth);
 	$("#travelogue-lists").append(
 			'<a href="card.html?' + travelogue.id + '" style="color: gray; text-decoration:none">'
-			+ '<div class="card">'
+			+ '<div class="card my-1">'
 			+ '<img class="center-block" style="width: 100%; height:' + cardWidth + 'px; object-fit: contain;" src="' + photo + '">'
 			+ '<div class="card-body card-img-overlay">'
 			+ '<div class="text-monospace" style="background: rgba(255,255,255,0.6);">'
