@@ -44,7 +44,7 @@ var getDate = function(date) {
 
 //ログインの有無でfooterのアクセス先を変更する
 var changeFooterURL = function(){
-	if(window.sessionStorage.getItem(['access_token']) != null){
+	if(window.sessionStorage.access_token != null){
 		return "post.html";
 	}else{
 		return "login.html";
