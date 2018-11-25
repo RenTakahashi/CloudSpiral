@@ -252,7 +252,7 @@ $(document).ready(() => {
                 photoList.map(x => x.id),
             ).then(result => {
                 console.debug(JSON.stringify(result));
-                resolve('card.html?' + result.id);
+                resolve('travelogue.html?' + result.id);
             }).catch(result => {
                 console.debug(result);
                 if (result.status === 401) {
