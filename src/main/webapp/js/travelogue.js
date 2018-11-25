@@ -52,7 +52,12 @@ $(document).ready(() => {
 			'',
 			'index.html',
 			);
-	getTravelogue(getTravelogueId());
+	let id = getTravelogueId();
+	if(id) {
+		getTravelogue(id);
+	} else {
+		location.href="index.html";
+	}
 	$('body').append('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeH3QEuI3KqOwBkkjJ6nYe-jQBTWGDQdw&callback=initMap" async defer>');
     adjustMapSize();
 });
