@@ -5,14 +5,14 @@ var endpoint = "./api/";
 var createTravelogueList = function(travelogue) {
 	//var photo = travelogue.photo;
 	//var photo = getPhoto(travelogue.photos[0]);
-	var photo = getPhoto(1);
-	console.log(photo);
-	console.log(travelogue.id);
+	//var photo = getPhoto(1);
+	//console.log("photo:" + photo);
+	console.log("travelogueID:" + travelogue.id);
 	$("#travelogue-lists").append(
 			'<a href="card.html?' + travelogue.id + '" style="color: gray; text-decoration:none">'
 			+ '<div class="card"><div class="row"><div class="col d-flex">'
 			+ '<div class="col-md-6">'
-			+ '<img class="img-keep-ratio my-4" height="250" src="'+ photo + '">'
+			+ '<img id="traveloguePhoto' + travelogue.photos[0] + '" class="img-keep-ratio my-4" height="250" src="">'
 			+ '</div>'
 			+ '<div class="card-body col-md-6">'
 			+ '<small class="text-muted">' + travelogue.date + '</small>'
@@ -20,6 +20,7 @@ var createTravelogueList = function(travelogue) {
 			+ '<p class="float-right" style="font-size: 0.6rem">by ' + travelogue.author + '</p>'
 			+ '</div></div></div></div></a>'
 			);
+	getPhoto(travelogue.photos[0]);
 }
 var createTravelogueLists = function() {
 	$.ajax({
@@ -37,12 +38,12 @@ var createTravelogueLists = function() {
  * 旅行記の写真を取得する
  * */
 var getPhoto = function(photoID) {
-	return $.ajax({
+	$.ajax({
 		type: 'GET',
 		url: endpoint + 'photos/' + photoID + '/raw',
 		contentType: 'image/jpeg',
-		success: function(json) {
-			return json.rawImage;
+		success: function(json){
+			$('#traveloguePhoto' + photoID).attr("src",'data:image/jpeg;base64,' + json.rawImage);
 		}
 	});
 }
@@ -52,7 +53,7 @@ var travelogues = [{
 	  "title":"イリヤかわいいあいうえおかきくけこ",
 	  "date": "2018-09-18",
 	  "author": "itimon",
-	  "photos_id": [1,2],
+	  "photos": [1],
 	  "photo": "http://tn.smilevideo.jp/smile?i=24770287.L",
 	  "description": "あいうえおかきくけこさしすせそ"
 	},{
@@ -60,7 +61,7 @@ var travelogues = [{
 	  "title":"イリヤかわいい2",
 	  "date": "2018-09-18",
 	  "author": "itimon",
-	  "photos_id": [1,2],
+	  "photos": [2],
 	  "photo": "http://tn.smilevideo.jp/smile?i=24770287.L",
 	  "description": "あいうえおかきくけこさしすせそ"
 	}];
