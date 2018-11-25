@@ -1,9 +1,9 @@
 var endpoint = "./api/";
-/*
- * 旅行記リストを作成する
- * */
+
+//旅行記リストを作成する
 var createTravelogueList = function(travelogue) {
-	var cardWidth = $("#travelogue-lists").width() * 3/4;
+	var cardWidth = $("#travelogue-lists").width() * 3/4;//カードの高さを画面サイズに合わせる
+	//旅行記リスト作成
 	$("#travelogue-lists").append(
 			'<a class="card my-1" href="card.html?' + travelogue.id + '" style="">'
 			+ '<img class="center-block" style="height:' + cardWidth + 'px;" src="' + getPhoto(travelogue.photos[0]) + '">'
@@ -15,8 +15,7 @@ var createTravelogueList = function(travelogue) {
 			+ '</div></div>'
 			+ '</a>'
 			);
-
-	$(".progress").remove();
+	$(".progress").remove();//読み込みが終了
 }
 var createTravelogueLists = function() {
 	$.ajax({
@@ -31,13 +30,10 @@ var createTravelogueLists = function() {
 	});
 }
 
-/*
- * 旅行記の写真を取得する
- * */
+//旅行記の要素をフォーマットしなおす
 var getPhoto = function(photos) {
 	return 'data:image/jpeg;base64,' + photos.rawImage;
 }
-
 var getDate = function(date) {
 	var formatDate = new Date(date)
 	var y = formatDate.getFullYear();
@@ -46,6 +42,7 @@ var getDate = function(date) {
 	return y + '/' + m + '/' + d; 
 }
 
+//ログインの有無でfooterのアクセス先を変更する
 var changeFooterURL = function(){
 	if(window.sessionStorage.getItem(['access_token']) != null){
 		return "post.html";

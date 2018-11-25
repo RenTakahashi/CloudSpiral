@@ -18,15 +18,18 @@
 		 * ボタン処理がいらない場合は，第2引数を書かない
 		 * 例：initTemplate("みんなの投稿");
 		 */
-			initTemplate("みんなの投稿", "投稿", changeFooterURL());
-		 	changeFotterURL();
+		 initTemplate("みんなの投稿", "投稿", changeFooterURL());
+		 //ログインの有無でfooterボタンのアクセス先を変更する
+		 changeFotterURL();
 		</script>
 		<main class="container">	
-			<!-- 旅行記サムネカード -->
-			<div id="travelogue-lists">
-			<div class="progress">
-  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-</div></div>
+			<!-- 旅行記リスト -->
+			<div id="travelogue-lists">	
+				<!-- 旅行記読み込み中の表示 -->
+				<div class="progress">
+					<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+				</div>
+			</div>
 		</main>	
 	</body>
 	
