@@ -13,8 +13,8 @@ import javax.ws.rs.core.Response;
 @Path("likes")
 public class LikesRest {
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
+    @Consumes(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     public Response postLike(Like like) {
        //TODO taraveloguesidの旅行記が存在するかの判定を行う
        //なければ404を返す
@@ -32,7 +32,7 @@ public class LikesRest {
     
     
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     public Response getLikes() {
 		try (LikeModel model = new LikeModel()) {
 			return Response.ok(model.getLikes())
@@ -41,7 +41,7 @@ public class LikesRest {
     }
     
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     @Path("{traveloguesid}")
     public Response getLike(
     		@PathParam("traveloguesid")String idString) {

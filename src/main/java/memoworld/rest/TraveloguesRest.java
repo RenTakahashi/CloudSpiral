@@ -19,8 +19,8 @@ public class TraveloguesRest {
 	
     @POST
     @Secured
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
+    @Consumes(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     public Response postTravelogue(@Context HttpHeaders headers,Travelogue travelogue){
         
         try (TravelogueModel model = new TravelogueModel()) {
@@ -53,7 +53,7 @@ public class TraveloguesRest {
     
     
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     public Response getTraveloges() {
 		try (TravelogueModel model = new TravelogueModel()) {
 			Travelogue travelogue = new Travelogue();
@@ -82,7 +82,7 @@ public class TraveloguesRest {
     }
     
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     @Path("{id}")
     public Response getTravelogue(
     		@PathParam("id")String idString) {
