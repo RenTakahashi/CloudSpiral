@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<script src="js/jquery-3.2.1.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+		<script src="js/common.js"></script>
+		<link rel="stylesheet" href="css/common.css" />
+
+		<script type="js/travelogue.js"></script>
+		<title>旅行記の詳細</title>
+	</head>
+	<body>
+		<script>
+		/*
+		 * ボタン処理がいらない場合は，第2引数を書かない
+		 * 例：initTemplate("みんなの投稿");
+		 */
+			$(document).ready(function(){
+				initTemplate("タイトルテンプレート", "右下ボタンテンプレート", "template.html");
+			});
+		</script>
+		<main class="container">	
+			<!--
+			 ページ内容をここに書く 
+			 mainの中は自由に変えてもらって大丈夫
+			 共通しそうなUIを用意したので，適宜使うこと
+			 
+			 classにrow col-md-(1~12)を入れ，大きさを調整してください
+			 詳細はGitHubのwikiページに置いてあるbootstrapWikiを見てください
+			-->
+			
+			<!-- カードUI -->
+			<div class="card row col-md-12">
+				<div class="card-body">
+				 	<small class="text-muted">2018-09-18</small>
+				 	<h5 class="card-title">カードテンプレート</h5>
+				 	<p>
+				 	コメントを適当に書く
+				 	んああああああああああああああああああああああああああああああああああ
+				 	
+					 ページ内容をここに書く 
+					 mainの中は自由に変えてもらって大丈夫
+					 共通しそうなUIを用意したので，適宜使うこと
+					 
+					 classにrow col-md-(1~12)を入れ，大きさを調整してください
+					 詳細はGitHubのwikiページに置いてあるbootstrapWikiを見てください
+					</p>
+				</div>
+			</div>
+						
+			<!-- ボタンUI -->
+			<a class="btn btn-secondary mb-1" href="#" role="button">ボタン</a>
+			<a class="btn btn-secondary float-right mb-1" href="#" role="button">右ボタン</a>
+
+			<!-- フォームUI -->
+			<!-- 縦並びフォーム -->
+			<form>
+				<div class="form-group row col-md-6">
+					<div class="form-group">
+					    <label for="formtemplate1">フォーム1</label>
+					    <input type="text" class="form-control" id="formtemplate1" placeholder="フォーム1">
+					</div>
+				</div>
+				  <div class="form-group">
+				    <label for="formtemplate2">フォーム2</label>
+				    <input type="text" class="form-control" id="formtemplate2" placeholder="フォーム2">
+				  </div>
+			</form>
+			<!-- 横並びフォーム -->
+			<form class="form-inline">
+				<div class="form-group mx-2 mb-2">
+				  <label for="formtemplate3">テンプレ3</label>
+				  <input type="text" class="form-control" id="formtemplate3" placeholder="フォーム3">
+				</div>
+				<div class="form-group mx-2 mb-2">
+				  <label for="formtemplate4">テンプレ4</label>
+				  <input type="text" class="form-control" id="formtemplate4" placeholder="フォーム4">
+				</div>
+			</form>
+			
+			<!-- スクロール確認のためのカード -->
+			<div class="card row col-md-12">
+				<div class="card-body">
+				 	<small class="text-muted">2018-09-18</small>
+				 	<h5 class="card-title">カードテンプレート</h5>
+				 	<p>
+				 	スクロール確認のために入れてます
+				 	適当に消していいよ
+					</p>
+				</div>
+			</div>
+			<div class="card row col-md-12">
+				<div class="card-body">
+				 	<small class="text-muted">2018-09-18</small>
+				 	<h5 class="card-title">カードテンプレート</h5>
+				 	<p>
+				 	スクロール確認のために入れてます
+				 	適当に消していいよ
+					</p>
+				</div>
+			</div>
+			<div class="card row col-md-12">
+				<div class="card-body">
+				 	<small class="text-muted">2018-09-18</small>
+				 	<h5 class="card-title">カードテンプレート</h5>
+				 	<p>
+				 	スクロール確認のために入れてます
+				 	適当に消していいよ
+					</p>
+				</div>
+			</div>
+
+		</main>	
+	</body>
+	
+
+</html>
