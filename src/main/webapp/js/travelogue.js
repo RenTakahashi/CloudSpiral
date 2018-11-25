@@ -24,13 +24,13 @@ function getTravelogue(id) {
 		type: 'GET',
 		url: './api/travelogues/' + id,
 		contentType: 'application/json; chrset=UTF-8',
-		success: function(json) {
-			$("#travel-title").append(
-					'<p>' + getDate(json.date) + '</p>'
-					+ '<p>' + json.title + '</p>'
-					+ '<p>by ' + json.author + '</p>'
-					);
-		}
+	})
+	.then(result => {
+		$("#travel-title").append(
+				'<p>' + getDate(result.date) + '</p>'
+				+ '<p>' + result.title + '</p>'
+				+ '<p>by ' + result.author + '</p>'
+				);
 	});
 }
 
