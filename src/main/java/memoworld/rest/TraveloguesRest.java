@@ -63,11 +63,7 @@ public class TraveloguesRest {
 			
 			for(int i = 1; i <=  model.count() ; i++) {
 					travelogue = model.findById(i);
-				for(int j = 1; j <= likemodel.count(); j++) {
-					Like like = likemodel.findByLid(j);
-					if (like.getTraveloguesid() == travelogue.getId())
-						travelogue.likes.add(like);
-				}
+				travelogue.likes = likemodel.getFindeq(travelogue.getId());
 				for(int id : travelogue.getPhotos_id()) {
 					Photo photo = photomodel.findById(id);
 					if (photo == null){
@@ -100,12 +96,8 @@ public class TraveloguesRest {
 				return errorMessage(404, "Not found");
 			LikeModel likemodel = new LikeModel();
 			PhotoModel photomodel = new PhotoModel();
-
-			for(int j = 1; j <= likemodel.count(); j++) {
-				Like like = likemodel.findByLid(j);
-				if (like.getTraveloguesid() == travelogue.getId())
-					travelogue.likes.add(like);
-			}
+			
+			travelogue.likes = likemodel.getFindeq(travelogue.getId());
 
 			for(int photo_id : travelogue.getPhotos_id()) {
 				Photo photo = photomodel.findById(photo_id);

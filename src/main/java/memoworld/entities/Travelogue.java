@@ -21,7 +21,7 @@ public class Travelogue {
     @XmlElement(name = "photos")
 	public ArrayList<Photo> photos = new ArrayList<>();
     @XmlElement(name = "likes")
-	public ArrayList<Like> likes = new ArrayList<>();
+	public Likes likes = new ArrayList<>();
     @XmlElement(name = "photos_id")
     private ArrayList<Integer> photos_id = new ArrayList<>();
     
