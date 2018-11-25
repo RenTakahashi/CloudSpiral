@@ -250,7 +250,7 @@ $(document).ready(() => {
                 photoList.map(x => x.id),
             ).then(result => {
                 console.debug(JSON.stringify(result));
-                resolve();
+                resolve('card.html?' + result.id);
             });
         });
     disableButton('body>footer>[role=button]');
