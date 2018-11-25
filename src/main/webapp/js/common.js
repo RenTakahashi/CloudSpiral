@@ -22,7 +22,8 @@ var initTemplate = function(pageTitle, buttonName, nextPage, callback) {
 				callback = (resolve, reject) => { resolve(nextPage); };
 			}
 			new Promise(callback)
-				.then((nextPage) => { location.href = nextPage; });
+				.then((nextPage) => { location.href = nextPage; })
+				.catch(() => { Promise.resolve(); });   // エラー時は遷移しない．エラー処理は callback 側の .catch() で行い，最後に reject(); すること
 		});
 		$('<footer class="fixed-bottom mb-3">')
 				.append(button)

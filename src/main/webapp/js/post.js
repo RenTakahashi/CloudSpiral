@@ -1,5 +1,6 @@
 'use strict';
 
+const ALL_FORM_ELEMENTS_SELECTOR = 'button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description, #file-input, body>footer>[role=button]';
 const DEFAULT_LOCATION_SETTING_MAP_ZOOM = 16;
 const DEFAULT_LOCATION = {lat: 34.7018888889, lng: 135.494972222};
 let DEFAULT_LATLNG;
@@ -194,7 +195,7 @@ function showErrorPopup(message, closable) {
             $('<button type="button" class="close float-right" aria-label="Close">')
             .append($('<span aria-hidden="true">').html('&times;'))
             .click(() => {
-                popup.fadeOut('fast')
+                popup.fadeOut('fast').slideUp('fast').promise()
                     .then(() => { $('#error-popup').remove(this); })
             }))
     }
@@ -245,12 +246,23 @@ $(document).ready(() => {
         '<span class="fas fa-upload"></span> 投稿',
         'index.html',
         (resolve, reject) => {
+            $(ALL_FORM_ELEMENTS_SELECTOR).prop('disabled', true);
             postTravelogue(
                 $('#travelogue-title').val(),
                 photoList.map(x => x.id),
             ).then(result => {
                 console.debug(JSON.stringify(result));
                 resolve('card.html?' + result.id);
+            }).catch(result => {
+                console.debug(result);
+                if (result.status === 401) {
+                    requireLogin('アカウントの認証に失敗しました。<br/>' +
+                                 '<a href="login.html" class="alert-link">ここタップして再度ログインしてく  ださい。</a>');
+                } else {
+                    showErrorPopup(result.responseJSON.message, true);
+                    $(ALL_FORM_ELEMENTS_SELECTOR).prop('disabled', false);
+                }
+                reject();
             });
         });
     disableButton('body>footer>[role=button]');
@@ -309,7 +321,7 @@ $(document).ready(() => {
 
         inputPhotoData = {};
 
-        $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description, #file-input').prop('disabled', true);
+        $(ALL_FORM_ELEMENTS_SELECTOR).prop('disabled', true);
 
         $('#selected-photo').attr('src', 'img/nowloading.png');
         $('#photo-taken-date').val('');
@@ -372,7 +384,7 @@ $(document).ready(() => {
         hideElement('#select-photo-button');
         showElement('.photo-property-form, #selected-photo-area', 'd-flex');
 
-        $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description, #file-input').prop('disabled', false);
+        $(ALL_FORM_ELEMENTS_SELECTOR).prop('disabled', false);
     });
 
     $('#location-setting-modal').on('shown.bs.modal', () => {
@@ -414,7 +426,7 @@ $(document).ready(() => {
     });
 
     $('#add-photo-button').on('click', () => {
-        $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description, #file-input').prop('disabled', true);
+        $(ALL_FORM_ELEMENTS_SELECTOR).prop('disabled', true);
 
         inputPhotoData.location = inputPhotoData.latLng != null
             ? { latitude: inputPhotoData.latLng.lat(), longitude: inputPhotoData.latLng.lng() }
@@ -458,7 +470,7 @@ $(document).ready(() => {
                                  '<a href="login.html" class="alert-link">ここタップして再度ログインしてください。</a>');
                 } else {
                     showErrorPopup(result.responseJSON.message, true);
-                    $('button[id$=-photo-button], [id^=photo-taken-], textarea#photo-description, #file-input').prop('disabled', false);
+                    $(ALL_FORM_ELEMENTS_SELECTOR).prop('disabled', false);
                 }
             })
     });
