@@ -8,11 +8,12 @@ var createTravelogueList = function(travelogue) {
 	//var photo = getPhoto(1);
 	//console.log("photo:" + photo);
 	console.log("travelogueID:" + travelogue.id);
+	var photo = getPhoto(travelogue.photos[0]);
 	$("#travelogue-lists").append(
 			'<a href="card.html?' + travelogue.id + '" style="color: gray; text-decoration:none">'
 			+ '<div class="card"><div class="row"><div class="col d-flex">'
 			+ '<div class="col-md-6">'
-			+ '<img id="traveloguePhoto' + travelogue.photos[0] + '" class="img-keep-ratio my-4" height="250" src="">'
+			+ '<img id="traveloguePhoto" class="img-keep-ratio my-4" height="250" src="' + photo + '">'
 			+ '</div>'
 			+ '<div class="card-body col-md-6">'
 			+ '<small class="text-muted">' + travelogue.date + '</small>'
@@ -20,15 +21,19 @@ var createTravelogueList = function(travelogue) {
 			+ '<p class="float-right" style="font-size: 0.6rem">by ' + travelogue.author + '</p>'
 			+ '</div></div></div></div></a>'
 			);
-	getPhoto(travelogue.photos[0]);
+	//getPhoto(travelogue.photos[0]);
 }
 var createTravelogueLists = function() {
+	console.log("createLists");
 	$.ajax({
 		type: 'GET',
-		url: endpoint + '/travelogues',
+		url: endpoint + 'travelogues',
+		contentType: 'image/json',
 		success: function(json) {
-			for(var i=0; json.length; i++){
-				createTravelogueList(json[i]);
+			console.log(json.travelogues.length);
+			for(var i=0; i < json.travelogues.length; i++){
+				console.log(json.travelogues[i]);
+				createTravelogueList(json.travelogues[i]);
 			}
 		}
 	});
@@ -37,15 +42,16 @@ var createTravelogueLists = function() {
 /*
  * 旅行記の写真を取得する
  * */
-var getPhoto = function(photoID) {
-	$.ajax({
+var getPhoto = function(photos) {
+	return 'data:image/jpeg;base64,' + photos.rawImage;
+	/*$.ajax({
 		type: 'GET',
 		url: endpoint + 'photos/' + photoID + '/raw',
 		contentType: 'image/jpeg',
 		success: function(json){
 			$('#traveloguePhoto' + photoID).attr("src",'data:image/jpeg;base64,' + json.rawImage);
 		}
-	});
+	});*/
 }
 
 var travelogues = [{
@@ -75,8 +81,6 @@ var changeFooterURL = function(){
 }
 
 $(document).ready(function(){
-	for(var i=0; i < travelogues.length; i++){
-		console.log(i);
-		createTravelogueList(travelogues[i]);
-	}
+	console.log("ready");
+	createTravelogueLists();
 });
