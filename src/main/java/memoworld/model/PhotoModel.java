@@ -7,6 +7,7 @@ import memoworld.entities.Location;
 import memoworld.entities.Photo;
 import org.bson.Document;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +28,22 @@ public class PhotoModel implements AutoCloseable {
         return toPhoto(document);
     }
 
+    public ArrayList<Photo> findByIds(ArrayList<Integer> ids){
+        ArrayList<Photo> list = new ArrayList<>();
+        this.photos.find(Filters.in("id", ids))
+                .sort(Sorts.ascending("date"))
+                .map(PhotoModel::toPhoto)
+                .into(list);
+        if(list.size() != ids.size())
+            return null;
+        return list;
+    }
+    
+  //photosの要素数を返す
+   	public long count() {
+   		return photos.count();
+   	}
+
     private static Photo toPhoto(Document document) {
         if (document == null)
             return null;
@@ -36,8 +53,8 @@ public class PhotoModel implements AutoCloseable {
         photo.setDescription(document.getString("description"));
         photo.setLocation(new Location(document.getDouble("latitude"), document.getDouble("longitude")));
         photo.setAuthor(document.getString("author"));
-        photo.setRawURI(document.getString("raw_uri"));
-        photo.setRawImage(document.getString("raw_image"));
+        photo.setRaw_uri(document.getString("raw_uri"));
+        photo.setRaw(document.getString("raw_image"));
         return photo;
     }
 
@@ -51,8 +68,8 @@ public class PhotoModel implements AutoCloseable {
         map.put("description", photo.getDescription());
         map.put("author", photo.getAuthor());
         map.put("date", photo.getDate());
-        map.put("raw_uri", photo.getRawURI());
-        map.put("raw_image", photo.getRawImage());
+        map.put("raw_uri", photo.getRaw_uri());
+        map.put("raw_image", photo.getRaw());
         return new Document(map);
     }
 
@@ -67,7 +84,7 @@ public class PhotoModel implements AutoCloseable {
 
     public Photo register(Photo photo) {
         photo.setId(newId());
-        photo.setRawURI("/photos/" + Integer.toString(photo.getId()) + "/raw");
+        photo.setRaw_uri("/photos/" + Integer.toString(photo.getId()) + "/raw");
         photos.insertOne(toDocument(photo));
         return photo;
     }

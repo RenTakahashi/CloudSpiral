@@ -23,15 +23,15 @@ public class PhotoTest {
         p.setDate(date);
         p.setDescription(desc);
         p.setLocation(location);
-        p.setRawURI(raw_uri);
-        p.setRawImage(raw_image);
+        p.setRaw_uri(raw_uri);
+        p.setRaw(raw_image);
         p.setAuthor(author);
         assertEquals(id, p.getId());
         assertEquals(date, p.getDate());
         assertEquals(desc, p.getDescription());
         assertEquals(location, p.getLocation());
-        assertEquals(raw_uri, p.getRawURI());
-        assertEquals(raw_image, p.getRawImage());
+        assertEquals(raw_uri, p.getRaw_uri());
+        assertEquals(raw_image, p.getRaw());
         assertEquals(author, p.getAuthor());
     }
 }

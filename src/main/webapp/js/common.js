@@ -1,4 +1,4 @@
-var initTemplate = function(pageTitle, buttonName, nextPage) {
+var initTemplate = function(pageTitle, buttonName, nextPage, callback) {
 	//headerとfooterの準備
 	$("body").prepend(
 			'<header class="fixed-top">'
@@ -14,12 +14,19 @@ var initTemplate = function(pageTitle, buttonName, nextPage) {
 			+ '</nav>'
 			+ '</header>');
 	if (buttonName != undefined){
-		$("body").append(
-				'<footer class="fixed-bottom mb-3">'
-				+ '<!-- ボタンの処理を変更する -->'
-				+ '<a class="btn btn-primary float-right mx-3" href="' + nextPage + '" role="button">'
+		let button = $('<button class="btn btn-primary float-right mx-3" role="button">'
 				+ buttonName
-				+ '</a>'
-				+ '</footer>');
+				+ '</button>');
+		button.click(() => {
+			if (typeof callback !== 'function') {
+				callback = (resolve, reject) => { resolve(nextPage); };
+			}
+			new Promise(callback)
+				.then((nextPage) => { location.href = nextPage; })
+				.catch(() => {});   // エラー時は遷移しない．エラー処理は callback 側の .catch() で行い，最後に reject(); すること
+		});
+		$('<footer class="fixed-bottom mb-3">')
+				.append(button)
+				.appendTo($('body'));
 	}
 }
