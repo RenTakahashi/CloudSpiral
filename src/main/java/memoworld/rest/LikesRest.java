@@ -3,8 +3,10 @@ package memoworld.rest;
 import memoworld.entities.Account;
 import memoworld.entities.Like;
 import memoworld.entities.ErrorMessage;
+import memoworld.entities.Travelogue;
 import memoworld.model.AccessTokenModel;
 import memoworld.model.LikeModel;
+import memoworld.model.TravelogueModel;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -31,9 +33,10 @@ public class LikesRest {
             Account account = accessTokenModel.getAccount(token);
             like.setAuthor(account.getName());
         }
-       //TODO taraveloguesidの旅行記が存在するかの判定を行う
-       //なければ404を返す
-       
+        TravelogueModel travelogueModel = new TravelogueModel();
+        if(travelogueModel.findById(like.getTraveloguesid()) == null)
+            return errorMessage(404, "Not found.");
+
         try (LikeModel model = new LikeModel()) {
             like.getTraveloguesid();
         	model.register(like);
@@ -60,8 +63,9 @@ public class LikesRest {
             Account account = accessTokenModel.getAccount(token);
             like.setAuthor(account.getName());
         }
-        //TODO taraveloguesidの旅行記が存在するかの判定を行う
-        //なければ404を返す
+        TravelogueModel travelogueModel = new TravelogueModel();
+        if(travelogueModel.findById(like.getTraveloguesid()) == null)
+            return errorMessage(404, "Not found.");
 
         try (LikeModel model = new LikeModel()) {
             model.register(like);
@@ -87,7 +91,9 @@ public class LikesRest {
     		@PathParam("traveloguesid")String idString) {
 		try (LikeModel model = new LikeModel()) {
 			int traveloguesid = toInteger(idString);
-			//TODO traveloguesidが旅行記のコレクションに対して存在するかの確認を行う
+            TravelogueModel travelogueModel = new TravelogueModel();
+            if(travelogueModel.findById(traveloguesid) == null)
+                return errorMessage(404, "Not found.");
 			return Response.ok(model.getFindeq(traveloguesid))
 					.build();
 		}
