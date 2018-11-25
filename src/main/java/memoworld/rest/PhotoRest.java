@@ -32,7 +32,7 @@ public class PhotoRest {
     @POST
     @Secured
     @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     public Response postPhoto(@Context HttpHeaders headers, Photo photo) {
         try {
             // 写真をデコードして画像として正しいかをチェック

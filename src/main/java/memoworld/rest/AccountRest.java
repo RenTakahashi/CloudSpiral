@@ -15,8 +15,8 @@ import javax.ws.rs.core.Response;
 public class AccountRest {
 	
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
+	@Consumes(MediaType.APPLICATION_JSON + "; charset=UTF-8")
 	public Response postAccount(
 			Account account
 			) {
@@ -46,7 +46,7 @@ public class AccountRest {
 		}
 	
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
 	public Response getAccounts() {
 		try (AccountModel model = new AccountModel()) {
 			return Response.ok(model.getAccounts()).build();
@@ -54,7 +54,7 @@ public class AccountRest {
 	}
 	//DB_IDを指定したアカウントを取得する
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
 	@Path("{db_id}")
     public Response getAccount(
             @PathParam("db_id") String idString) {
@@ -72,7 +72,7 @@ public class AccountRest {
     }
 	//DB_IDを指定してアカウントを削除する
 	@DELETE
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
 	@Path("{db_id}")
 	public Response deleteAccount(
 			@PathParam("db_id") String idString){		
