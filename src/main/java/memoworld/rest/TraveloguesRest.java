@@ -1,9 +1,6 @@
 package memoworld.rest;
 
-import memoworld.entities.Travelogue;
-import memoworld.entities.Travelogues;
-import memoworld.entities.Account;
-import memoworld.entities.ErrorMessage;
+import memoworld.entities.*;
 import memoworld.model.AccessTokenModel;
 import memoworld.model.LikeModel;
 import memoworld.model.PhotoModel;
@@ -40,9 +37,13 @@ public class TraveloguesRest {
         	travelogue.getPhotos_id();
         	Travelogue result =	model.register(travelogue);
         	PhotoModel photomodel = new PhotoModel();
-        	for(int k = 1; k <= photomodel.count(); k++) {
-        		result.photos.add(photomodel.findById(k));
-        	}
+        	for(int id : result.getPhotos_id()) {
+				Photo photo = photomodel.findById(id);
+				if (photo == null){
+					return errorMessage(404, "Not found photo");
+				}
+				result.photos.add(photo);
+			}
         	result.setPhotos_id(null);
         	return Response.status(201)
                     .entity(result)
@@ -63,10 +64,16 @@ public class TraveloguesRest {
 			for(int i = 1; i <=  model.count() ; i++) {
 					travelogue = model.findById(i);
 				for(int j = 1; j <= likemodel.count(); j++) {
-					travelogue.likes.add(likemodel.findByLid(j));
+					Like like = likemodel.findByLid(j);
+					if (like.getTraveloguesid() == travelogue.getId())
+						travelogue.likes.add(like);
 				}
-				for(int k = 1; k <= photomodel.count() ; k++) {
-					travelogue.photos.add(photomodel.findById(k));
+				for(int id : travelogue.getPhotos_id()) {
+					Photo photo = photomodel.findById(id);
+					if (photo == null){
+						return errorMessage(404, "Not found photo");
+					}
+					travelogue.photos.add(photo);
 				}
 				travelogues.travelogues.add(travelogue);	
 			}
@@ -93,13 +100,19 @@ public class TraveloguesRest {
 				return errorMessage(404, "Not found");
 			LikeModel likemodel = new LikeModel();
 			PhotoModel photomodel = new PhotoModel();
-			
-			for(int i = 1; i <= likemodel.count(); i++) {
-				travelogue.likes.add(likemodel.findByLid(i));
+
+			for(int j = 1; j <= likemodel.count(); j++) {
+				Like like = likemodel.findByLid(j);
+				if (like.getTraveloguesid() == travelogue.getId())
+					travelogue.likes.add(like);
 			}
-			
-			for(int j = 1; j <= photomodel.count(); j++) {
-				travelogue.photos.add(photomodel.findById(j));
+
+			for(int photo_id : travelogue.getPhotos_id()) {
+				Photo photo = photomodel.findById(photo_id);
+				if (photo == null){
+					return errorMessage(404, "Not found photo");
+				}
+				travelogue.photos.add(photo);
 			}
 			likemodel.close();
 			photomodel.close();
