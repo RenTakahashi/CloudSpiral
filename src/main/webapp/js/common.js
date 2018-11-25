@@ -1,4 +1,4 @@
-var initTemplate = function(pageTitle, buttonName, nextPage) {
+var initTemplate = function(pageTitle, buttonName, nextPage, callback) {
 	//headerとfooterの準備
 	$("body").prepend(
 			'<header class="fixed-top">'
@@ -14,12 +14,18 @@ var initTemplate = function(pageTitle, buttonName, nextPage) {
 			+ '</nav>'
 			+ '</header>');
 	if (buttonName != undefined){
-		$("body").append(
-				'<footer class="fixed-bottom mb-3">'
-				+ '<!-- ボタンの処理を変更する -->'
-				+ '<a class="btn btn-primary float-right mx-3" href="' + nextPage + '" role="button">'
+		let button = $('<button class="btn btn-primary float-right mx-3" role="button">'
 				+ buttonName
-				+ '</a>'
-				+ '</footer>');
+				+ '</button>');
+		button.click(() => {
+			if (typeof callback !== 'function') {
+				callback = (resolve, reject) => { resolve(); };
+			}
+			new Promise(callback)
+				.then(() => { location.href = nextPage; });
+		});
+		$('<footer class="fixed-bottom mb-3">')
+				.append(button)
+				.appendTo($('body'));
 	}
 }
