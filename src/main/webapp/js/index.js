@@ -32,7 +32,7 @@ var createTravelogueLists = function() {
 
 //旅行記の要素をフォーマットしなおす
 var getPhoto = function(photos) {
-	return 'data:image/jpeg;base64,' + photos.rawImage;
+	return 'data:image/jpeg;base64,' + photos.raw;
 }
 var getDate = function(date) {
 	var formatDate = new Date(date)
