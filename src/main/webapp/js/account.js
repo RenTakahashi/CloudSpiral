@@ -14,30 +14,33 @@ if($('#password').val() == $('#password1').val()){
 			url: '/memoworld/api/accounts',
 			data: JSON.stringify(account),
 			success: function(data, status, xhr) {
-				console.log('success');
+				if(confirm("アカウントの登録が完了しました。\n"+"ログインページでログインしてください") == true){
+					$('#success').append('<script>location.href="login.html"</script>');
+				}else{
 				$('#success').empty();
 				$('#success').append('<div class="card row col-md-12">'
 		   				+'<div class="alert alert-success my-2" role="alert">'
 		   				+'アカウントの登録が完了しました。</br>'
 		   				+'ログインページでログインしてください'
 		   				+'</div>'
-				);
-				if(confirm("アカウントの登録が完了しました。\n"+"ログインページでログインしてください") == true){
-					$('#success').append('<script>location.href="login.html"</script>');
-				}
+				);}
 			},
 			error: function(xhr, status, error){
 				if(xhr.status == '400'){
-					console.log(xhr);
+					$('#user_id').val('');
+					$('#password').val('');
+					$('#password1').val('');
 					$('#idError').append('<div class="card row col-md-12">'
 			   				+'<div class="alert alert-danger my-2" role="alert">'
 			   				+xhr.responseJSON.message
 			   				+'</div>'
-			   		)
-				}
+			   				+'</div>'
+			   		);}
 			}
-		})
-	}else{   	 
+		});
+	}else{   	
+		$('#password').val('');
+		$('#password1').val('');
    		$('#passError').append('<div class="card row col-md-12">'
    				+'<div class="alert alert-danger my-2" role="alert">'
    				+'入力されたパスワードが違います。同じパスワードを入力してください'
