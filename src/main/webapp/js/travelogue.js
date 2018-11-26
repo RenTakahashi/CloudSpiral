@@ -2,6 +2,8 @@ const DEFAULT_LOCATION_SETTING_MAP_ZOOM = 16;
 const DEFAULT_LOCATION = {lat: 34.7018888889, lng: 135.494972222};
 let DEFAULT_LATLNG;
 let map;
+let marker = [];
+let infoWindow = [];
 
 function initMap() {
 	DEFAULT_LATLNG = new google.maps.LatLng(DEFAULT_LOCATION);
@@ -31,6 +33,7 @@ function getTravelogue(id) {
 				+ '<p>' + result.title + '</p>'
 				+ '<p>by ' + result.author + '</p>'
 				);
+		let sumLocation = { lat: 0, lng: 0 };
 		for(var i = 0; i < result.photos.length; i++) {
 			$("#travel-photos").append(
 					'<div class="row">'
@@ -39,7 +42,22 @@ function getTravelogue(id) {
 					+ '<p>' + getDate(result.photos[i].date) + '</p></div>'
 					+ '</div>'
 					);
+			marker[i] = new google.maps.Marker({
+				position: new google.maps.LatLng(result.photos[i].location.latitude, result.photos[i].location.longitude),
+				map: map,
+				label: result.photos.description,
+			});
+			infoWindow[i] = new google.maps.InfoWindow({
+				content: '<img src="' + getPhoto(result.photos[i]) + '" width="300">', 
+			});
+			markerEvent(i);
 		}
+	});
+}
+
+function markerEvent(i) {
+	marker[i].addListener('click', function() {
+		infoWindow[i].open(map, marker[i]);
 	});
 }
 
