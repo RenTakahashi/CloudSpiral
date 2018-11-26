@@ -33,8 +33,9 @@ function getTravelogue(id) {
 				+ '<p>' + result.title + '</p>'
 				+ '<p>by ' + result.author + '</p>'
 				);
-		let sumLocation = { lat: 0, lng: 0 };
+		let photoList = [];
 		for(var i = 0; i < result.photos.length; i++) {
+			photoList[i] = result.photos[i];
 			$("#travel-photos").append(
 					'<div class="row">'
 					+ '<div class="col">' + '<img class="img-fluid" src="' + getPhoto(result.photos[i]) + '"></div>'
@@ -45,14 +46,36 @@ function getTravelogue(id) {
 			marker[i] = new google.maps.Marker({
 				position: new google.maps.LatLng(result.photos[i].location.latitude, result.photos[i].location.longitude),
 				map: map,
-				label: result.photos.description,
 			});
 			infoWindow[i] = new google.maps.InfoWindow({
-				content: '<img src="' + getPhoto(result.photos[i]) + '" width="300">', 
+				content: result.photos[i].description + '<br><img src="' + getPhoto(result.photos[i]) + '" width="300">', 
 			});
 			markerEvent(i);
 		}
+		updateMap(photoList);
 	});
+}
+
+function updateMap(photoList) {
+    const locations = photoList
+    	.filter(x => x.location.latitude !== 0 || x.location.longitude !== 0)
+    	.map(x => ({ lat: x.location.latitude, lng: x.location.longitude }));
+    let sumLocation = locations.reduce(
+    		(sum, x) => ({ lat: sum.lat + x.lat, lng: sum.lng + x.lng }),
+    		{ lat: 0, lng: 0 });
+    map.setCenter({
+    	lat: sumLocation.lat / locations.length,
+    	lng: sumLocation.lng / locations.length,
+    });
+    map.setZoom(DEFAULT_LOCATION_SETTING_MAP_ZOOM);
+    const bounds = locations.reduce(
+    		(bound, x) => bound.extend({ lat: x.lat, lng: x.lng }),
+    		new google.maps.LatLngBounds()
+    );
+    map.fitBounds(bounds);
+    if (map.getZoom() > DEFAULT_LOCATION_SETTING_MAP_ZOOM) {
+    	map.setZoom(DEFAULT_LOCATION_SETTING_MAP_ZOOM);
+    }
 }
 
 function markerEvent(i) {
