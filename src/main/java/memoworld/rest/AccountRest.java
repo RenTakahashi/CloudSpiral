@@ -26,22 +26,22 @@ public class AccountRest {
 		String saftyPassword = PasswordUtil.getSafetyPassword(password, user_id);
 		
 		if(password == null || password.trim().equals(""))
-			return errorMessage(400, "empty password");
+			return errorMessage(400, "パスワードが入力されていません。パスワードを入力してください");
 		if(password.length() < 5) 
-			return errorMessage(400, "too short password");
+			return errorMessage(400, "パスワードが短すぎです。5文字以上のパスワードを入力してください");
 		if(password.equals(password.toLowerCase())|| password.equals(password.toUpperCase()))
-			return errorMessage(400, "パスワードに大文字と小文字を含めてください");
+			return errorMessage(400, "パスワードが小文字または大文字のみになっています。大文字と小文字の両方を含めてください");
 		if(name == null || name.trim().equals(""))
-			return errorMessage(400, "empty name");
+			return errorMessage(400, "名前が入力されていません。名前を入力してください");
 		if(user_id == null || user_id.trim().equals(""))
-			return errorMessage(400, "empty user_id");
+			return errorMessage(400, "ログインIDが入力されていません。ログインIDを入力してください");
 		try (AccountModel model = new AccountModel()) {
 			Account d = model.findByUser_Id(user_id);
 			if(d == null) {
 			 account = model.register(new Account(saftyPassword,name,user_id));
 				return Response.status(201).entity(account).build();
 			}
-			return errorMessage(400, "すでにアカウントが存在します。");
+			return errorMessage(400, "すでにログインIDが存在します。異なるログインIDを入力してください");
 			}
 		}
 	

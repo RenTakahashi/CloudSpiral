@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	crossorigin="anonymous"></script>
+<script src="js/common.js"></script>
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+	integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+	crossorigin="anonymous" />
+<script src="js/jquery-3.2.1.js"></script>
+<link rel="stylesheet" href="css/common.css" />
+<title>アカウント登録ページ</title>
+<style>
+.font-size-1x {
+	font-size: 1rem;
+}
+
+.font-size-2x {
+	font-size: 2rem;
+}
+</style>
+</head>
+<body>
+	<script>
+		/*
+		 * ボタン処理がいらない場合は，第2引数を書かない
+		 * 例：initTemplate("みんなの投稿");
+		 */
+		$(document).ready(function() {
+			initTemplate("アカウント登録");
+		});
+	</script>
+	<main class="container">
+	<div class="row">
+		<div class="col">
+			<div id="success">
+			<form>
+				<p id="nameError"></p>
+				<div class="form-group">
+					<label for="name">名前を入力してください</label> <input type="text"
+						class="form-control" id="name" placeholder="名前">
+				</div>
+				<p id="idError"></p>
+				<div class="form-group">
+					<label for="user_id">ログインIDを入力してください</label> <input type="text"
+						class="form-control" id="user_id" placeholder="ログインID">
+				</div>
+					<div class="form-group">
+					<label for="password">パスワードを入力してください(5文字以上かつ大文字と小文字を含めてください)</label> <input type="password"
+						class="form-control" id="password" placeholder="パスワード">
+				</div>
+				<p id="passError"></p>
+				<div class="form-group">
+					<label for="password1">もう一度パスワードを入力してください</label> <input type="password"
+						class="form-control" id="password1" placeholder="パスワード再入力">
+				</div>
+				<p id="success1"></p>
+				<input class="btn btn-primary float-right mb-1" type="button"
+					id="send" value="アカウント登録" />
+			</form>
+			</div>
+			<a class="font-size-1x" href="login.html">ログイン</a>
+			<script src="js/account.js"></script>
+		</div>
+	</div>
+</body>
+</html>
