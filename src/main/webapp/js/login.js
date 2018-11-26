@@ -13,6 +13,7 @@ $('#send').click(function() {
 		},
 		error: function(xhr, status, error){
 			if(xhr.status == '401'){
+				$('#loginError').empty();
 				$('#user_id').val('');
 				$('#password').val('');
 				$('#loginError').append('<div class="card row col-md-12">'
