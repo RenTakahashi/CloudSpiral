@@ -23,7 +23,7 @@ function updateLikes() {
 	$.ajax({
 		type: 'GET',
 		url: './api/likes/' + id,
-		contentType: 'application/json; chrset=UTF-8',
+		contentType: 'application/json; charset=UTF-8',
 	})
 	.then(result => {
 		debug = result;
@@ -42,7 +42,7 @@ function getTravelogue() {
 	$.ajax({
 		type: 'GET',
 		url: './api/travelogues/' + id,
-		contentType: 'application/json; chrset=UTF-8',
+		contentType: 'application/json; charset=UTF-8',
 	})
 	.then(result => {
 		$("#travel-title").append(
@@ -120,7 +120,7 @@ function postLike() {
 	return $.ajax({
 		type: 'POST',
 		url: './api/likes/' + id,
-		contentType: 'application/json; chrset=UTF-8',
+		contentType: 'application/json; charset=UTF-8',
 	});
 }
 
