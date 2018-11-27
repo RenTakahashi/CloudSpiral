@@ -4,6 +4,8 @@ let DEFAULT_LATLNG;
 let map;
 let marker = [];
 let infoWindow = [];
+let id;
+var debug;
 
 function initMap() {
 	DEFAULT_LATLNG = new google.maps.LatLng(DEFAULT_LOCATION);
@@ -17,11 +19,26 @@ function adjustMapSize() {
     $('[id$=-map]').each((i, element) => $(element).height($(element).width() * 0.75));
 }
 
+function updateLikes() {
+	$.ajax({
+		type: 'GET',
+		url: './api/likes/' + id,
+		contentType: 'application/json; chrset=UTF-8',
+	})
+	.then(result => {
+		debug = result;
+		$("#travel-likes").text("");
+		$("#travel-likes").append(
+				'<div class="float-right">いいね数：　'+ Object.keys(result.likes).length + '</div>'
+				);
+	});
+}
+
 function getTravelogueId() {
 	return decodeURIComponent(location.search.substring(1));
 }
 
-function getTravelogue(id) {
+function getTravelogue() {
 	$.ajax({
 		type: 'GET',
 		url: './api/travelogues/' + id,
@@ -29,9 +46,9 @@ function getTravelogue(id) {
 	})
 	.then(result => {
 		$("#travel-title").append(
-				'<p>' + getDate(result.date) + '</p>'
-				+ '<p>' + result.title + '</p>'
-				+ '<p>by ' + result.author + '</p>'
+				'<h4>' + result.title + '</h4>'
+				+ '<div class="float-left">' + getDate(result.date) + '</div>'
+				+ '<div class="float-right">by ' + result.author + '</div>'
 				);
 		let photoList = [];
 		for(var i = 0; i < result.photos.length; i++) {
@@ -48,12 +65,13 @@ function getTravelogue(id) {
 				map: map,
 			});
 			infoWindow[i] = new google.maps.InfoWindow({
-				content: result.photos[i].description + '<br><img src="' + getPhoto(result.photos[i]) + '" width="300">', 
+				content: result.photos[i].description + '<br><img src="' + getPhoto(result.photos[i]) + '" width="500">', 
 			});
 			markerEvent(i);
 		}
 		updateMap(photoList);
 	});
+	updateLikes();
 }
 
 function updateMap(photoList) {
@@ -93,7 +111,17 @@ function getDate(date) {
 	let y = formatDate.getFullYear();
 	let m = formatDate.getMonth() + 1;
 	let d = formatDate.getDate();
-	return y + '/' + m + '/' + d;
+	let h = formatDate.getHours();
+	let min = formatDate.getMinutes();
+	return y + '/' + m + '/' + d + ' ' + h + ':' + min;
+}
+
+function postLike() {
+	return $.ajax({
+		type: 'POST',
+		url: './api/likes/' + id,
+		contentType: 'application/json; chrset=UTF-8',
+	});
 }
 
 $(window).resize(() => {
@@ -101,17 +129,26 @@ $(window).resize(() => {
 });
 
 $(document).ready(() => {
+	id = getTravelogueId();
 	initTemplate(
 			'旅行記の詳細',
-			'',
-			'index.html',
-			);
-	let id = getTravelogueId();
+			'いいね',
+			'travelogue.html?' + getTravelogueId(), 
+	        (resolve, reject) => {
+	        	postLike()
+	        	.then(result => {
+//	                resolve('travelogue.html?' + id);
+	        		updateLikes();
+	        	})
+	        	.catch(result => {
+	        		reject();
+	        	});
+	        });
 	if(id) {
-		getTravelogue(id);
+		getTravelogue();
+		$('body').append('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeH3QEuI3KqOwBkkjJ6nYe-jQBTWGDQdw&callback=initMap" async defer>');
+	    adjustMapSize();
 	} else {
 		location.href="index.html";
 	}
-	$('body').append('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeH3QEuI3KqOwBkkjJ6nYe-jQBTWGDQdw&callback=initMap" async defer>');
-    adjustMapSize();
 });
