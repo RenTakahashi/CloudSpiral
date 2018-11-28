@@ -26,19 +26,16 @@ public class AuthenticationRestTest extends JerseyTest {
     private static final String TEST_PASSWORD = "Password";
     private static final String TEST_SAFETY_PASSWORD = PasswordUtil.getSafetyPassword(TEST_PASSWORD, TEST_USER_ID);
 
-    private static final Authentication TEST_REQUEST_BODY = new Authentication();
-
-    static {
-        TEST_REQUEST_BODY.setUserId(TEST_USER_ID);
-        TEST_REQUEST_BODY.setPassword(TEST_PASSWORD);
-    }
-
     private int accountCount;
     private int accessTokenCount;
 
     @Test
     public void getAccessTokenTest() {
-        Response response = post(TEST_REQUEST_BODY);
+        Authentication requestBody = new Authentication();
+        requestBody.setUserId(TEST_USER_ID);
+        requestBody.setPassword(TEST_PASSWORD);
+
+        Response response = post(requestBody);
         assertThat(response.getStatus(), is(200));
         AccessToken token = response.readEntity(AccessToken.class);
         assertNotNull(token);
@@ -49,11 +46,19 @@ public class AuthenticationRestTest extends JerseyTest {
 
     @Test
     public void getTwiceTest() {
-        Response firstResponse = post(TEST_REQUEST_BODY);
+        Authentication requestBody1 = new Authentication();
+        requestBody1.setUserId(TEST_USER_ID);
+        requestBody1.setPassword(TEST_PASSWORD);
+
+        Response firstResponse = post(requestBody1);
         assertThat(firstResponse.getStatus(), is(200));
         AccessToken firstResposedToken = firstResponse.readEntity(AccessToken.class);
 
-        Response secondResponse = post(TEST_REQUEST_BODY);
+        Authentication requestBody2 = new Authentication();
+        requestBody2.setUserId(TEST_USER_ID);
+        requestBody2.setPassword(TEST_PASSWORD);
+
+        Response secondResponse = post(requestBody2);
         assertThat(secondResponse.getStatus(), is(200));
         AccessToken secondResposedToken = secondResponse.readEntity(AccessToken.class);
 
@@ -68,7 +73,7 @@ public class AuthenticationRestTest extends JerseyTest {
         // テスト用ユーザーの登録
         try (AccountModel model = new AccountModel()) {
             accountCount = model.newId();
-            Account testUser = new Account(TEST_SAFETY_PASSWORD, "Test User", TEST_USER_ID);;
+            Account testUser = new Account(TEST_SAFETY_PASSWORD, "Test User", TEST_USER_ID);
             model.register(testUser);
         }
 
@@ -117,7 +122,7 @@ public class AuthenticationRestTest extends JerseyTest {
     private Response post(Authentication body) {
         return target("/authentication")
                 .request()
-                .post(Entity.entity(body, MediaType.APPLICATION_JSON));
+                .post(Entity.entity(body, MediaType.APPLICATION_JSON + "; charset=UTF-8"));
     }
 
     @Override
