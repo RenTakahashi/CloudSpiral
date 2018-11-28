@@ -98,7 +98,7 @@ function updateMap(photoList) {
 
 function markerEvent(i) {
 	marker[i].addListener('click', function() {
-		infoWindow.foreach(window => window.close());
+		infoWindow.forEach(window => window.close());
 		infoWindow[i].open(map, marker[i]);
 	});
 }
