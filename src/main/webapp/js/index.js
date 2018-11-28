@@ -9,7 +9,7 @@ var createTravelogueList = function(travelogue) {
 			+ '<img class="center-block" style="height:' + cardWidth + 'px;" src="' + getPhoto(travelogue.photos[0]) + '">'
 			+ '<div class="card-body card-img-overlay text-monospace p-0 h-100 d-flex flex-column justify-content-end">'
 			+ '<div id="card-texts" class="px-3">'
-			+ '<i class="fas fa-heart fa-lg">'
+			+ '<i class="fas fa-heart fa-lg fa-heart-pink">'
 			+ '<small>' + travelogue.likes.likes.length + '</small>'
 			+ '</i>'
 			+ '<small class="text-muted">' + getDate(travelogue.date) + '</small>'
