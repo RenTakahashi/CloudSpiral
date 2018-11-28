@@ -27,7 +27,10 @@ function updateLikes() {
 	.then(result => {
 		$("#travel-likes").text("");
 		$("#travel-likes").append(
-				'<div class="float-right">いいね数：　'+ Object.keys(result.likes).length + '</div>'
+				'<div class="float-right">'
+				+ '<i class="fas fa-heart fa-lg">'
+				+ '<small> ' + Object.keys(result.likes).length + '</small>'
+				+ '</div>'
 				);
 	});
 }
@@ -51,8 +54,8 @@ function getTravelogue() {
 		for(var i = 0; i < result.photos.length; i++) {
 			photoList[i] = result.photos[i];
 			$("#travel-photos").append(
-					'<div class="row">'
-					+ '<div class="col">' + '<img class="img-fluid" src="' + getPhoto(result.photos[i]) + '"></div>'
+					'<div class="row py-1">'
+					+ '<div class="col">' + '<img class="img-fluid px-1" src="' + getPhoto(result.photos[i]) + '"></div>'
 					+ '<div class="col">' + '<p class="card-text">' + result.photos[i].description + '</p>'
 					+ '<p>' + getDateTime(result.photos[i].date) + '</p></div>'
 					+ '</div>'
