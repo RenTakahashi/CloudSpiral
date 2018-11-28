@@ -6,12 +6,12 @@ var createTravelogueList = function(travelogue) {
 	//旅行記リスト作成
 	$("#travelogue-lists").append(
 			'<a class="card my-1" href="travelogue.html?' + travelogue.id + '" style="">'
-			+ '<i class="fas fa-heart">1</i>'
 			+ '<img class="center-block" style="height:' + cardWidth + 'px;" src="' + getPhoto(travelogue.photos[0]) + '">'
 			+ '<div class="card-body card-img-overlay text-monospace p-0 h-100 d-flex flex-column justify-content-end">'
 			+ '<div id="card-texts" class="px-3">'
+			+ '<i class="fas fa-heart fa-lg"></i>'
 			+ '<small class="text-muted">' + getDate(travelogue.date) + '</small>'
-			+ '<h5 class="card-title">' + travelogue.title.substr(0,10) + '</h5>'
+			+ '<h5 class="card-title">' + travelogue.title.substr(0,10) +'</h5>'
 			+ '<p class="text-right" style="font-size: 0.6rem">by ' + travelogue.author + '</p>'
 			+ '</div></div>'
 			+ '</a>'

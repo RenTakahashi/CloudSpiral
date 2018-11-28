@@ -11,3 +11,8 @@ img {
 #card-texts {
 	background: rgba(255,255,255,0.6);
 }
+
+.fa-heart {
+	position: absolute;
+	top: 90%;
+}
