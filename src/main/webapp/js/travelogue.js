@@ -98,6 +98,7 @@ function updateMap(photoList) {
 
 function markerEvent(i) {
 	marker[i].addListener('click', function() {
+		infoWindow.foreach(window => window.close());
 		infoWindow[i].open(map, marker[i]);
 	});
 }
@@ -145,8 +146,8 @@ $(document).ready(() => {
 	        	});
 	        });
 	if(id) {
-		getTravelogue();
 		$('body').append('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeH3QEuI3KqOwBkkjJ6nYe-jQBTWGDQdw&callback=initMap" async defer>');
+		getTravelogue();
 	    adjustMapSize();
 	} else {
 		location.href="index.html";
