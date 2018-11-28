@@ -5,7 +5,6 @@ let map;
 let marker = [];
 let infoWindow = [];
 let id;
-var debug;
 
 function initMap() {
 	DEFAULT_LATLNG = new google.maps.LatLng(DEFAULT_LOCATION);
@@ -26,7 +25,6 @@ function updateLikes() {
 		contentType: 'application/json; charset=UTF-8',
 	})
 	.then(result => {
-		debug = result;
 		$("#travel-likes").text("");
 		$("#travel-likes").append(
 				'<div class="float-right">いいね数：　'+ Object.keys(result.likes).length + '</div>'
@@ -146,7 +144,6 @@ $(document).ready(() => {
 	        	});
 	        });
 	if(id) {
-		$('body').append('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeH3QEuI3KqOwBkkjJ6nYe-jQBTWGDQdw&callback=initMap" async defer>');
 		getTravelogue();
 	    adjustMapSize();
 	} else {
