@@ -6,6 +6,7 @@ var createTravelogueList = function(travelogue) {
 	//旅行記リスト作成
 	$("#travelogue-lists").append(
 			'<a class="card my-1" href="travelogue.html?' + travelogue.id + '" style="">'
+			+ '<i class="fas fa-heart">1</i>'
 			+ '<img class="center-block" style="height:' + cardWidth + 'px;" src="' + getPhoto(travelogue.photos[0]) + '">'
 			+ '<div class="card-body card-img-overlay text-monospace p-0 h-100 d-flex flex-column justify-content-end">'
 			+ '<div id="card-texts" class="px-3">'
@@ -14,6 +15,7 @@ var createTravelogueList = function(travelogue) {
 			+ '<p class="text-right" style="font-size: 0.6rem">by ' + travelogue.author + '</p>'
 			+ '</div></div>'
 			+ '</a>'
+			
 			);
 	$(".progress").remove();//読み込みが終了
 }
