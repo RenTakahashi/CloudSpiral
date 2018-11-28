@@ -10,3 +10,8 @@ header, footer{
 html {
     font-size: 2rem;
 }
+
+.fa-heart-pink:before
+{
+	color: #FFC0CB;
+}
