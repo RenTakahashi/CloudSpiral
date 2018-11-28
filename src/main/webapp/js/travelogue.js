@@ -28,7 +28,7 @@ function updateLikes() {
 		$("#travel-likes").text("");
 		$("#travel-likes").append(
 				'<div class="float-right">'
-				+ '<i class="fas fa-heart fa-lg">'
+				+ '<i class="fas fa-heart fa-lg fa-heart-pink">'
 				+ '<small> ' + Object.keys(result.likes).length + '</small>'
 				+ '</div>'
 				);
