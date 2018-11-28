@@ -43,19 +43,18 @@ function getTravelogue() {
 		contentType: 'application/json; charset=UTF-8',
 	})
 	.then(result => {
-		$("#travel-title").append(
-				'<h4>' + result.title + '</h4>'
-				+ '<div class="float-left">' + getDate(result.date) + '</div>'
-				+ '<div class="float-right">by ' + result.author + '</div>'
-				);
 		let photoList = [];
+		photoList = result.photos;
+		photoList.sort(function(a,b) {
+			return (a.date > b.date ? 1 : -1);
+		});
 		for(var i = 0; i < result.photos.length; i++) {
 			photoList[i] = result.photos[i];
 			$("#travel-photos").append(
 					'<div class="row">'
 					+ '<div class="col">' + '<img class="img-fluid" src="' + getPhoto(result.photos[i]) + '"></div>'
 					+ '<div class="col">' + '<p class="card-text">' + result.photos[i].description + '</p>'
-					+ '<p>' + getDate(result.photos[i].date) + '</p></div>'
+					+ '<p>' + getDateTime(result.photos[i].date) + '</p></div>'
 					+ '</div>'
 					);
 			marker[i] = new google.maps.Marker({
@@ -67,6 +66,11 @@ function getTravelogue() {
 			});
 			markerEvent(i);
 		}
+		$("#travel-title").append(
+				'<h4>' + result.title + '</h4>'
+				+ '<div class="float-left">' + getDateFromPhoto(photoList) + '</div>'
+				+ '<div class="float-right">by ' + result.author + '</div>'
+				);
 		updateMap(photoList);
 	});
 	updateLikes();
@@ -105,7 +109,23 @@ var getPhoto = function(photos) {
 	return 'data:image/jpeg;base64,' + photos.raw;
 }
 
+function getDateFromPhoto(photoList) {
+	let text = getDate(photoList[0].date);
+	if(photoList.length > 1) {
+		text += " ～ " + getDate(photoList[photoList.length-1].date);
+	}
+	return text;
+}
+
 function getDate(date) {
+	let formatDate = new Date(date)
+	let y = formatDate.getFullYear();
+	let m = formatDate.getMonth() + 1;
+	let d = formatDate.getDate();
+	return y + '/' + m + '/' + d;
+}
+
+function getDateTime(date) {
 	let formatDate = new Date(date)
 	let y = formatDate.getFullYear();
 	let m = formatDate.getMonth() + 1;
