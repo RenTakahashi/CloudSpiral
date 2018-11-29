@@ -14,7 +14,7 @@ var createTravelogueList = function(travelogue) {
 			+ '</i>'
 			+ '<small class="text-muted">' + getDate(travelogue.date) + '</small>'
 			+ '<h5 class="card-title">' + omitDescription(travelogue.title) +'</h5>'
-			+ '<p class="text-right" style="font-size: 0.6rem">by ' + travelogue.author + '</p>'
+			+ '<p class="text-right" style="font-size: 1rem">by ' + travelogue.author + '</p>'
 			+ '</div></div>'
 			+ '</a>'
 			
