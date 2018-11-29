@@ -13,7 +13,7 @@ var createTravelogueList = function(travelogue) {
 			+ '<small>' + travelogue.likes.likes.length + '</small>'
 			+ '</i>'
 			+ '<small class="text-muted">' + getDate(travelogue.date) + '</small>'
-			+ '<h5 class="card-title">' + travelogue.title.substr(0,10) +'</h5>'
+			+ '<h5 class="card-title">' + omitDescription(travelogue.title) +'</h5>'
 			+ '<p class="text-right" style="font-size: 0.6rem">by ' + travelogue.author + '</p>'
 			+ '</div></div>'
 			+ '</a>'
@@ -35,6 +35,13 @@ var createTravelogueLists = function() {
 }
 
 //旅行記の要素をフォーマットしなおす
+var omitDescription = function(description){
+	if(description.length>=20){
+		return description.substr(0,20) + "...";
+	}
+	return description;
+}
+
 var getPhoto = function(photos) {
 	return 'data:image/jpeg;base64,' + photos.raw;
 }
