@@ -25,7 +25,7 @@ var createTravelogueLists = function() {
 	$.ajax({
 		type: 'GET',
 		url: endpoint + 'travelogues',
-		contentType: 'image/json',
+		contentType: 'application/json; charset=UTF-8',
 		success: function(json) {
 			for(var i=0; i < json.travelogues.length; i++){
 				createTravelogueList(json.travelogues[i]);

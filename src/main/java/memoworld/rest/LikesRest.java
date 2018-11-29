@@ -50,7 +50,7 @@ public class LikesRest {
 
     @POST
     @Path("{travelogue_id}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
     public Response postLike(@Context HttpHeaders headers,
                              @PathParam("travelogue_id")String idString) {
         Like like = new Like(toInteger(idString));

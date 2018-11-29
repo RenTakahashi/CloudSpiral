@@ -4,7 +4,7 @@ $('#send').click(function() {
 	var account = {user_id: $('#user_id').val(), password: $('#password').val()};
 	$.ajax({
 		type: 'POST',
-		contentType: 'application/json',
+		contentType: 'application/json; charset=UTF-8',
 		url: '/memoworld/api/authentication',
 		data: JSON.stringify(account),
 		success: function(json) {
