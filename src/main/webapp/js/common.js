@@ -1,4 +1,5 @@
 var initTemplate = function(pageTitle, buttonName, nextPage, callback) {
+	$("head").prepend('<link rel="shortcut icon" href="img/logo.jpg">');
 	//headerとfooterの準備
 	$("body").prepend(
 			'<header class="fixed-top">'
