@@ -10,7 +10,7 @@ if($('#password').val() == $('#password1').val()){
 	var account = {user_id: $('#user_id').val(), password: $('#password').val(), name: $('#name').val()};
 		$.ajax({
 			type: 'POST',
-			contentType: 'application/json',
+			contentType: 'application/json; charset=UTF-8',
 			url: '/memoworld/api/accounts',
 			data: JSON.stringify(account),
 			success: function(data, status, xhr) {
