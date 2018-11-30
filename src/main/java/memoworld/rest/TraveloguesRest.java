@@ -64,8 +64,8 @@ public class TraveloguesRest {
 				Photo p = photomodel.findById(travelogue.getPhotos_id().get(0));
 				if (p == null)
 					return errorMessage(404, "Not found some photos");
-                travelogue.photos = new ArrayList<Photo>();
-                travelogue.photos.add(p);                 
+				travelogue.photos = new ArrayList<Photo>();
+				travelogue.photos.add(p);
 				travelogues.travelogues.add(travelogue);
 			}
 				photomodel.close();
