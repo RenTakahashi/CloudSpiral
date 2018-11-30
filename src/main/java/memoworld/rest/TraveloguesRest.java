@@ -12,6 +12,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 
 @Path("/travelogues")
 public class TraveloguesRest {
@@ -60,10 +61,12 @@ public class TraveloguesRest {
 			for(int i = 1; i <=  model.count() ; i++) {
 					travelogue = model.findById(i);
 				travelogue.likes = likemodel.getFindeq(travelogue.getId());
-                travelogue.photos = photomodel.findByIds(travelogue.getPhotos_id());
-                if(travelogue.photos == null)
-                    return errorMessage(404, "Not found some photos");
-				travelogues.travelogues.add(travelogue);	
+				Photo p = photomodel.findById(travelogue.getPhotos_id().get(0));
+				if (p == null)
+					return errorMessage(404, "Not found some photos");
+				travelogue.photos = new ArrayList<Photo>();
+				travelogue.photos.add(p);
+				travelogues.travelogues.add(travelogue);
 			}
 				photomodel.close();
 				likemodel.close();
