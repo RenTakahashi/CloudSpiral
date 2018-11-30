@@ -312,8 +312,8 @@ $(document).ready(() => {
         }
 
         const file = event.target.files[0];
-        if (!file.type.startsWith('image/')) {
-            alert('画像ファイルを選択してください');
+        if (!file.type.startsWith('image/jpeg')) {
+            alert('JPEGファイルを選択してください');
 
             return;
         }
