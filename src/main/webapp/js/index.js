@@ -27,7 +27,7 @@ var createTravelogueLists = function() {
 		url: endpoint + 'travelogues',
 		contentType: 'application/json; charset=UTF-8',
 		success: function(json) {
-			for(var i=0; i < json.travelogues.length; i++){
+			for(var i=json.travelogues.length-1; i >= 0; i--){
 				createTravelogueList(json.travelogues[i]);
 			}
 		}
