@@ -61,10 +61,11 @@ public class TraveloguesRest {
 			for(int i = 1; i <=  model.count() ; i++) {
 					travelogue = model.findById(i);
 				travelogue.likes = likemodel.getFindeq(travelogue.getId());
+				Photo p = photomodel.findById(travelogue.getPhotos_id().get(0));
+				if (p == null)
+					return errorMessage(404, "Not found some photos");
                 travelogue.photos = new ArrayList<Photo>();
-                travelogue.photos.add(photomodel.findById(travelogue.getPhotos_id().get(0)));
-                if(travelogue.photos == null)
-                    return errorMessage(404, "Not found some photos");
+                travelogue.photos.add(p);                 
 				travelogues.travelogues.add(travelogue);
 			}
 				photomodel.close();
